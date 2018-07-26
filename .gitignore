@@ -34,3 +34,19 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Submodule
+Assets/Haste
+Assets/Haste.meta
+Assets/Plugins/UniRx
+Assets/Plugins/UniRx.meta
+Assets/Plugins/MessagePack
+Assets/Plugins/MessagePack.meta
+Assets/Plugins/Zenject
+Assets/Plugins/Zenject.meta
+Assets/Plugins/UnityExtensions
+Assets/Plugins/UnityExtensions.meta
+Assets/Demigiant
+Assets/Demigiant.meta
+Assets/Resources/DOTweenSettings.asset
+Assets/Resources/DOTweenSettings.asset.meta
