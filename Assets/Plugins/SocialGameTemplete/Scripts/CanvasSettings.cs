@@ -11,6 +11,7 @@ namespace SocialGame
         private enum Layer
         {
             Background  = 0,
+            Foreground  = 100,
             Dialog      = 600,
             Toast       = 700,
             Transition  = 800,
@@ -18,9 +19,9 @@ namespace SocialGame
             TapEffect   = 1000,
         }
 
-        [SerializeField] private Layer _layer;
+        [SerializeField] private Layer _layer = Layer.Foreground;
 
-        [Inject] private Camera _uiCamera;
+        [Inject] private Camera _uiCamera = null;
 
         private void Start()
         {

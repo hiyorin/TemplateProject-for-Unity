@@ -6,7 +6,7 @@ namespace SocialGame.Internal
 {
     public sealed class SystemSceneContext : SceneContext
     {
-        [SerializeField] private string _settingsPath;
+        [SerializeField] private string _settingsPath = string.Empty;
 
         protected override void RunInternal()
         {

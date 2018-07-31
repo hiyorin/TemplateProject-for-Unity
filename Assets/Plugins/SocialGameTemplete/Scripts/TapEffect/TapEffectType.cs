@@ -3,6 +3,6 @@ namespace SocialGame.TapEffect
 {
     public enum TapEffectType
     {
-        Sample,
+        Sample = -1,
     }
 }

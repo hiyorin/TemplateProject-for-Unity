@@ -1,11 +1,12 @@
 ﻿using System;
 using SocialGame.Transition;
+using SocialGame.Internal.Transition;
 using Zenject;
 using UniRx;
 
 namespace SocialGame
 {
-    public class TransitionController : ITransitionIntent
+    public sealed class TransitionController : ITransitionIntent
     {
         private readonly Subject<TransMode> _onTransIn = new Subject<TransMode>();
 

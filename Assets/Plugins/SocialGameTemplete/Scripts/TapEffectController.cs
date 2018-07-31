@@ -1,5 +1,6 @@
 ﻿using System;
 using SocialGame.TapEffect;
+using SocialGame.Internal.TapEffect;
 using UniRx;
 
 namespace SocialGame

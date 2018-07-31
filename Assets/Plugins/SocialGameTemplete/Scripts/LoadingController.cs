@@ -1,5 +1,6 @@
 ﻿using System;
 using SocialGame.Loading;
+using SocialGame.Internal.Loading;
 using UniRx;
 
 namespace SocialGame

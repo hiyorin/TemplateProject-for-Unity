@@ -1,5 +1,6 @@
 ﻿using System;
 using SocialGame.Dialog;
+using SocialGame.Internal.Dialog;
 using UniRx;
 
 namespace SocialGame

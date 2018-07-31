@@ -1,5 +1,6 @@
 ﻿using System;
 using SocialGame.Toast;
+using SocialGame.Internal.Toast;
 using UniRx;
 
 namespace SocialGame

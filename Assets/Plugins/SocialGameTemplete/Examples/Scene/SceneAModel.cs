@@ -9,7 +9,7 @@ namespace Sandbox.Scene
 {
     public class SceneAModel : ISceneLifecycle, IInitializable, IDisposable
     {
-        [Inject] private ISceneManager _sceneManager;
+        [Inject] private ISceneManager _sceneManager = null;
 
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
 

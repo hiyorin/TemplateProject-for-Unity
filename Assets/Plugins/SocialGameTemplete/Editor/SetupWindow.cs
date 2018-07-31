@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using Zenject;
 
-namespace SocialGame
+namespace SocialGame.Internal
 {
     public sealed class SetupWindow : ScriptableWizard
     {

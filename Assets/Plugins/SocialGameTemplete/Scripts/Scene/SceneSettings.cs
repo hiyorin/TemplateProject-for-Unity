@@ -9,7 +9,7 @@ using UnityEditor.SceneManagement;
 
 namespace SocialGame.Scene
 {
-    public class SceneSettings : MonoBehaviour
+    public sealed class SceneSettings : MonoBehaviour
     {
         [Serializable]
         private class DataSet
@@ -40,7 +40,7 @@ namespace SocialGame.Scene
 
         #if UNITY_EDITOR
         [CustomEditor(typeof(SceneSettings))]
-        private class CustomInspector : Editor
+        private sealed class CustomInspector : Editor
         {
             private SceneSettings _owner;
 
