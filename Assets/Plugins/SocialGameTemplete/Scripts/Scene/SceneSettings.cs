@@ -2,7 +2,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using SocialGame.Internal;
 #if UNITY_EDITOR
+using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
@@ -55,7 +57,7 @@ namespace SocialGame.Scene
 
                 EditorGUILayout.LabelField("Load sub scenes");
                 EditorGUI.indentLevel++;
-                foreach (var scene in EditorBuildSettings.scenes.Where(x => x.enabled && x.path.IndexOf("System") == -1))
+                foreach (var scene in EditorBuildSettings.scenes.Where(x => x.enabled && x.path.IndexOf(Path.Combine(ProjectModel.RootPath, "Scenes")) == -1))
                 {
                     string sceneName = System.IO.Path.GetFileName(scene.path);
                     sceneName = sceneName.Replace(".unity", "");
