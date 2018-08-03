@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityExtensions.Editor;
 using Zenject;
 
 namespace SocialGame.Internal
@@ -33,6 +34,7 @@ namespace SocialGame.Internal
 
         private void OnWizardCreate()
         {
+            SetupExtensions();
             SetupBuildSettingsScene();
             SetupSettings<Dialog.DialogSettingsInstaller>("DialogSettings");
             SetupSettings<Loading.LoadingSettingsInstaller>("LoadingSettings");
@@ -40,6 +42,12 @@ namespace SocialGame.Internal
             SetupSettings<Toast.ToastSettingsInstaller>("ToastSettings");
             SetupSettings<Transition.TransitionSettingsInstaller>("TransitionSettings");
             AssetDatabase.SaveAssets();
+        }
+
+        private void SetupExtensions()
+        {
+            UniRxMenu.Enable();
+            DOTweenMenu.Enable();
         }
 
         private void SetupBuildSettingsScene()
