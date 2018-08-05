@@ -25,6 +25,8 @@ public class ExportPackage
 
         File.Delete(readmePath);
         File.Delete(licensePath);
+        File.Delete(readmePath + ".meta");
+        File.Delete(licensePath + ".meta");
         AssetDatabase.Refresh();
     }
 }
