@@ -7,6 +7,7 @@ namespace SocialGame.Internal
     public sealed class ProjectInstaller : MonoInstaller
     {
         [SerializeField] private SceneManager _sceneManager = null;
+
         [SerializeField] private Camera _uiCamera = null;
 
         public override void InstallBindings()
@@ -18,7 +19,13 @@ namespace SocialGame.Internal
             Container.BindInterfacesAndSelfTo<ToastController>().AsSingle();
             Container.BindInterfacesAndSelfTo<TapEffectController>().AsSingle();
             Container.BindInterfacesAndSelfTo<LoadingController>().AsSingle();
-            Container.BindInstance<Camera>(_uiCamera).AsSingle();
+            Container.BindInstance(_uiCamera).AsSingle();
+
+            var projectSettings = Resources.Load<ProjectSettings>("ProjectSettings");
+            Container.BindInstance(projectSettings.Debug).AsSingle();
+
+            // Debug mode
+            Container.BindInterfacesAndSelfTo<DebugMode.FPSModel>().AsSingle();
         }
     }
 }

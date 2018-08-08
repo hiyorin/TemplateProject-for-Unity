@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
 using UnityExtensions.Editor;
 using Zenject;
 
@@ -36,6 +37,7 @@ namespace SocialGame.Internal
         {
             SetupExtensions();
             SetupBuildSettingsScene();
+            SetupSettings<ProjectSettings>("ProjectSettings");
             SetupSettings<Dialog.DialogSettingsInstaller>("DialogSettings");
             SetupSettings<Loading.LoadingSettingsInstaller>("LoadingSettings");
             SetupSettings<TapEffect.TapEffectSettingsInstaller>("TapEffectSettings");
@@ -64,7 +66,7 @@ namespace SocialGame.Internal
             EditorBuildSettings.scenes = scenes.ToArray();   
         }
 
-        private void SetupSettings<T>(string fileName) where T:ScriptableObjectInstaller
+        private void SetupSettings<T>(string fileName) where T:ScriptableObject
         {
             string path = string.Format("Assets/Resources/{0}.asset", fileName);
             if (AssetDatabase.LoadAssetAtPath<ScriptableObjectInstaller>(path) == null)
