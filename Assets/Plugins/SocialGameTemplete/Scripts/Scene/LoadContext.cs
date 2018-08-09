@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using UnityExtensions;
 using SocialGame.Transition;
 using UniRx;
 
@@ -11,7 +12,7 @@ namespace SocialGame.Scene
         public class Scene
         {
             public readonly string Name;
-            public List<ISceneLifecycle> Lifecycles;
+            public IEnumerable<ISceneLifecycle> Lifecycles;
 
             public Scene(string name)
             {

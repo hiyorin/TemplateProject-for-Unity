@@ -128,7 +128,7 @@ namespace SocialGame.Scene
                     .SelectMany(x => new WaitUntil(() => x.Initialized)
                         .ToObservable()
                         .Select(_ => x))
-                    .Do(x => additiveScene.Lifecycles = x.Container.ResolveAll<ISceneLifecycle>())
+                    .Do(x => additiveScene.Lifecycles = x.Container.ResolveAll<ISceneLifecycle>().Where(y => !context.NextScene.Lifecycles.Any(z => y == z)))
                     .FirstOrDefault())
                 .WhenAll()
                 .StartAsCoroutine();
