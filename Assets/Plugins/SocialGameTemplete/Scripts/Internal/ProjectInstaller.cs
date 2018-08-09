@@ -26,6 +26,8 @@ namespace SocialGame.Internal
 
             // Debug mode
             Container.BindInterfacesAndSelfTo<DebugMode.FPSModel>().AsSingle();
+
+            Application.targetFrameRate = projectSettings.Application.TargetFrameRate;
         }
     }
 }
