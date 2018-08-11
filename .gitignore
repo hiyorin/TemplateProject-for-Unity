@@ -46,6 +46,8 @@ Assets/Plugins/Zenject
 Assets/Plugins/Zenject.meta
 Assets/Plugins/UnityExtensions
 Assets/Plugins/UnityExtensions.meta
+Assets/Plugins/MemoryInfoPlugin
+Assets/Plugins/MemoryInfoPlugin.meta
 Assets/Demigiant
 Assets/Demigiant.meta
 Assets/Resources/DOTweenSettings.asset
