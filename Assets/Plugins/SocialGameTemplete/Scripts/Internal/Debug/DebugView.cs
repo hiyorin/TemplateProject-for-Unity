@@ -36,7 +36,11 @@ namespace SocialGame.Internal.DebugMode
 
             _memoryModel
                 .OnUpdateMomoryInfoAsObservable()
-                .Subscribe(x => _memory.text = string.Format("Memory : {0:0.00}/{1:0.00} MB ({2}%)", x.UsedSize, x.TotalSize, (int)(100.0f * x.UsedSize / x.TotalSize)))
+                .Subscribe(x => {
+                    float usedSizeMB = x.UsedSize / 1024.0f;
+                    float totalSizeMB = x.TotalSize / 1024.0f;
+                    _memory.text = string.Format("Memory : {0:0.00}/{1:0.00} MB ({2:0.0}%)", usedSizeMB, totalSizeMB, 100.0f * usedSizeMB / totalSizeMB);
+                })
                 .AddTo(this);
         }
 
