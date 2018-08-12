@@ -4,7 +4,7 @@ using UniRx;
 
 namespace SocialGame.Internal.Transition
 {
-    public interface ITransitionIntent
+    internal interface ITransitionIntent
     {
         IObservable<TransMode> OnTransInAsObservable();
 

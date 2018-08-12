@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using SocialGame;
+using SocialGame.TapEffect;
 using Zenject;
 using UniRx;
 

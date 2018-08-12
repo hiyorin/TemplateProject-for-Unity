@@ -1,10 +1,8 @@
 ﻿using System;
-using SocialGame.Transition;
 using SocialGame.Internal.Transition;
-using Zenject;
 using UniRx;
 
-namespace SocialGame
+namespace SocialGame.Transition
 {
     public sealed class TransitionController : ITransitionIntent
     {

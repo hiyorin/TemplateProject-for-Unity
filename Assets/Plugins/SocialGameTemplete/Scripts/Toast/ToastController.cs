@@ -1,9 +1,8 @@
 ﻿using System;
-using SocialGame.Toast;
 using SocialGame.Internal.Toast;
 using UniRx;
 
-namespace SocialGame
+namespace SocialGame.Toast
 {
     public sealed class ToastController : IToastIntent
     {

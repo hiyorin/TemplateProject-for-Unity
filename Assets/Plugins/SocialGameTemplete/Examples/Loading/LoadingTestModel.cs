@@ -1,5 +1,5 @@
 ﻿using System;
-using SocialGame;
+using SocialGame.Loading;
 using UnityEngine;
 using Zenject;
 using UniRx;

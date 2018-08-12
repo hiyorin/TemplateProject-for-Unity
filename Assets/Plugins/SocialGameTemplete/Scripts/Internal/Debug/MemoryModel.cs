@@ -6,12 +6,12 @@ using Info = MemoryInfo.MemoryInfo;
 
 namespace SocialGame.Internal.DebugMode
 {
-    public interface IMemoryModel
+    internal interface IMemoryModel
     {
         IObservable<Info> OnUpdateMomoryInfoAsObservable();
     }
 
-    public sealed class MemoryModel : IInitializable, IDisposable, IMemoryModel
+    internal sealed class MemoryModel : IInitializable, IDisposable, IMemoryModel
     {
         [Inject] private DebugSettings _settings = null;
 

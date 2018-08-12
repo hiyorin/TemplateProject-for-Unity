@@ -1,9 +1,8 @@
 ﻿using System;
-using SocialGame.Dialog;
 using SocialGame.Internal.Dialog;
 using UniRx;
 
-namespace SocialGame
+namespace SocialGame.Dialog
 {
     public sealed class DialogController : IDialogIntent
     {

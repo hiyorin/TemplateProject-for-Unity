@@ -4,7 +4,7 @@ using Zenject;
 
 namespace SocialGame.Internal.Transition
 {
-    public class TransitionFactory
+    internal class TransitionFactory
     {
         [Inject] private DiContainer _container = null;
 

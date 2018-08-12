@@ -27,6 +27,11 @@ namespace SocialGame.Internal
 
         [SerializeField] private float _memoryUpdateInterval = 0.5f;
 
+        [Header("Extension")]
+        [SerializeField] private bool _extension = false;
+
+        [SerializeField] private float _extensionUpdateInterval = 0.5f;
+
         public Color TextColor { get { return _textColor; } }
 
         public bool FPS { get { return _fps; } }
@@ -36,6 +41,10 @@ namespace SocialGame.Internal
         public bool Memory { get { return _memory; } }
 
         public float MemoryUpdateInterval { get { return _memoryUpdateInterval; } }
+
+        public bool Extension { get { return _extension; } }
+
+        public float ExtensionUpdateInterval { get { return _extensionUpdateInterval; } }
     }
 
     [Serializable]

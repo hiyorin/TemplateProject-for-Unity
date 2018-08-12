@@ -13,9 +13,13 @@ namespace SocialGame.Internal.DebugMode
 
         [SerializeField] private Text _memory = null;
 
+        [SerializeField] private Text _extension = null;
+
         [Inject] private IFPSModel _fpsModel = null;
 
         [Inject] private IMemoryModel _memoryModel = null;
+
+        [Inject] private IExtensionModel _extensionModel = null;
 
         [Inject] private DebugSettings _settings = null;
 
@@ -27,7 +31,10 @@ namespace SocialGame.Internal.DebugMode
             _memory.text = string.Empty;
             _memory.color = _settings.TextColor;
 
-            gameObject.SetActiveSafe(_settings.FPS || _settings.Memory);
+            _extension.text = string.Empty;
+            _extension.color = _settings.TextColor;
+
+            gameObject.SetActiveSafe(_settings.FPS || _settings.Memory || _settings.Extension);
 
             _fpsModel
                 .OnUpdateFPSAsObservable()
@@ -41,6 +48,11 @@ namespace SocialGame.Internal.DebugMode
                     float totalSizeMB = x.TotalSize / 1024.0f;
                     _memory.text = string.Format("Memory : {0:0.00}/{1:0.00} MB ({2:0.0}%)", usedSizeMB, totalSizeMB, 100.0f * usedSizeMB / totalSizeMB);
                 })
+                .AddTo(this);
+
+            _extensionModel
+                .OnUpdateExtensionAsObservable()
+                .Subscribe(x => _extension.text = x)
                 .AddTo(this);
         }
 

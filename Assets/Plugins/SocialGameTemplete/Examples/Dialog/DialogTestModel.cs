@@ -1,5 +1,5 @@
 ﻿using System;
-using SocialGame;
+using SocialGame.Dialog;
 using UnityEngine;
 using Zenject;
 using UniRx;
@@ -17,7 +17,7 @@ namespace Sandbox.Dialog
             Observable
                 .EveryUpdate()
                 .Where(_ => Input.GetKeyDown(KeyCode.O))
-                .SelectMany(_ => _dialogController.Open(SocialGame.Dialog.DialogType.Sample, UnityEngine.Random.Range(0, 100).ToString()))
+                .SelectMany(_ => _dialogController.Open(DialogType.Sample, UnityEngine.Random.Range(0, 100).ToString()))
                 .Subscribe(x => Debug.Log(x))
                 .AddTo(_disposable);
         }

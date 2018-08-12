@@ -1,9 +1,8 @@
 ﻿using System;
-using SocialGame.Loading;
 using SocialGame.Internal.Loading;
 using UniRx;
 
-namespace SocialGame
+namespace SocialGame.Loading
 {
     public sealed class LoadingController : ILoadingIntent
     {

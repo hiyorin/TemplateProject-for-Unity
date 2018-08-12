@@ -4,7 +4,7 @@ using UniRx;
 
 namespace SocialGame.Internal.Transition
 {
-    public interface ITransitionModel
+    internal interface ITransitionModel
     {
         IObservable<GameObject> OnAddAsObservable();
 

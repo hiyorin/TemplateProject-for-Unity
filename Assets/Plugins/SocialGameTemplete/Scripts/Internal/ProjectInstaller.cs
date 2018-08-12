@@ -1,4 +1,10 @@
 using SocialGame.Scene;
+using SocialGame.Transition;
+using SocialGame.Dialog;
+using SocialGame.Toast;
+using SocialGame.Loading;
+using SocialGame.TapEffect;
+using SocialGame.DebugMode;
 using UnityEngine;
 using Zenject;
 
@@ -19,6 +25,7 @@ namespace SocialGame.Internal
             Container.BindInterfacesAndSelfTo<ToastController>().AsSingle();
             Container.BindInterfacesAndSelfTo<TapEffectController>().AsSingle();
             Container.BindInterfacesAndSelfTo<LoadingController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<DebugController>().AsSingle();
             Container.BindInstance(_uiCamera).AsSingle();
 
             var projectSettings = Resources.Load<ProjectSettings>("ProjectSettings");
@@ -27,6 +34,7 @@ namespace SocialGame.Internal
             // Debug mode
             Container.BindInterfacesAndSelfTo<DebugMode.FPSModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<DebugMode.MemoryModel>().AsSingle();
+            Container.BindInterfacesAndSelfTo<DebugMode.ExtensionModel>().AsSingle();
 
             Application.targetFrameRate = projectSettings.Application.TargetFrameRate;
         }

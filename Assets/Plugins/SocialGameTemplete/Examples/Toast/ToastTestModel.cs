@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using SocialGame;
 using SocialGame.Toast;
 using Zenject;
 using UniRx;

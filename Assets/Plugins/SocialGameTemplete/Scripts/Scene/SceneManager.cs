@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 using UnityExtensions;
 using Zenject;
 using UniRx;
-using UnityScene = UnityEngine.SceneManagement.Scene;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 #if UNITY_EDITOR
 using UnityEditor;
