@@ -25,17 +25,14 @@ namespace SocialGame.Internal.DebugMode
 
         private void Start()
         {
-            _fps.text = string.Empty;
-            _fps.color = _settings.TextColor;
-
-            _memory.text = string.Empty;
-            _memory.color = _settings.TextColor;
-
-            _extension.text = string.Empty;
-            _extension.color = _settings.TextColor;
+            Reset(_fps);
+            Reset(_memory);
+            Reset(_extension);
 
             gameObject.SetActiveSafe(_settings.FPS || _settings.Memory || _settings.Extension);
-
+            if (!gameObject.activeSelf)
+                return;
+            
             _fpsModel
                 .OnUpdateFPSAsObservable()
                 .Subscribe(x => _fps.text = string.Format("FPS : {0:F2}", x))
@@ -56,5 +53,11 @@ namespace SocialGame.Internal.DebugMode
                 .AddTo(this);
         }
 
+        private void Reset(Text text)
+        {
+            text.text = string.Empty;
+            text.color = _settings.TextColor;
+            text.fontSize = _settings.TextFontSize;
+        }
     }
 }

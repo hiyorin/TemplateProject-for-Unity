@@ -17,6 +17,8 @@ namespace SocialGame.Internal
         [Header("General")]
         [SerializeField] private Color _textColor = Color.white;
 
+        [SerializeField] private int _textFontSize = 24;
+
         [Header("FPS")]
         [SerializeField] private bool _fps = false;
 
@@ -33,6 +35,8 @@ namespace SocialGame.Internal
         [SerializeField] private float _extensionUpdateInterval = 0.5f;
 
         public Color TextColor { get { return _textColor; } }
+
+        public int TextFontSize { get { return _textFontSize; } }
 
         public bool FPS { get { return _fps; } }
 
