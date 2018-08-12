@@ -7,8 +7,12 @@ namespace SocialGame.Internal
     public sealed class ApplicationSettings
     {
         [SerializeField][Range(24, 60)] private int _targetFrameRate = 60;
-        
+
+        [SerializeField][Range(0.1f, 1.0f)] private float _resolution = 1.0f;
+
         public int TargetFrameRate { get { return _targetFrameRate; } }
+
+        public float Resolution { get { return _resolution; } }
     }
 
     [Serializable]

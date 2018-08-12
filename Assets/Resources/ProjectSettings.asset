@@ -13,6 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _application:
     _targetFrameRate: 60
+    _resolution: 1
   _debug:
     _textColor: {r: 1, g: 1, b: 1, a: 1}
     _textFontSize: 24

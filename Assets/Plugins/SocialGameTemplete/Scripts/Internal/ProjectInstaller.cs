@@ -29,14 +29,13 @@ namespace SocialGame.Internal
             Container.BindInstance(_uiCamera).AsSingle();
 
             var projectSettings = Resources.Load<ProjectSettings>("ProjectSettings");
+            Container.BindInstance(projectSettings.Application).AsSingle();
             Container.BindInstance(projectSettings.Debug).AsSingle();
 
             // Debug mode
             Container.BindInterfacesAndSelfTo<DebugMode.FPSModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<DebugMode.MemoryModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<DebugMode.ExtensionModel>().AsSingle();
-
-            Application.targetFrameRate = projectSettings.Application.TargetFrameRate;
         }
     }
 }
