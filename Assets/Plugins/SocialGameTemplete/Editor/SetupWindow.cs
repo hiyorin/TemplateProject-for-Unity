@@ -30,6 +30,7 @@ namespace SocialGame.Internal
         protected override bool DrawWizardGUI()
         {
             EditorGUILayout.LabelField("1. Setup system scenes");
+            EditorGUILayout.LabelField("2. Create system settings");
             return true;
         }
 
