@@ -30,7 +30,7 @@ namespace SocialGame.Internal
                     .Where(x => x.enabled)
                     .Select(x => x.path)
                     .Where(x => !ProjectModel.SystemSceneNames.Any(y => x.EndsWith(string.Format("/{0}.unity", y))))
-                    .Where(x => x.IndexOf("/SocialGameTemplete/Examples") < 0))
+                    .Where(x => x.IndexOf("/SocialGameTemplate/Examples") < 0))
                 {
                     string sceneName = Path.GetFileName(scenePath);
                     sceneName = sceneName.Replace(".unity", "");

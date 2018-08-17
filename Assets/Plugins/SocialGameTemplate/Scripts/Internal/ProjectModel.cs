@@ -23,7 +23,7 @@ namespace SocialGame.Internal
             "Loading",
         };
 
-        public const string RootPath = "Plugins/SocialGameTemplete";
+        public const string RootPath = "Plugins/SocialGameTemplate";
 
         void IInitializable.Initialize()
         {

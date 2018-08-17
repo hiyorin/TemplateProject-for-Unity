@@ -9,7 +9,7 @@ namespace SocialGame.Internal
 {
     public sealed class SetupWindow : ScriptableWizard
     {
-        [MenuItem("Window/Setup SocialGameTemplete")]
+        [MenuItem("Window/Setup SocialGameTemplate")]
         private static void Open()
         {
             DisplayWizard<SetupWindow>("Setup");
