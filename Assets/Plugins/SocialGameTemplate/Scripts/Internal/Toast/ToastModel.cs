@@ -15,6 +15,7 @@ namespace SocialGame.Internal.Toast
             public GameObject Object;
         }
 
+        [Serializable]
         private class Request
         {
             public IToast Toast;
@@ -23,7 +24,7 @@ namespace SocialGame.Internal.Toast
 
         [Inject] private IToastIntent _intent = null;
 
-        [Inject] private ToastFactory _factory = null;
+        [Inject] private IToastFactory _factory = null;
 
         [Inject] private ToastSettings _settings = null;
 
@@ -47,8 +48,8 @@ namespace SocialGame.Internal.Toast
                     {
                         var toastObject = _factory.Create(request.Type);
                         context = new Context() {
-                           Toast = toastObject.GetComponent<IToast>(),
-                           Object = toastObject,
+                            Toast = toastObject.GetComponent<IToast>(),
+                            Object = toastObject,
                         };
                         _contexts.Add(request.Type, context);
                     }
@@ -58,7 +59,15 @@ namespace SocialGame.Internal.Toast
                     };
                 })
                 .Where(x => x.Toast != null)
-                .Subscribe(x => _requests.Enqueue(x))
+                .Subscribe(x => {
+                    if (_current.Value == null)
+                    {
+                        _isOpen.Value = true;
+                        _current.Value = x;
+                    }
+                    else
+                        _requests.Enqueue(x);
+                })
                 .AddTo(_disposable);
 
             Observable
@@ -100,12 +109,14 @@ namespace SocialGame.Internal.Toast
         IObservable<Unit> IToastModel.OnOpenAsObservable()
         {
             return _isOpen
+                .Where(x => x)
                 .AsUnitObservable();
         }
 
         IObservable<Unit> IToastModel.OnCloseAsObservable()
         {
             return _isOpen
+                .Where(x => !x)
                 .AsUnitObservable();
         }
         #endregion

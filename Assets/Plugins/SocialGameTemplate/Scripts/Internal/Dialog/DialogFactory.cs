@@ -4,7 +4,7 @@ using Zenject;
 
 namespace SocialGame.Internal.Dialog
 {
-    internal sealed class DialogFactory
+    internal sealed class DialogFactory : IDialogFactory
     {
         [Inject] private DiContainer _container = null;
 
@@ -12,12 +12,14 @@ namespace SocialGame.Internal.Dialog
 
         [Inject] private SampleDialog _samplePrefab = null;
 
-        public GameObject Create(DialogType type)
+        #region IDialogFactory implementation
+        GameObject IDialogFactory.Create(DialogType type)
         {
             if (type == DialogType.Sample)
                 return _container.InstantiatePrefab(_samplePrefab);
             else
                 return _container.InstantiatePrefab(_settings.Prefabs[(int)type]);
         }
+        #endregion
     }
 }

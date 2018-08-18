@@ -23,7 +23,7 @@ namespace SocialGame.Internal.Dialog
 
         [Inject] private IDialogIntent _intent = null;
 
-        [Inject] private DialogFactory _factory = null;
+        [Inject] private IDialogFactory _factory = null;
 
         private readonly Stack<Request> _stack = new Stack<Request>();
 

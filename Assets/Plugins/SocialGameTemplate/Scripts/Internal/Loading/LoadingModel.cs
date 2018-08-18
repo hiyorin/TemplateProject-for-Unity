@@ -16,7 +16,7 @@ namespace SocialGame.Internal.Loading
 
         [Inject] private ILoadingIntent _intent = null;
 
-        [Inject] private LoadingFactory _factory = null;
+        [Inject] private ILoadingFactory _factory = null;
 
         private readonly ReactiveDictionary<LoadingType, Context> _contexts = new ReactiveDictionary<LoadingType, Context>();
 

@@ -4,7 +4,7 @@ using Zenject;
 
 namespace SocialGame.Internal.Transition
 {
-    internal class TransitionFactory
+    internal sealed class TransitionFactory : ITransitionFactory
     {
         [Inject] private DiContainer _container = null;
 
@@ -12,12 +12,14 @@ namespace SocialGame.Internal.Transition
 
         [Inject] private BlackFadeTransition _blackFade = null;
 
-        public GameObject Create(TransMode trans)
+        #region ITransitionFactory implementation
+        GameObject ITransitionFactory.Create(TransMode trans)
         {
             if (trans == TransMode.BlackFade)
                 return _container.InstantiatePrefab(_blackFade);
             else
-                return _container.InstantiatePrefab(_settings.Prefabs [(int)trans]);
+                return _container.InstantiatePrefab(_settings.Prefabs[(int)trans]);
         }
+        #endregion
     }
 }

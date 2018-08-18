@@ -9,7 +9,7 @@ namespace SocialGame.Internal.Transition
 {
     internal sealed class TransitionModel : IInitializable, IDisposable, ITransitionModel
     {
-        [Inject] private TransitionFactory _factory = null;
+        [Inject] private ITransitionFactory _factory = null;
 
         [Inject] private ITransitionIntent _intent = null;
         
@@ -64,7 +64,7 @@ namespace SocialGame.Internal.Transition
                 .Select(x => x.Value);
         }
 
-        IObservable<Unit> ITransitionModel.OnTransInCompleteAsObservalbe()
+        IObservable<Unit> ITransitionModel.OnTransInCompleteAsObservable()
         {
             return _onTransInComplete;
         }

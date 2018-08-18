@@ -4,7 +4,7 @@ using Zenject;
 
 namespace SocialGame.Internal.Loading
 {
-    internal sealed class LoadingFactory
+    internal sealed class LoadingFactory : ILoadingFactory
     {
         [Inject] private DiContainer _container = null;
 
@@ -12,12 +12,14 @@ namespace SocialGame.Internal.Loading
 
         [Inject] private SampleLoading _samplePrefab = null;
 
-        public GameObject Create(LoadingType type)
+        #region ILoadingFactory implementation
+        GameObject ILoadingFactory.Create(LoadingType type)
         {
             if (type == LoadingType.Sample)
                 return _container.InstantiatePrefab(_samplePrefab);
             else
                 return _container.InstantiatePrefab(_settings.Prefabs[(int)type]);
         }
+        #endregion
     }
 }

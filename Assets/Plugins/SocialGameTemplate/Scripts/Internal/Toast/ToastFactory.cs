@@ -5,7 +5,7 @@ using Zenject;
 
 namespace SocialGame.Internal.Toast
 {
-    internal sealed class ToastFactory
+    internal sealed class ToastFactory : IToastFactory
     {
         [Inject] private DiContainer _container = null;
 
@@ -13,12 +13,14 @@ namespace SocialGame.Internal.Toast
 
         [Inject] private SampleToast _sample = null;
 
-        public GameObject Create(ToastType type)
+        #region IToastFactory implementation
+        GameObject IToastFactory.Create(ToastType type)
         {
             if (type == ToastType.Sample)
                 return _container.InstantiatePrefab(_sample);
             else
                 return _container.InstantiatePrefab(_settings.Prefabs[(int)type]);
         }
+        #endregion
     }
 }

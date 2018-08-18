@@ -8,7 +8,7 @@ namespace SocialGame.Internal.Transition
     {
         IObservable<GameObject> OnAddAsObservable();
 
-        IObservable<Unit> OnTransInCompleteAsObservalbe();
+        IObservable<Unit> OnTransInCompleteAsObservable();
 
         IObservable<Unit> OnTransOutCompleteAsObservable();
     }
