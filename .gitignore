@@ -54,8 +54,12 @@ sysinfo.txt
 
 /Assets/Plugins/Zenject/*
 /Assets/Plugins/Zenject.meta
+
+!/Assets/Plugins/UnityExtensions/
 /Assets/Plugins/UnityExtensions/*
-/Assets/Plugins/UnityExtensions.meta
+!/Assets/Plugins/UnityExtensions/UnityExtensions.asmdef
+!/Assets/Plugins/UnityExtensions/UnityExtensions.asmdef.meta
+
 /Assets/Plugins/MemoryInfoPlugin/*
 /Assets/Plugins/MemoryInfoPlugin.meta
 /Assets/Demigiant/*
