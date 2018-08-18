@@ -8,6 +8,9 @@ using SocialGame.DebugMode;
 using UnityEngine;
 using Zenject;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Editor")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Play")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace SocialGame.Internal
 {
     public sealed class ProjectInstaller : MonoInstaller
