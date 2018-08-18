@@ -47,8 +47,11 @@ sysinfo.txt
 !/Assets/Plugins/UniRx/Scripts/UniRx.asmdef
 !/Assets/Plugins/UniRx/Scripts/UniRx.asmdef.meta
 
+!/Assets/Plugins/MessagePack/
 /Assets/Plugins/MessagePack/*
-/Assets/Plugins/MessagePack.meta
+!/Assets/Plugins/MessagePack/MessagePack.asmdef
+!/Assets/Plugins/MessagePack/MessagePack.asmdef.meta
+
 /Assets/Plugins/Zenject/*
 /Assets/Plugins/Zenject.meta
 /Assets/Plugins/UnityExtensions/*
