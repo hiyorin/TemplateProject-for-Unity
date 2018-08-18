@@ -1,0 +1,14 @@
+{
+    "name": "SocialGameTemplate",
+    "references": [
+        "Zenject",
+        "UniRx",
+        "MessagePack",
+        "MemoryInfoPlugin",
+        "UnityExtensions"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
