@@ -6,24 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Plugins/SocialGameTemplete/Scenes/Transition.unity
+    path: Assets/Plugins/SocialGameTemplate/Scenes/Transition.unity
     guid: ed64b49ba96004bfb892c81dbad38b9f
   - enabled: 1
-    path: Assets/Plugins/SocialGameTemplete/Scenes/Dialog.unity
+    path: Assets/Plugins/SocialGameTemplate/Scenes/Dialog.unity
     guid: 4bb8a744ce7774b1ebd1b8b389053a83
   - enabled: 1
-    path: Assets/Plugins/SocialGameTemplete/Scenes/Toast.unity
+    path: Assets/Plugins/SocialGameTemplate/Scenes/Toast.unity
     guid: 9ada95879d59c4acd85e0ccb50690fee
   - enabled: 1
-    path: Assets/Plugins/SocialGameTemplete/Scenes/TapEffect.unity
+    path: Assets/Plugins/SocialGameTemplate/Scenes/TapEffect.unity
     guid: 9e11f7a7e60b940b0a3567464de341cb
   - enabled: 1
-    path: Assets/Plugins/SocialGameTemplete/Scenes/Loading.unity
+    path: Assets/Plugins/SocialGameTemplate/Scenes/Loading.unity
     guid: 99e4a48249c9744548b7abdbd04fd5d9
   - enabled: 1
-    path: Assets/Plugins/SocialGameTemplete/Examples/Scene/SceneA.unity
+    path: Assets/Plugins/SocialGameTemplate/Examples/Scene/SceneA.unity
     guid: 4e1c9a6d7345f43c28bbcf2f59c9e99d
   - enabled: 1
-    path: Assets/Plugins/SocialGameTemplete/Examples/Scene/SceneB.unity
+    path: Assets/Plugins/SocialGameTemplate/Examples/Scene/SceneB.unity
     guid: 06f8a296e740e4886aec7f97d1b37fa3
   m_configObjects: {}

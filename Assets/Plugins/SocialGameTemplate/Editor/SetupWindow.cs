@@ -31,6 +31,7 @@ namespace SocialGame.Internal
         {
             EditorGUILayout.LabelField("1. Setup system scenes");
             EditorGUILayout.LabelField("2. Create system settings");
+            EditorGUILayout.LabelField("3. Create assembly definition files");
             return true;
         }
 
@@ -44,7 +45,9 @@ namespace SocialGame.Internal
             SetupSettings<TapEffect.TapEffectSettingsInstaller>("TapEffectSettings");
             SetupSettings<Toast.ToastSettingsInstaller>("ToastSettings");
             SetupSettings<Transition.TransitionSettingsInstaller>("TransitionSettings");
+            SetupAssemblyDefinitionFiles();
             AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
 
         private void SetupExtensions()
@@ -75,6 +78,20 @@ namespace SocialGame.Internal
                 var instance = CreateInstance<T>();
                 AssetDatabase.CreateAsset(instance, path);
             }
+        }
+
+        private void SetupAssemblyDefinitionFiles()
+        {
+            new AssemblyDefinitionBuilder("Plugins/UniRx/Scripts/UniRx")
+                .Write();
+            new AssemblyDefinitionBuilder("Plugins/MessagePack/MessagePack")
+                .Write();
+            new AssemblyDefinitionBuilder("Plugins/UnityExtensions/UnityExtensions")
+                .AddReferences("UniRx")
+                .Write();
+            new AssemblyDefinitionBuilder("Plugins/SocialGameTemplate/Scripts/SocialGameTemplate")
+                .AddReferences("Zenject", "UniRx", "MessagePack", "MemoryInfoPlugin", "UnityExtensions")
+                .Write();
         }
     }
 }
