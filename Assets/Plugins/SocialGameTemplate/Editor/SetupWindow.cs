@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -32,6 +33,7 @@ namespace SocialGame.Internal
             EditorGUILayout.LabelField("1. Setup system scenes");
             EditorGUILayout.LabelField("2. Create system settings");
             EditorGUILayout.LabelField("3. Create assembly definition files");
+            EditorGUILayout.LabelField("4. Create unit test assembly and folder");
             return true;
         }
 
@@ -46,6 +48,7 @@ namespace SocialGame.Internal
             SetupSettings<Toast.ToastSettingsInstaller>("ToastSettings");
             SetupSettings<Transition.TransitionSettingsInstaller>("TransitionSettings");
             SetupAssemblyDefinitionFiles();
+            SetupUnitTest();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
@@ -90,7 +93,40 @@ namespace SocialGame.Internal
                 .AddReferences("UniRx")
                 .Write();
             new AssemblyDefinitionBuilder("Plugins/SocialGameTemplate/Scripts/SocialGameTemplate")
-                .AddReferences("Zenject", "UniRx", "MessagePack", "MemoryInfoPlugin", "UnityExtensions")
+                .AddReferences(
+                    "Zenject",
+                    "UniRx",
+                    "MessagePack",
+                    "MemoryInfoPlugin",
+                    "UnityExtensions")
+                .Write();
+        }
+
+        private void SetupUnitTest()
+        {
+            Directory.CreateDirectory(Path.Combine(Application.dataPath, "Tests"));
+            Directory.CreateDirectory(Path.Combine(Application.dataPath, "Tests/Editor"));
+            Directory.CreateDirectory(Path.Combine(Application.dataPath, "Tests/Play"));
+
+            new AssemblyDefinitionBuilder("Tests/Editor/Editor")
+                .AddReferences(
+                    "UniRx",
+                    "Zenject-TestFramework-Editor",
+                    "Zenject-TestFramework",
+                    "Zenject",
+                    "SocialGameTemplate")
+                .AddIncludePlatforms("Editor")
+                .EnableTestAssemblies()
+                .Write();
+
+            new AssemblyDefinitionBuilder("Tests/Play/Play")
+                .AddReferences(
+                    "UniRx",
+                    "Zenject-TestFramework-Editor",
+                    "Zenject-TestFramework",
+                    "Zenject",
+                    "SocialGameTemplate")
+                .EnableTestAssemblies()
                 .Write();
         }
     }
