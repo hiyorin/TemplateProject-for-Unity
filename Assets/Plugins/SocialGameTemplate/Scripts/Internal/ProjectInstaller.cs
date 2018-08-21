@@ -14,7 +14,7 @@ using Zenject;
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace SocialGame.Internal
 {
-    public sealed class ProjectInstaller : MonoInstaller
+    internal sealed class ProjectInstaller : MonoInstaller
     {
         [SerializeField] private SceneManager _sceneManager = null;
 

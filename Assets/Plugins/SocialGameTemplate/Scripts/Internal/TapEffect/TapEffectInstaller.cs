@@ -5,7 +5,7 @@ using Zenject;
 
 namespace SocialGame.Internal.TapEffect
 {
-    public sealed class TapEffectInstaller : MonoInstaller<TapEffectInstaller>
+    internal sealed class TapEffectInstaller : MonoInstaller<TapEffectInstaller>
     {
         [SerializeField] private SampleTapEffect _sample = null;
 

@@ -5,7 +5,7 @@ using Zenject;
 
 namespace SocialGame.Internal.Toast
 {
-    public sealed class ToastInstaller : MonoInstaller<ToastInstaller>
+    internal sealed class ToastInstaller : MonoInstaller<ToastInstaller>
     {
         [SerializeField] private SampleToast _sample = null;
 

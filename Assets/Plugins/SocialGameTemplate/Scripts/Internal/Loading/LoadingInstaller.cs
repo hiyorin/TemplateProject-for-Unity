@@ -5,7 +5,7 @@ using Zenject;
 
 namespace SocialGame.Internal.Loading
 {
-    public sealed class LoadingInstaller : MonoInstaller<LoadingInstaller>
+    internal sealed class LoadingInstaller : MonoInstaller<LoadingInstaller>
     {
         [SerializeField] private SampleLoading _sample = null;
 

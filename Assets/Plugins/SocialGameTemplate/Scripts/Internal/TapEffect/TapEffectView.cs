@@ -5,7 +5,7 @@ using UniRx;
 
 namespace SocialGame.Internal.TapEffect
 {
-    public sealed class TapEffectView : MonoBehaviour
+    internal sealed class TapEffectView : MonoBehaviour
     {
         [SerializeField] private Transform _container = null;
 

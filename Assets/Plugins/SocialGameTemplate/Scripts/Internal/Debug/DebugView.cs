@@ -7,7 +7,7 @@ using UniRx;
 
 namespace SocialGame.Internal.DebugMode
 {
-    public sealed class DebugView : MonoBehaviour
+    internal sealed class DebugView : MonoBehaviour
     {
         [SerializeField] private Text _fps = null;
 

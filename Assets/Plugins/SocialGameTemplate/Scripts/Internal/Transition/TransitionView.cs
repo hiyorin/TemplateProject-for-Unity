@@ -4,7 +4,7 @@ using UniRx;
 
 namespace SocialGame.Internal.Transition
 {
-    public sealed class TransitionView : MonoBehaviour
+    internal sealed class TransitionView : MonoBehaviour
     {
         [SerializeField] private Transform _container = null;
 

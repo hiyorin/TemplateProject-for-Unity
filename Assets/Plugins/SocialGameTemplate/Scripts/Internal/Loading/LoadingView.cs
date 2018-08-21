@@ -7,7 +7,7 @@ using UniRx;
 
 namespace SocialGame.Internal.Loading
 {
-    public sealed class LoadingView : MonoBehaviour
+    internal sealed class LoadingView : MonoBehaviour
     {
         [SerializeField] private Transform _container = null;
 

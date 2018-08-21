@@ -5,7 +5,7 @@ using UniRx;
 
 namespace SocialGame.Internal.Sound
 {
-    public sealed class SoundView : MonoBehaviour
+    internal sealed class SoundView : MonoBehaviour
     {
         [SerializeField] private Transform _bgmContainer = null;
 

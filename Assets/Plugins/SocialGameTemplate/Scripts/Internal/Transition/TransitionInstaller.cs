@@ -4,7 +4,7 @@ using Zenject;
 
 namespace SocialGame.Internal.Transition
 {
-    public class TransitionInstaller : MonoInstaller
+    internal class TransitionInstaller : MonoInstaller
     {
         [SerializeField] private BlackFadeTransition _blackFade = null;
 

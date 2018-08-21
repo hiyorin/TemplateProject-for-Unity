@@ -8,7 +8,7 @@ using DG.Tweening;
 
 namespace SocialGame.Internal.Dialog
 {
-    public sealed class DialogView : MonoBehaviour
+    internal sealed class DialogView : MonoBehaviour
     {
         [SerializeField] private Transform _container = null;
 

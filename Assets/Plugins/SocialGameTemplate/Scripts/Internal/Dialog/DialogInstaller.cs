@@ -4,7 +4,7 @@ using Zenject;
 
 namespace SocialGame.Internal.Dialog
 {
-    public sealed class DialogInstaller : MonoInstaller<DialogInstaller>
+    internal sealed class DialogInstaller : MonoInstaller<DialogInstaller>
     {
         [SerializeField] private SampleDialog _sample = null;
 

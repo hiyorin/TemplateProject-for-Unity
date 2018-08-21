@@ -9,7 +9,7 @@ using DG.Tweening;
 
 namespace SocialGame.Internal.Toast
 {
-    public sealed class ToastView : MonoBehaviour
+    internal sealed class ToastView : MonoBehaviour
     {
         [SerializeField] private Transform _container = null;
 
