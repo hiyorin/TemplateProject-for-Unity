@@ -53,7 +53,7 @@ namespace SocialGame.Internal.Sound
                 writer.WriteLine("    public enum " + type);
                 writer.WriteLine("    {");
 
-                foreach (var clip in clips)
+                foreach (var clip in clips.Where(x => x != null))
                 {
                     writer.WriteLine(string.Format("        {0},", clip.name));
                 }
