@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Plugins/SocialGameTemplate/Scenes/Loading.unity
     guid: 99e4a48249c9744548b7abdbd04fd5d9
   - enabled: 1
+    path: Assets/Plugins/SocialGameTemplate/Scenes/Sound.unity
+    guid: 19000f3c844cf45cd858dc8eaa65966b
+  - enabled: 1
     path: Assets/Plugins/SocialGameTemplate/Examples/Scene/SceneA.unity
     guid: 4e1c9a6d7345f43c28bbcf2f59c9e99d
   - enabled: 1

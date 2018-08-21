@@ -4,6 +4,7 @@ using SocialGame.Dialog;
 using SocialGame.Toast;
 using SocialGame.Loading;
 using SocialGame.TapEffect;
+using SocialGame.Sound;
 using SocialGame.DebugMode;
 using UnityEngine;
 using Zenject;
@@ -28,6 +29,8 @@ namespace SocialGame.Internal
             Container.BindInterfacesAndSelfTo<ToastController>().AsSingle();
             Container.BindInterfacesAndSelfTo<TapEffectController>().AsSingle();
             Container.BindInterfacesAndSelfTo<LoadingController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<SoundController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<SoundVolumeController>().AsSingle();
             Container.BindInterfacesAndSelfTo<DebugController>().AsSingle();
             Container.BindInstance(_uiCamera).AsSingle();
 

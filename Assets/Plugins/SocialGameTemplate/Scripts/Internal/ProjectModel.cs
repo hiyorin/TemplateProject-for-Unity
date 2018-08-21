@@ -21,6 +21,7 @@ namespace SocialGame.Internal
             "Toast",
             "TapEffect",
             "Loading",
+            "Sound",
         };
 
         public const string RootPath = "Plugins/SocialGameTemplate";

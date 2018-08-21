@@ -47,6 +47,7 @@ namespace SocialGame.Internal
             SetupSettings<TapEffect.TapEffectSettingsInstaller>("TapEffectSettings");
             SetupSettings<Toast.ToastSettingsInstaller>("ToastSettings");
             SetupSettings<Transition.TransitionSettingsInstaller>("TransitionSettings");
+            SetupSettings<Sound.SoundSettingsInstaller>("SoundSettings");
             SetupAssemblyDefinitionFiles();
             SetupUnitTest();
             AssetDatabase.SaveAssets();
