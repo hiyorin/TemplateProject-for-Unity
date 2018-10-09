@@ -21,6 +21,8 @@ namespace SocialGame
 
         [SerializeField] private Layer _layer = Layer.Foreground;
 
+        [SerializeField] [Range(0, 99)] private int _order = 0;
+
         [Inject] private Camera _uiCamera = null;
 
         private void Start()
@@ -28,7 +30,7 @@ namespace SocialGame
             var canvas = GetComponent<Canvas>();
             canvas.worldCamera = _uiCamera;
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
-            canvas.sortingOrder = (int)_layer;
+            canvas.sortingOrder = (int)_layer + _order;
         }
 
         #if UNITY_EDITOR
