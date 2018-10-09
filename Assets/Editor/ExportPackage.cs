@@ -6,6 +6,7 @@ public class ExportPackage
 {
     private readonly static string[] Paths = {
         "Assets/Plugins/SocialGameTemplate",
+        "Assets/Resources/ProjectContext.prefab",
     };
 
     private const string ReadMe = "README.md";

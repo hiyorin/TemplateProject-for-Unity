@@ -1,10 +1,9 @@
 {
     "name": "Play",
     "references": [
-        "Zenject-TestFramework-Editor",
+        "UniRx",
         "Zenject-TestFramework",
         "Zenject",
-        "UniRx",
         "SocialGameTemplate"
     ],
     "optionalUnityReferences": [

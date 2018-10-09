@@ -2,7 +2,6 @@
     "name": "Editor",
     "references": [
         "UniRx",
-        "Zenject-TestFramework-Editor",
         "Zenject-TestFramework",
         "Zenject",
         "SocialGameTemplate"

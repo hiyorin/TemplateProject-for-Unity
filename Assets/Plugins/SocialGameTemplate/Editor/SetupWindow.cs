@@ -86,8 +86,6 @@ namespace SocialGame.Internal
 
         private void SetupAssemblyDefinitionFiles()
         {
-            new AssemblyDefinitionBuilder("Plugins/UniRx/Scripts/UniRx")
-                .Write();
             new AssemblyDefinitionBuilder("Plugins/MessagePack/MessagePack")
                 .Write();
             new AssemblyDefinitionBuilder("Plugins/UnityExtensions/UnityExtensions")
@@ -112,7 +110,6 @@ namespace SocialGame.Internal
             new AssemblyDefinitionBuilder("Tests/Editor/Editor")
                 .AddReferences(
                     "UniRx",
-                    "Zenject-TestFramework-Editor",
                     "Zenject-TestFramework",
                     "Zenject",
                     "SocialGameTemplate")
@@ -123,7 +120,6 @@ namespace SocialGame.Internal
             new AssemblyDefinitionBuilder("Tests/Play/Play")
                 .AddReferences(
                     "UniRx",
-                    "Zenject-TestFramework-Editor",
                     "Zenject-TestFramework",
                     "Zenject",
                     "SocialGameTemplate")
