@@ -88,14 +88,15 @@ namespace SocialGame.Scene
         private IEnumerator Load(LoadContext next, LoadContext prev)
         {
             IsLoading = true;
-            if (prev != null) yield return prev.TransOut().StartAsCoroutine();
+            if (prev != null) yield return prev.TransOut(next).StartAsCoroutine();
             yield return _transController.TransIn(next.TransMode);
-            if (prev != null) yield return prev.Unload().StartAsCoroutine();
-            if (prev != null) yield return UnloadInternal(prev);
             yield return LoadInternal(next);
-            yield return next.Load().StartAsCoroutine();
+            if (prev != null) yield return prev.Unload(next).StartAsCoroutine();
+            if (prev != null) yield return UnloadInternal(prev, next);
+            yield return LoadSubsInternal(next, prev);
+            yield return next.Load(prev).StartAsCoroutine();
             yield return _transController.TransOut();
-            yield return next.TransIn().StartAsCoroutine();
+            yield return next.TransIn(prev).StartAsCoroutine();
             next.TransComplate();
             IsLoading = false;
         }
@@ -119,8 +120,20 @@ namespace SocialGame.Scene
             if (sceneSettings != null)
                 sceneSettings.Subs.ForEach(x => context.AddAdditiveScene(x));
             context.NextScene.Lifecycles = sceneContext.Container.ResolveAll<ISceneLifecycle>();
+        }
 
+        private static IEnumerator LoadSubsInternal(LoadContext context, LoadContext prev)
+        {
             yield return context.AdditiveScenes
+                .Where(x => {
+                    if (prev == null) return true;
+                    var cache = prev.AdditiveScenes.FirstOrDefault(y => x.Name == y.Name);
+                    if (cache == null)
+                        return true;
+                    else
+                        x.Lifecycles = cache.Lifecycles;
+                    return false;
+                })
                 .Select(additiveScene => UnitySceneManager.LoadSceneAsync(additiveScene.Name, LoadSceneMode.Additive)
                     .AsObservable()
                     .Select(_ => FindSceneContext(additiveScene.Name))
@@ -131,18 +144,19 @@ namespace SocialGame.Scene
                     .FirstOrDefault())
                 .WhenAll()
                 .StartAsCoroutine();
-            
+
             Resources.UnloadUnusedAssets();
 
             GC.Collect();
         }
 
-        private static IEnumerator UnloadInternal(LoadContext context)
+        private static IEnumerator UnloadInternal(LoadContext context, LoadContext next)
         {
             if (context == null)
                 yield break;
             
             yield return context.AdditiveScenes
+                .Where(x => next == null || !next.AdditiveScenes.Any(y => x.Name == y.Name))
                 .Select(x => UnitySceneManager.UnloadSceneAsync(x.Name)
                     .ObserveEveryValueChanged(y => y.isDone)
                     .FirstOrDefault())

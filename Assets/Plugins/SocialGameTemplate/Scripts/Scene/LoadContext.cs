@@ -48,6 +48,28 @@ namespace SocialGame.Scene
                 .WhenAll();
         }
 
+        public IObservable<Unit> Load(LoadContext prev)
+        {
+            return NextScene.Lifecycles
+                .Select(x => x.OnLoad(TransData))
+                .Concat(AdditiveScenes
+                    .Where(x => prev == null || !prev.AdditiveScenes.Any(y => x.Name == y.Name))
+                    .SelectMany(x => x.Lifecycles)
+                    .Select(x => x.OnLoad(TransData)))
+                .WhenAll();
+        }
+
+        public IObservable<Unit> TransIn(LoadContext prev)
+        {
+            return NextScene.Lifecycles
+                .Select(x => x.OnTransIn())
+                .Concat(AdditiveScenes
+                    .Where(x => prev == null || !prev.AdditiveScenes.Any(y => x.Name == y.Name))
+                    .SelectMany(x => x.Lifecycles)
+                    .Select(x => x.OnTransIn()))
+                .WhenAll();
+        }
+
         public IObservable<Unit> TransIn()
         {
             return NextScene.Lifecycles
@@ -73,9 +95,31 @@ namespace SocialGame.Scene
                 .WhenAll();
         }
 
+        public IObservable<Unit> TransOut(LoadContext next)
+        {
+            return AdditiveScenes
+                .Where(x => next == null || !next.AdditiveScenes.Any(y => x.Name == y.Name))
+                .SelectMany(x => x.Lifecycles)
+                .Select(x => x.OnTransOut())
+                .Concat(NextScene.Lifecycles
+                    .Select(x => x.OnTransOut()))
+                .WhenAll();
+        }
+
         public IObservable<Unit> Unload()
         {
             return AdditiveScenes
+                .SelectMany(x => x.Lifecycles)
+                .Select(x => x.OnUnload())
+                .Concat(NextScene.Lifecycles
+                    .Select(x => x.OnUnload()))
+                .WhenAll();
+        }
+
+        public IObservable<Unit> Unload(LoadContext next)
+        {
+            return AdditiveScenes
+                .Where(x => next == null || !next.AdditiveScenes.Any(y => x.Name == y.Name))
                 .SelectMany(x => x.Lifecycles)
                 .Select(x => x.OnUnload())
                 .Concat(NextScene.Lifecycles
