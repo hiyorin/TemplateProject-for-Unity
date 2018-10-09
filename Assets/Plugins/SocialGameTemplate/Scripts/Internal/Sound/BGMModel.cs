@@ -34,6 +34,9 @@ namespace SocialGame.Internal.Sound
 
         void IInitializable.Initialize()
         {
+            if (_settings.Group == null)
+                return;
+            
             _intent
                 .OnPlayAsObservable()
                 .SelectMany(bgm => {

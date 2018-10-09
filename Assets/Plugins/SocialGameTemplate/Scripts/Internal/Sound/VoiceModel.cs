@@ -33,6 +33,9 @@ namespace SocialGame.Internal.Sound
 
         void IInitializable.Initialize()
         {
+            if (_settings.Group == null)
+                return;
+            
             var playIndex = 0;
             _intent
                 .OnPlayAsObservable()

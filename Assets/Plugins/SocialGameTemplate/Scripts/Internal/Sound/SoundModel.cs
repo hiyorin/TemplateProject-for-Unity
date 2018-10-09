@@ -16,6 +16,9 @@ namespace SocialGame.Internal.Sound
 
         void IInitializable.Initialize()
         {
+            if (_settings.Group == null)
+                return;
+            
             _volumeIntent
                 .OnMasterVolumeAsObservable()
                 .Select(x => Mathf.Lerp(-80.0F, 0.0F, Mathf.Clamp01(x)))

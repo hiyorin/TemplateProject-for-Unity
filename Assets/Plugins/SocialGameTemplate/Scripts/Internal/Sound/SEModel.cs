@@ -35,6 +35,9 @@ namespace SocialGame.Internal.Sound
 
         void IInitializable.Initialize()
         {
+            if (_settings.Group == null)
+                return;
+            
             _intent
                 .OnPlayAsObservable()
                 .Subscribe(x => _playQueue.Enqueue(x))
