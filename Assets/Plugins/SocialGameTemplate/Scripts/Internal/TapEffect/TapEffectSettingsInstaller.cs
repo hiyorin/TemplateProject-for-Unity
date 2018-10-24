@@ -7,11 +7,12 @@ using Zenject;
 using System.IO;
 using System.Text;
 using UnityEditor;
+using UnityEditor.VersionControl;
 #endif
 
 namespace SocialGame.Internal.TapEffect
 {
-    [CreateAssetMenu(fileName = "TapEffectSettingsInstaller", menuName = "Installers/TapEffectSettingsInstaller")]
+    [CreateAssetMenu(fileName = "TapEffectSettings", menuName = "Installers/TapEffectSettings")]
     public sealed class TapEffectSettingsInstaller : ScriptableObjectInstaller<TapEffectSettingsInstaller>
     {
         [SerializeField] private TapEffectSettings _settings = null;
@@ -24,8 +25,12 @@ namespace SocialGame.Internal.TapEffect
         #if UNITY_EDITOR
         public void OnValidate()
         {
-            string path = Path.Combine(Application.dataPath, ProjectModel.RootPath, "Scripts/TapEffect/TapEffectType.cs");
-            using (StreamWriter writer = new StreamWriter(path, false, Encoding.UTF8))
+            string fileName = Path.Combine(ProjectModel.RootPath, "Scripts/TapEffect/TapEffectType.cs");
+            string filePath = Path.Combine(Application.dataPath, fileName);
+            if (Provider.isActive && File.Exists(filePath))
+                Provider.Checkout(Path.Combine("Assets", fileName), CheckoutMode.Asset).Wait();
+            
+            using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
             {
                 writer.WriteLine("// this file was auto-generated.");
                 writer.WriteLine("namespace SocialGame.TapEffect");

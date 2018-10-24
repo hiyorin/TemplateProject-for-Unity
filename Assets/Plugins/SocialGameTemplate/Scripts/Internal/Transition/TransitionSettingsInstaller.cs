@@ -7,11 +7,12 @@ using Zenject;
 using System.IO;
 using System.Text;
 using UnityEditor;
+using UnityEditor.VersionControl;
 #endif
 
 namespace SocialGame.Internal.Transition
 {
-    [CreateAssetMenu(fileName = "TransitionSettingsInstaller", menuName = "Installers/TransitionSettingsInstaller")]
+    [CreateAssetMenu(fileName = "TransitionSettings", menuName = "Installers/TransitionSettings")]
     public sealed class TransitionSettingsInstaller : ScriptableObjectInstaller<TransitionSettingsInstaller>
     {
         [SerializeField] private TransitionSettings _settings = null;
@@ -26,8 +27,12 @@ namespace SocialGame.Internal.Transition
         {
             if (EditorApplication.isPlaying) return;
 
-            string path = Path.Combine(Application.dataPath, ProjectModel.RootPath, "Scripts/Transition/TransMode.cs");
-            using (StreamWriter writer = new StreamWriter(path, false, Encoding.UTF8))
+            string fileName = Path.Combine(ProjectModel.RootPath, "Scripts/Transition/TransMode.cs");
+            string filePath = Path.Combine(Application.dataPath, fileName);
+            if (Provider.isActive && File.Exists(filePath))
+                Provider.Checkout(Path.Combine("Assets", fileName), CheckoutMode.Asset).Wait();
+            
+            using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
             {
                 writer.WriteLine("// this file was auto-generated.");
                 writer.WriteLine("namespace SocialGame.Transition");

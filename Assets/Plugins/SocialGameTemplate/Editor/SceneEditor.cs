@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using UnityEditor.VersionControl;
 using System.IO;
 using System.Text;
 using System.Linq;
@@ -11,14 +12,17 @@ namespace SocialGame.Internal
         [InitializeOnLoadMethod]
         private static void InitializeOnLoadMethod()
         {
-            CreateSceneEnum();
             EditorBuildSettings.sceneListChanged += CreateSceneEnum;
         }
 
         private static void CreateSceneEnum()
         {
-            string path = Path.Combine(Application.dataPath, ProjectModel.RootPath, "Scripts/Scene/Scene.cs");
-            using (StreamWriter writer = new StreamWriter(path, false, Encoding.UTF8))
+            string fileName = Path.Combine(ProjectModel.RootPath, "Scripts/Scene/Scene.cs");
+            string filePath = Path.Combine(Application.dataPath, fileName);
+            if (Provider.isActive && File.Exists(filePath))
+                Provider.Checkout(Path.Combine("Assets", fileName), CheckoutMode.Asset).Wait();
+            
+            using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
             {
                 writer.WriteLine("// this file was auto-generated.");
                 writer.WriteLine("namespace SocialGame.Scene");

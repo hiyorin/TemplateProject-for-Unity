@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using SocialGame.Sound;
@@ -7,11 +8,12 @@ using Zenject;
 using System.IO;
 using System.Text;
 using UnityEditor;
+using UnityEditor.VersionControl;
 #endif
 
 namespace SocialGame.Internal.Sound
 {
-    [CreateAssetMenu(fileName = "SoundSettings", menuName = "Installers/SoundSettingsInstaller")]
+    [CreateAssetMenu(fileName = "SoundSettings", menuName = "Installers/SoundSettings")]
     public sealed class SoundSettingsInstaller : ScriptableObjectInstaller<SoundSettingsInstaller>
     {
         [SerializeField] private SoundSettings _general = null;
@@ -44,8 +46,12 @@ namespace SocialGame.Internal.Sound
 
         private void Generate(string type, IEnumerable<AudioClip> clips)
         {
-            string path = Path.Combine(Application.dataPath, ProjectModel.RootPath, "Scripts/Sound", type + ".cs");
-            using (StreamWriter writer = new StreamWriter(path, false, Encoding.UTF8))
+            string fileName = Path.Combine(ProjectModel.RootPath, "Scripts/Sound", type + ".cs");
+            string filePath = Path.Combine(Application.dataPath, fileName);
+            if (Provider.isActive && File.Exists(filePath))
+                Provider.Checkout(Path.Combine("Assets", fileName), CheckoutMode.Asset).Wait();
+            
+            using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
             {
                 writer.WriteLine("// this file was auto-generated.");
                 writer.WriteLine("namespace SocialGame.Sound");
