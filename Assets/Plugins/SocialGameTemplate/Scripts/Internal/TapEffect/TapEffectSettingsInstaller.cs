@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using SocialGame.TapEffect;
 using UnityEngine;
+using UnityExtensions;
 using Zenject;
 #if UNITY_EDITOR
 using System.IO;
@@ -25,30 +26,39 @@ namespace SocialGame.Internal.TapEffect
         #if UNITY_EDITOR
         public void OnValidate()
         {
+            if (EditorApplication.isPlaying)
+                return;
+            
             string fileName = Path.Combine(ProjectModel.RootPath, "Scripts/TapEffect/TapEffectType.cs");
             string filePath = Path.Combine(Application.dataPath, fileName);
-            if (Provider.isActive && File.Exists(filePath))
-                Provider.Checkout(Path.Combine("Assets", fileName), CheckoutMode.Asset).Wait();
             
-            using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("// this file was auto-generated.");
+            builder.AppendLine("namespace SocialGame.TapEffect");
+            builder.AppendLine("{");
+            builder.AppendLine("    public enum TapEffectType");
+            builder.AppendLine("    {");
+            builder.AppendLine("        Sample = -1,");
+
+            foreach (var prefab in _settings.Prefabs.Where(x => x != null))
             {
-                writer.WriteLine("// this file was auto-generated.");
-                writer.WriteLine("namespace SocialGame.TapEffect");
-                writer.WriteLine("{");
-                writer.WriteLine("    public enum TapEffectType");
-                writer.WriteLine("    {");
-                writer.WriteLine("        Sample = -1,");
-
-                foreach (var prefab in _settings.Prefabs.Where(x => x != null))
-                {
-                    writer.WriteLine(string.Format("        {0},", prefab.name.Replace("TapEffect", "")));
-                }
-
-                writer.WriteLine("    }");
-                writer.WriteLine("}");
-                writer.Flush();
-                writer.Close();
+                builder.AppendLineFormat("        {0},", prefab.name.Replace("TapEffect", ""));
             }
+
+            builder.AppendLine("    }");
+            builder.AppendLine("}");
+            
+            string text = builder.ToString();
+            if (File.Exists(filePath))
+            {
+                if (File.ReadAllText(filePath) == text)
+                    return;
+                
+                if (Provider.isActive)
+                    Provider.Checkout(Path.Combine("Assets", fileName), CheckoutMode.Asset).Wait();
+            }
+
+            File.WriteAllText(filePath, text, Encoding.UTF8);
 
             AssetDatabase.Refresh(ImportAssetOptions.ImportRecursive);
 

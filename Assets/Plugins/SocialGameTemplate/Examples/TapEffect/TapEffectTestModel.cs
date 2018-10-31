@@ -17,7 +17,7 @@ namespace Sandbox.TapEffect
             Observable
                 .EveryUpdate()
                 .Where(_ => Input.GetKeyDown(KeyCode.S))
-                .Subscribe(_ => _controller.Start(SocialGame.TapEffect.TapEffectType.Sample))
+                .Subscribe(_ => _controller.Start(TapEffectType.Sample))
                 .AddTo(_disposable);
 
             Observable

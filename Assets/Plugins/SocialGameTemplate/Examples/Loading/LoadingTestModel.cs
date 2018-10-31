@@ -17,7 +17,7 @@ namespace Sandbox.Loading
             Observable
                 .EveryUpdate()
                 .Where(_ => Input.GetKeyDown(KeyCode.S))
-                .Subscribe(_ => _controller.Show(SocialGame.Loading.LoadingType.Sample))
+                .Subscribe(_ => _controller.Show(LoadingType.Sample))
                 .AddTo(_disposable);
 
             Observable
