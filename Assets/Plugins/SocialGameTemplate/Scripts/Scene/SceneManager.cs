@@ -57,6 +57,7 @@ namespace SocialGame.Scene
                 Debug.unityLogger.LogWarning(GetType().Name, "Loading");
                 return;
             }
+            IsLoading = true;
 
             _histories.Push(new History() { SceneName = sceneName, TransData = transData });
             var nextContext = new LoadContext(sceneName, transData, transMode);
@@ -87,7 +88,6 @@ namespace SocialGame.Scene
 
         private IEnumerator Load(LoadContext next, LoadContext prev)
         {
-            IsLoading = true;
             if (prev != null) yield return prev.TransOut(next).StartAsCoroutine();
             yield return _transController.TransIn(next.TransMode);
             yield return LoadInternal(next);
@@ -105,7 +105,7 @@ namespace SocialGame.Scene
         {
             if (context == null)
                 yield break;
-
+            
             var scene = UnitySceneManager.GetSceneByName(context.NextScene.Name);
             if (!scene.isLoaded)
                 yield return UnitySceneManager.LoadSceneAsync(context.NextScene.Name, LoadSceneMode.Additive);

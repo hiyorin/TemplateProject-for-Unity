@@ -52,7 +52,7 @@ namespace SocialGame.Internal.Sound
             int playIndex = 0;
             Observable
                 .EveryUpdate()
-                .Where(_ => _playQueue.Count >= 0)
+                .Where(_ => _playQueue.Count > 0)
                 .Select(_ => _playQueue.Distinct())
                 .Subscribe(x => {
                     x.ForEach(se => {
