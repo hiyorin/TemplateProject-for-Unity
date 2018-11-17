@@ -20,6 +20,8 @@ namespace SocialGame.Network
     
     public sealed class HttpConnection : IInitializable, IDisposable, IHttpConnection
     {
+        [Inject] private GeneralSettings _generalSettings;
+        
         [Inject] private HttpSettings _settings;
 
         void IInitializable.Initialize()
@@ -101,10 +103,21 @@ namespace SocialGame.Network
             var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbGET);
             request.chunkedTransfer = _settings.UseChunkedTransfer;
             request.uploadHandler = new UploadHandlerRaw(Serialize(data, _settings.DataFormat));
+            if (_generalSettings.DebugMode)
+            {
+                Debug.unityLogger.Log(GetType().Name, string.Format("request : {0}\ndata : {1}", url, data));
+            }
             
             return Observable
                 .FromCoroutine<byte[]>((observer, cancel) => Fetch(request, observer, cancel, _settings.TimeOutSeconds))
                 .SelectMany(x => Deserialize<TResponse>(x, _settings.DataFormat))
+                .Do(x =>
+                {
+                    if (_generalSettings.DebugMode)
+                    {
+                        Debug.unityLogger.Log(GetType().Name, string.Format("response : {0}\ndata : {1}", url, x));
+                    }
+                })
                 .OnErrorRetry((HttpException ex) => { }, _settings.RetryCount);
         }
         
@@ -114,10 +127,21 @@ namespace SocialGame.Network
             var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
             request.chunkedTransfer = _settings.UseChunkedTransfer;
             request.uploadHandler = new UploadHandlerRaw(Serialize(data, _settings.DataFormat));
+            if (_generalSettings.DebugMode)
+            {
+                Debug.unityLogger.Log(GetType().Name, string.Format("request : {0}\ndata : {1}", url, data));
+            }
             
             return Observable
                 .FromCoroutine<byte[]>((observer, cancel) => Fetch(request, observer, cancel, _settings.TimeOutSeconds))
                 .SelectMany(x => Deserialize<TResponse>(x, _settings.DataFormat))
+                .Do(x =>
+                {
+                    if (_generalSettings.DebugMode)
+                    {
+                        Debug.unityLogger.Log(GetType().Name, string.Format("response : {0}\ndata : {1}", url, x));
+                    }
+                })
                 .OnErrorRetry((HttpException ex) => { }, _settings.RetryCount);
         }
         #endregion

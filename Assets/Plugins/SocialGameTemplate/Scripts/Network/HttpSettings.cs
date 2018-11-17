@@ -21,7 +21,7 @@ namespace SocialGame.Network
         [SerializeField] private float _timeOutSeconds = 10.0f;
 
         [SerializeField] private int _retryCount = 0;
-        
+
         public string Domain
         {
             get { return _domain; }
