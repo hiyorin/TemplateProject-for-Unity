@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using SocialGame.Internal.Network;
 using UnityEditor;
 using UnityEngine;
 using UnityExtensions.Editor;
@@ -8,7 +9,7 @@ using Zenject;
 
 namespace SocialGame.Internal
 {
-    public sealed class SetupWindow : ScriptableWizard
+    internal sealed class SetupWindow : ScriptableWizard
     {
         [MenuItem("Window/Setup SocialGameTemplate")]
         private static void Open()
@@ -42,6 +43,7 @@ namespace SocialGame.Internal
             SetupExtensions();
             SetupBuildSettingsScene();
             SetupSettings<ProjectSettings>("ProjectSettings");
+            SetupSettings<NetworkSettings>("NetworkSettings");
             SetupSettings<Dialog.DialogSettingsInstaller>("DialogSettings");
             SetupSettings<Loading.LoadingSettingsInstaller>("LoadingSettings");
             SetupSettings<TapEffect.TapEffectSettingsInstaller>("TapEffectSettings");

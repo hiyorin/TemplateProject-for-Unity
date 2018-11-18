@@ -6,7 +6,7 @@ using SocialGame.Loading;
 using SocialGame.TapEffect;
 using SocialGame.Sound;
 using SocialGame.DebugMode;
-using SocialGame.Network;
+using SocialGame.Internal.Network;
 using UnityEngine;
 using Zenject;
 
@@ -35,12 +35,15 @@ namespace SocialGame.Internal
             Container.BindInterfacesAndSelfTo<DebugController>().AsSingle();
             Container.BindInstance(_uiCamera).AsSingle();
 
-            // network
-            Container.BindInterfacesAndSelfTo<HttpConnection>().AsSingle();
-            
             var projectSettings = Resources.Load<ProjectSettings>("ProjectSettings");
             Container.BindInstance(projectSettings.Application).AsSingle();
             Container.BindInstance(projectSettings.Debug).AsSingle();
+
+            // network
+            var networkSettings = Resources.Load<NetworkSettings>("NetworkSettings");
+            Container.BindInstance(networkSettings.General);
+            Container.BindInstance(networkSettings.Http);
+            Container.BindInterfacesAndSelfTo<HttpConnection>().AsSingle();
 
             // Debug mode
             Container.BindInterfacesAndSelfTo<DebugMode.FPSModel>().AsSingle();

@@ -9,24 +9,40 @@ using UnityEngine.Networking;
 using MessagePack;
 using Zenject;
 using UniRx;
+using SocialGame.Network;
+using Env = SocialGame.Internal.Network.Environment;
 
-namespace SocialGame.Network
+namespace SocialGame.Internal.Network
 {
-    public interface IHttpConnection
-    {
-        IObservable<TResponse> Get<TRequest, TResponse>(string path, TRequest data);
-        IObservable<TResponse> Post<TRequest, TResponse>(string path, TRequest data);
-    }
-    
-    public sealed class HttpConnection : IInitializable, IDisposable, IHttpConnection
+    internal sealed class HttpConnection : IInitializable, IDisposable, IHttpConnection
     {
         [Inject] private GeneralSettings _generalSettings;
         
         [Inject] private HttpSettings _settings;
 
+        private string _domain;
+        
         void IInitializable.Initialize()
         {
-            
+            string env = string.Empty;
+            switch (_generalSettings.Environment)
+            {
+                case Env.Production:
+                    env = _settings.ProductionEnvironment;
+                    break;
+                case Env.Staging:
+                    env = _settings.StagingEnvironment;
+                    break;
+                case Env.Development:
+                    env = _settings.DevelopmentEnvironment;
+                    break;
+                default:
+                    Debug.unityLogger.LogError(GetType().Name, string.Format("Not supported {0}", _generalSettings.Environment));
+                    break;
+            }
+
+            _domain = Path.Combine(_settings.Domain, env);
+            Debug.Log(_domain);
         }
 
         void IDisposable.Dispose()
@@ -99,7 +115,7 @@ namespace SocialGame.Network
         #region IHttpConnection implementation
         IObservable<TResponse> IHttpConnection.Get<TRequest, TResponse>(string path, TRequest data)
         {
-            string url = Path.Combine(_settings.Domain, path);
+            string url = Path.Combine(_domain, path);
             var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbGET);
             request.chunkedTransfer = _settings.UseChunkedTransfer;
             request.uploadHandler = new UploadHandlerRaw(Serialize(data, _settings.DataFormat));
@@ -123,7 +139,7 @@ namespace SocialGame.Network
         
         IObservable<TResponse> IHttpConnection.Post<TRequest, TResponse>(string path, TRequest data)
         {
-            string url = Path.Combine(_settings.Domain, path);
+            string url = Path.Combine(_domain, path);
             var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
             request.chunkedTransfer = _settings.UseChunkedTransfer;
             request.uploadHandler = new UploadHandlerRaw(Serialize(data, _settings.DataFormat));
