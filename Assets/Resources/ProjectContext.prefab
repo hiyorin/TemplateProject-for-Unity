@@ -280,7 +280,7 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
+  m_HDR: 0
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
@@ -300,6 +300,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneManager: {fileID: 114546800403164926}
   _uiCamera: {fileID: 20465132360735308}
+  _eventSystem: {fileID: 114763034904787464}
 --- !u!114 &114221964586915804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -337,6 +338,9 @@ MonoBehaviour:
   - {fileID: 114020270446194746}
   _installerPrefabs: []
   _scriptableObjectInstallers: []
+  _parentNewObjectsUnderContext: 1
+  _editorReflectionBakingCoverageMode: 0
+  _buildsReflectionBakingCoverageMode: 0
   _settings:
     _ensureDeterministicDestructionOrderOnApplicationQuit: 0
     _displayWarningWhenResolvingDuringInstall: 1
@@ -599,8 +603,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 528, y: -87.661575}
-  m_SizeDelta: {x: 1056, y: 25.464632}
+  m_AnchoredPosition: {x: 528, y: -88.55301}
+  m_SizeDelta: {x: 1056, y: 25.821205}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224278946993645298
 RectTransform:
@@ -638,8 +642,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 528, y: -12.732316}
-  m_SizeDelta: {x: 1056, y: 25.464632}
+  m_AnchoredPosition: {x: 528, y: -12.910603}
+  m_SizeDelta: {x: 1056, y: 25.821205}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224474036978286700
 RectTransform:
@@ -656,6 +660,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 528, y: -50.196945}
-  m_SizeDelta: {x: 1056, y: 25.464632}
+  m_AnchoredPosition: {x: 528, y: -50.731808}
+  m_SizeDelta: {x: 1056, y: 25.821205}
   m_Pivot: {x: 0.5, y: 0.5}

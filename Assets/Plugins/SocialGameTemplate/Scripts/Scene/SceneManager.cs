@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityExtensions;
 using Zenject;
 using UniRx;
+using UnityEngine.EventSystems;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -25,7 +26,9 @@ namespace SocialGame.Scene
 
         private static bool IsLoading;
 
-        [Inject] private TransitionController _transController = null;
+        [Inject] private TransitionController _transController;
+
+        [Inject] private EventSystem _eventSystem;
 
         private LoadContext _loadContext;
 
@@ -88,6 +91,7 @@ namespace SocialGame.Scene
 
         private IEnumerator Load(LoadContext next, LoadContext prev)
         {
+            _eventSystem.enabled = false;
             if (prev != null) yield return prev.TransOut(next).StartAsCoroutine();
             yield return _transController.TransIn(next.TransMode);
             yield return LoadInternal(next);
@@ -99,6 +103,7 @@ namespace SocialGame.Scene
             yield return next.TransIn(prev).StartAsCoroutine();
             next.TransComplate();
             IsLoading = false;
+            _eventSystem.enabled = true;
         }
 
         private static IEnumerator LoadInternal(LoadContext context)

@@ -8,6 +8,7 @@ using SocialGame.Sound;
 using SocialGame.DebugMode;
 using SocialGame.Internal.Network;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Editor")]
@@ -17,10 +18,12 @@ namespace SocialGame.Internal
 {
     internal sealed class ProjectInstaller : MonoInstaller
     {
-        [SerializeField] private SceneManager _sceneManager = null;
+        [SerializeField] private SceneManager _sceneManager;
 
-        [SerializeField] private Camera _uiCamera = null;
+        [SerializeField] private Camera _uiCamera;
 
+        [SerializeField] private EventSystem _eventSystem;
+        
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<ProjectModel>().AsSingle();
@@ -34,7 +37,8 @@ namespace SocialGame.Internal
             Container.BindInterfacesAndSelfTo<SoundVolumeController>().AsSingle();
             Container.BindInterfacesAndSelfTo<DebugController>().AsSingle();
             Container.BindInstance(_uiCamera).AsSingle();
-
+            Container.BindInstance(_eventSystem).AsSingle();
+            
             var projectSettings = Resources.Load<ProjectSettings>("ProjectSettings");
             Container.BindInstance(projectSettings.Application).AsSingle();
             Container.BindInstance(projectSettings.Debug).AsSingle();
