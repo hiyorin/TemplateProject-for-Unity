@@ -42,8 +42,9 @@ namespace SocialGame.Internal
         {
             SetupExtensions();
             SetupBuildSettingsScene();
-            SetupSettings<ProjectSettings>("ProjectSettings");
-            SetupSettings<NetworkSettings>("NetworkSettings");
+            SetupSettings<ProjectSettings>(ProjectSettings.FileName);
+            SetupSettings<NetworkSettings>(NetworkSettings.FileName);
+            SetupSettings<ResolutionSettings>(ResolutionSettings.FileName);
             SetupSettings<Dialog.DialogSettingsInstaller>("DialogSettings");
             SetupSettings<Loading.LoadingSettingsInstaller>("LoadingSettings");
             SetupSettings<TapEffect.TapEffectSettingsInstaller>("TapEffectSettings");

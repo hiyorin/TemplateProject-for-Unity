@@ -35,7 +35,6 @@ namespace SocialGame.Internal
                 .AddTo(_disposable);
 
             Application.targetFrameRate = _settings.TargetFrameRate;
-            Screen.SetResolution((int)(Screen.width * _settings.Resolution), (int)(Screen.height * _settings.Resolution), true);
         }
 
         void IDisposable.Dispose()

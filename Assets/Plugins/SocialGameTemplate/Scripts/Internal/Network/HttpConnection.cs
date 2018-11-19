@@ -42,7 +42,6 @@ namespace SocialGame.Internal.Network
             }
 
             _domain = Path.Combine(_settings.Domain, env);
-            Debug.Log(_domain);
         }
 
         void IDisposable.Dispose()

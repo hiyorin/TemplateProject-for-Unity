@@ -6,6 +6,8 @@ using SocialGame.Loading;
 using SocialGame.TapEffect;
 using SocialGame.Sound;
 using SocialGame.DebugMode;
+using SocialGame.Internal.Data;
+using SocialGame.Internal.Data.DataStore;
 using SocialGame.Internal.Network;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -23,6 +25,8 @@ namespace SocialGame.Internal
         [SerializeField] private Camera _uiCamera;
 
         [SerializeField] private EventSystem _eventSystem;
+
+        [SerializeField] private ResolutionLocalStorage _resolutionStorage;
         
         public override void InstallBindings()
         {
@@ -39,12 +43,20 @@ namespace SocialGame.Internal
             Container.BindInstance(_uiCamera).AsSingle();
             Container.BindInstance(_eventSystem).AsSingle();
             
-            var projectSettings = Resources.Load<ProjectSettings>("ProjectSettings");
+            // data
+            Container.BindInstance(_resolutionStorage).AsSingle();
+            Container.BindInterfacesAndSelfTo<ResolutionLocalDataStore>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ResolutionController>().AsSingle();
+
+            var resolutionSettings = Resources.Load<ResolutionSettings>(ResolutionSettings.FileName);
+            Container.BindInstance(resolutionSettings).AsSingle();
+            
+            var projectSettings = Resources.Load<ProjectSettings>(ProjectSettings.FileName);
             Container.BindInstance(projectSettings.Application).AsSingle();
             Container.BindInstance(projectSettings.Debug).AsSingle();
 
             // network
-            var networkSettings = Resources.Load<NetworkSettings>("NetworkSettings");
+            var networkSettings = Resources.Load<NetworkSettings>(NetworkSettings.FileName);
             Container.BindInstance(networkSettings.General);
             Container.BindInstance(networkSettings.Http);
             Container.BindInterfacesAndSelfTo<HttpConnection>().AsSingle();
