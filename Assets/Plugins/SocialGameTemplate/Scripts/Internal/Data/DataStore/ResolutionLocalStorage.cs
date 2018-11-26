@@ -9,7 +9,10 @@ namespace SocialGame.Internal.Data.DataStore
 
         protected override Resolution OnCreate()
         {
-            return new Resolution();
+            return new Resolution()
+            {
+                Quality = Quality.High,
+            };
         }
 
         protected override void OnInitialize()

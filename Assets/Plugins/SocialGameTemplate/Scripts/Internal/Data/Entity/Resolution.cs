@@ -6,7 +6,7 @@ namespace SocialGame.Internal.Data.Entity
 {
     [Serializable]
     [MessagePackObject]
-    internal sealed class Resolution
+    public sealed class Resolution
     {
         [Key(0)] public Quality Quality;
     }
