@@ -1,15 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
-using MessagePack;
 using Zenject;
 using UniRx;
 using SocialGame.Network;
+using SocialGame.Internal.Network.FormatContent;
 using Env = SocialGame.Internal.Network.Environment;
 
 namespace SocialGame.Internal.Network
@@ -21,9 +20,12 @@ namespace SocialGame.Internal.Network
         [Inject] private HttpSettings _settings;
 
         private string _domain;
+
+        private IFormatContent _formatContent;
         
         void IInitializable.Initialize()
         {
+            // environment setting
             string env = string.Empty;
             switch (_generalSettings.Environment)
             {
@@ -40,8 +42,24 @@ namespace SocialGame.Internal.Network
                     Debug.unityLogger.LogError(GetType().Name, $"Not supported {_generalSettings.Environment}");
                     break;
             }
-
             _domain = Path.Combine(_settings.Domain, env);
+            
+            // data format setting
+            switch (_settings.DataFormat)
+            {
+                case HttpSettings.Format.JSON:
+                    _formatContent = new JsonContent();
+                    break;
+                case HttpSettings.Format.MessagePack:
+                    _formatContent = new MsgPackContent();
+                    break;
+                case HttpSettings.Format.XML:
+                    _formatContent = new XmlContent();
+                    break;
+                default:
+                    Debug.unityLogger.LogError(typeof(HttpConnection).Name, $"Not supported {_settings.DataFormat}");
+                    break;
+            }
         }
 
         void IDisposable.Dispose()
@@ -79,55 +97,6 @@ namespace SocialGame.Internal.Network
                 observer.OnNext(request.downloadHandler.data);
             }
         }
-
-        private static void SetRequestHeader(UnityWebRequest request, HttpSettings.Format format)
-        {
-            string formatString = string.Empty;
-            switch (format)
-            {
-                case HttpSettings.Format.JSON:
-                    formatString = "json";
-                    break;
-                case HttpSettings.Format.MessagePack:
-                    formatString = "x-msgpack";
-                    break;
-                default:
-                    Debug.unityLogger.LogError(typeof(HttpConnection).Name, $"Not supported {format}");
-                    break;
-            }
-            request.SetRequestHeader("Content-Type", $"application/{formatString}; charset=UTF-8");
-        }
-
-        private static byte[] Serialize<T>(T data, HttpSettings.Format format)
-        {
-            switch (format)
-            {
-                case HttpSettings.Format.JSON:
-                    return Encoding.UTF8.GetBytes(JsonUtility.ToJson(data));
-                case HttpSettings.Format.MessagePack:
-                    return MessagePackSerializer.Serialize(data);
-                default:
-                    Debug.unityLogger.LogError(typeof(HttpConnection).Name, $"Not supported {format}");
-                    return null;
-            }
-        }
-        
-        private static IObservable<T> Deserialize<T>(byte[] data, HttpSettings.Format format)
-        {
-            return Observable.Start(() =>
-            {
-                switch (format)
-                {
-                    case HttpSettings.Format.JSON:
-                        return JsonUtility.FromJson<T>(Encoding.UTF8.GetString(data));
-                    case HttpSettings.Format.MessagePack:
-                        return MessagePackSerializer.Deserialize<T>(data);
-                    default:
-                        Debug.unityLogger.LogError(typeof(HttpConnection).Name, $"Not supported {format}");
-                        return default(T);
-                }
-            });
-        }
         
         #region IHttpConnection implementation
         IObservable<TResponse> IHttpConnection.Get<TRequest, TResponse>(string path, TRequest data)
@@ -135,8 +104,8 @@ namespace SocialGame.Internal.Network
             string url = Path.Combine(_domain, path);
             var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbGET);
             request.chunkedTransfer = _settings.UseChunkedTransfer;
-            request.uploadHandler = new UploadHandlerRaw(Serialize(data, _settings.DataFormat));
-            SetRequestHeader(request, _settings.DataFormat);
+            request.uploadHandler = new UploadHandlerRaw(_formatContent.Serialize(data));
+            _formatContent.SetRequestHeader(request);
             if (_generalSettings.DebugMode)
             {
                 Debug.unityLogger.Log(GetType().Name, $"request : {url}\ndata : {data}");
@@ -144,7 +113,8 @@ namespace SocialGame.Internal.Network
             
             return Observable
                 .FromCoroutine<byte[]>((observer, cancel) => Fetch(request, observer, cancel, _settings.TimeOutSeconds))
-                .SelectMany(x => Deserialize<TResponse>(x, _settings.DataFormat))
+                .SelectMany(x => _formatContent.Deserialize<TResponse>(x))
+                .ObserveOnMainThread()
                 .Do(x =>
                 {
                     if (_generalSettings.DebugMode)
@@ -160,8 +130,8 @@ namespace SocialGame.Internal.Network
             string url = Path.Combine(_domain, path);
             var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
             request.chunkedTransfer = _settings.UseChunkedTransfer;
-            request.uploadHandler = new UploadHandlerRaw(Serialize(data, _settings.DataFormat));
-            SetRequestHeader(request, _settings.DataFormat);
+            request.uploadHandler = new UploadHandlerRaw(_formatContent.Serialize(data));
+            _formatContent.SetRequestHeader(request);
             if (_generalSettings.DebugMode)
             {
                 Debug.unityLogger.Log(GetType().Name, $"request : {url}\ndata : {data}");
@@ -169,7 +139,8 @@ namespace SocialGame.Internal.Network
             
             return Observable
                 .FromCoroutine<byte[]>((observer, cancel) => Fetch(request, observer, cancel, _settings.TimeOutSeconds))
-                .SelectMany(x => Deserialize<TResponse>(x, _settings.DataFormat))
+                .SelectMany(x => _formatContent.Deserialize<TResponse>(x))
+                .ObserveOnMainThread()
                 .Do(x =>
                 {
                     if (_generalSettings.DebugMode)

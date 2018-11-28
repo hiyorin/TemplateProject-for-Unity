@@ -10,6 +10,7 @@ namespace SocialGame.Internal.Network
         {
             JSON,
             MessagePack,
+            XML,
         }
         
         [SerializeField] private string _domain = "https://www.google.co.jp/";
