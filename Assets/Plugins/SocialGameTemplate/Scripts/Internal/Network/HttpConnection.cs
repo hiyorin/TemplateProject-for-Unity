@@ -37,7 +37,7 @@ namespace SocialGame.Internal.Network
                     env = _settings.DevelopmentEnvironment;
                     break;
                 default:
-                    Debug.unityLogger.LogError(GetType().Name, string.Format("Not supported {0}", _generalSettings.Environment));
+                    Debug.unityLogger.LogError(GetType().Name, $"Not supported {_generalSettings.Environment}");
                     break;
             }
 
@@ -70,7 +70,7 @@ namespace SocialGame.Internal.Network
                 }
 
                 var responseCode = (HttpStatusCode)request.responseCode;
-                if (request.isNetworkError || responseCode != HttpStatusCode.OK)
+                if (request.isNetworkError || request.isHttpError || responseCode != HttpStatusCode.OK)
                 {
                     observer.OnError(new HttpException(responseCode, request.error));
                     yield break;
@@ -78,6 +78,24 @@ namespace SocialGame.Internal.Network
 
                 observer.OnNext(request.downloadHandler.data);
             }
+        }
+
+        private static void SetRequestHeader(UnityWebRequest request, HttpSettings.Format format)
+        {
+            string formatString = string.Empty;
+            switch (format)
+            {
+                case HttpSettings.Format.JSON:
+                    formatString = "json";
+                    break;
+                case HttpSettings.Format.MessagePack:
+                    formatString = "x-msgpack";
+                    break;
+                default:
+                    Debug.unityLogger.LogError(typeof(HttpConnection).Name, $"Not supported {format}");
+                    break;
+            }
+            request.SetRequestHeader("Content-Type", $"application/{formatString}; charset=UTF-8");
         }
 
         private static byte[] Serialize<T>(T data, HttpSettings.Format format)
@@ -89,7 +107,7 @@ namespace SocialGame.Internal.Network
                 case HttpSettings.Format.MessagePack:
                     return MessagePackSerializer.Serialize(data);
                 default:
-                    Debug.unityLogger.LogError(typeof(HttpConnection).Name, string.Format("Not supported {0}", format));
+                    Debug.unityLogger.LogError(typeof(HttpConnection).Name, $"Not supported {format}");
                     return null;
             }
         }
@@ -105,12 +123,12 @@ namespace SocialGame.Internal.Network
                     case HttpSettings.Format.MessagePack:
                         return MessagePackSerializer.Deserialize<T>(data);
                     default:
-                        Debug.unityLogger.LogError(typeof(HttpConnection).Name, string.Format("Not supported {0}", format));
+                        Debug.unityLogger.LogError(typeof(HttpConnection).Name, $"Not supported {format}");
                         return default(T);
                 }
             });
         }
-
+        
         #region IHttpConnection implementation
         IObservable<TResponse> IHttpConnection.Get<TRequest, TResponse>(string path, TRequest data)
         {
@@ -118,9 +136,10 @@ namespace SocialGame.Internal.Network
             var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbGET);
             request.chunkedTransfer = _settings.UseChunkedTransfer;
             request.uploadHandler = new UploadHandlerRaw(Serialize(data, _settings.DataFormat));
+            SetRequestHeader(request, _settings.DataFormat);
             if (_generalSettings.DebugMode)
             {
-                Debug.unityLogger.Log(GetType().Name, string.Format("request : {0}\ndata : {1}", url, data));
+                Debug.unityLogger.Log(GetType().Name, $"request : {url}\ndata : {data}");
             }
             
             return Observable
@@ -130,7 +149,7 @@ namespace SocialGame.Internal.Network
                 {
                     if (_generalSettings.DebugMode)
                     {
-                        Debug.unityLogger.Log(GetType().Name, string.Format("response : {0}\ndata : {1}", url, x));
+                        Debug.unityLogger.Log(GetType().Name, $"response : {url}\ndata : {x}");
                     }
                 })
                 .OnErrorRetry((HttpException ex) => { }, _settings.RetryCount);
@@ -142,9 +161,10 @@ namespace SocialGame.Internal.Network
             var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
             request.chunkedTransfer = _settings.UseChunkedTransfer;
             request.uploadHandler = new UploadHandlerRaw(Serialize(data, _settings.DataFormat));
+            SetRequestHeader(request, _settings.DataFormat);
             if (_generalSettings.DebugMode)
             {
-                Debug.unityLogger.Log(GetType().Name, string.Format("request : {0}\ndata : {1}", url, data));
+                Debug.unityLogger.Log(GetType().Name, $"request : {url}\ndata : {data}");
             }
             
             return Observable
@@ -154,7 +174,7 @@ namespace SocialGame.Internal.Network
                 {
                     if (_generalSettings.DebugMode)
                     {
-                        Debug.unityLogger.Log(GetType().Name, string.Format("response : {0}\ndata : {1}", url, x));
+                        Debug.unityLogger.Log(GetType().Name, $"response : {url}\ndata : {x}");
                     }
                 })
                 .OnErrorRetry((HttpException ex) => { }, _settings.RetryCount);
