@@ -16,7 +16,7 @@ namespace SocialGame.Data
     /// 保存するファイル単位で実装してください
     /// </summary>
     /// <typeparam name="T">シリアライズするクラス</typeparam>
-    public abstract class LocalStorageBase<T> : MonoBehaviour, IInitializable, IDisposable
+    public abstract class LocalStorageBase<T> : MonoBehaviour
     {
         private const string EncryptKey = "c6eahbq9sjuawhvdr9kvhpsm5qv393ga";
         private const int EncryptKeyCount = 16;
@@ -46,7 +46,7 @@ namespace SocialGame.Data
             }
         }
 
-        void IInitializable.Initialize()
+        private void Start()
         {
             if (FileUtility.Exists(FilePath))
             {
@@ -60,7 +60,7 @@ namespace SocialGame.Data
             OnInitialize();
         }
 
-        void IDisposable.Dispose()
+        private void OnDestroy()
         {
             Save();
         }
