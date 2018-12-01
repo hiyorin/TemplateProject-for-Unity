@@ -53,6 +53,9 @@ namespace SocialGame.Internal.Network
                 case HttpSettings.Format.MessagePack:
                     _formatContent = new MsgPackContent();
                     break;
+                case HttpSettings.Format.LZ4MessagePack:
+                    _formatContent = new LZ4MsgPackContent();
+                    break;
                 case HttpSettings.Format.XML:
                     _formatContent = new XmlContent();
                     break;

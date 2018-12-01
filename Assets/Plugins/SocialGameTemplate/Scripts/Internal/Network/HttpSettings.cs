@@ -10,6 +10,7 @@ namespace SocialGame.Internal.Network
         {
             JSON,
             MessagePack,
+            LZ4MessagePack,
             XML,
         }
         
