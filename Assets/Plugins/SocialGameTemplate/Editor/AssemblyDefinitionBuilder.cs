@@ -65,6 +65,12 @@ namespace SocialGame.Internal
             return this;
         }
 
+        public AssemblyDefinitionBuilder DisableAllowUnsafeCode()
+        {
+            _asmdef.allowUnsafeCode = false;
+            return this;
+        }
+
         public AssemblyDefinitionBuilder Write()
         {
             var json = JsonUtility.ToJson(_asmdef, true);

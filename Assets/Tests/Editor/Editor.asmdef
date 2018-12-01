@@ -2,6 +2,7 @@
     "name": "Editor",
     "references": [
         "UniRx",
+        "UniRx.Async",
         "Zenject-TestFramework",
         "Zenject",
         "SocialGameTemplate"

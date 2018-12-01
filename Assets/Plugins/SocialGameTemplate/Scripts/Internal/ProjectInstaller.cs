@@ -1,3 +1,4 @@
+using MessagePack.Resolvers;
 using SocialGame.Scene;
 using SocialGame.Transition;
 using SocialGame.Dialog;
@@ -27,6 +28,17 @@ namespace SocialGame.Internal
         [SerializeField] private EventSystem _eventSystem;
 
         [SerializeField] private ResolutionLocalStorage _resolutionStorage;
+
+        private void Awake()
+        {
+	        CompositeResolver.RegisterAndSetAsDefault(
+		        GeneratedResolver.Instance,
+		        MessagePack.Unity.UnityResolver.Instance,
+		        BuiltinResolver.Instance,
+		        AttributeFormatterResolver.Instance,
+		        PrimitiveObjectResolver.Instance
+	        );
+        }
         
         public override void InstallBindings()
         {

@@ -2,6 +2,7 @@
     "name": "Play",
     "references": [
         "UniRx",
+        "UniRx.Async",
         "Zenject-TestFramework",
         "Zenject",
         "SocialGameTemplate"

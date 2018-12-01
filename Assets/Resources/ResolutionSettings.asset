@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0384f449f1a2845788066b6f974898ea, type: 3}
-  m_Name: 
+  m_Name: ResolutionSettings
   m_EditorClassIdentifier: 
   _type: 0
   _lowSize: {x: 1136, y: 640}

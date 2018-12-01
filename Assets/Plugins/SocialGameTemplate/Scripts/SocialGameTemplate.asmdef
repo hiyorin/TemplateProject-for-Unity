@@ -3,6 +3,7 @@
     "references": [
         "Zenject",
         "UniRx",
+        "UniRx.Async",
         "MessagePack",
         "MemoryInfoPlugin",
         "UnityExtensions"
