@@ -5,8 +5,8 @@ namespace SocialGame.Internal
 {
     internal static class MessagePackUnsafeEditor
     {
-        private const string EnableItemName     = "Tools/MessagePack/Unsafe/Enable";
-        private const string DisableItemName    = "Tools/MessagePack/Unsafe/Disable";
+        private const string EnableItemName     = "Tools/MessagePack-CSharp/Unsafe/Enable";
+        private const string DisableItemName    = "Tools/MessagePack-CSharp/Unsafe/Disable";
         private const string Symbol             = "ENABLE_UNSAFE_MSGPACK";
         
         [MenuItem(EnableItemName)]

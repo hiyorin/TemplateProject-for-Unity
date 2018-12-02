@@ -1,17 +1,16 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Xml.Linq;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEditor;
 using UnityExtensions;
+using SocialGame.Internal;
 using Debug = UnityEngine.Debug;
 
-namespace SocialGame.Internal
+namespace SocialGame.Editor
 {
     internal static class MessagePackCodeGenerator
     {
-        [MenuItem("Tools/MessagePack/Code Generator")]
+        [MenuItem("Tools/MessagePack-CSharp/Code Generator")]
         private static void CodeGenerate()
         {
             string rootPath = Path.GetFullPath(Application.dataPath + "/../");
@@ -42,7 +41,7 @@ namespace SocialGame.Internal
             string input = dstPath;
             string output = Application.dataPath + "/" + ProjectModel.RootPath + "/Scripts/Internal/MessagePackGenerated.cs";
             string cmd = $"{exe} -i {input} -o {output}";
-            var log = DoBashCommand(cmd);
+            var log = ProcessUtility.DoBashCommand(cmd);
             
             // delete temp csproj file
             File.Delete(dstPath);
@@ -68,37 +67,6 @@ namespace SocialGame.Internal
             });
             
             return itemGroup;
-        }
-        
-        private static string DoBashCommand(string cmd)
-        {
-            var p = new Process();
-
-            switch (Application.platform)
-            {
-                case RuntimePlatform.WindowsEditor:
-                    p.StartInfo.FileName = Environment.GetEnvironmentVariable("ComSpec");
-                    p.StartInfo.Arguments = "/c " + cmd;
-                    break;
-                case RuntimePlatform.OSXEditor:
-                    p.StartInfo.FileName = "/bin/bash";
-                    p.StartInfo.Arguments = "-c \"/Library/Frameworks/Mono.framework/Commands/mono " + cmd + "\"";
-                    break;
-                default:
-                    Debug.LogError("This platform is not supported");
-                    break;
-            }
-            
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.CreateNoWindow = true;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.Start();
-
-            var output = p.StandardOutput.ReadToEnd();
-            p.WaitForExit();
-            p.Close();
-            
-            return output;
         }
     }
 }
