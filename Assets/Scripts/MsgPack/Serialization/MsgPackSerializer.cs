@@ -1,21 +1,13 @@
 // this file was auto-generated.
-using MsgPack.Serialization.GeneratedSerializers;
+using UnityEngine;
 namespace MsgPack.Serialization
 {
-    public static class MsgPackSerializer
+    sealed class MsgPackSerializerRegister
     {
-        static readonly SerializationContext Context = new SerializationContext
+        [RuntimeInitializeOnLoadMethod]
+        private static void RuntimeInitializeOnLoadMethod()
         {
-            EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue,
-            SerializationMethod = SerializationMethod.Array,
-        };
-        static MsgPackSerializer()
-        {
-            Context.Serializers.Register(new DataSerializer(Context));
-        }
-        public static MessagePackSerializer<T> Get<T>()
-        {
-            return Context.GetSerializer<T>();
+            MsgPackSerializer.Register(new MsgPack.Serialization.GeneratedSerializers.DataSerializer(MsgPackSerializer.Context));
         }
     }
 }

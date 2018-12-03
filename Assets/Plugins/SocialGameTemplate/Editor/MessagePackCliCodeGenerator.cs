@@ -52,17 +52,13 @@ namespace SocialGame.Editor
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("// this file was auto-generated.");
-            sb.AppendLine($"using {ns};");
+            sb.AppendLine("using UnityEngine;");
             sb.AppendLine("namespace MsgPack.Serialization");
             sb.AppendLine("{");
-            sb.AppendLine("    public static class MsgPackSerializer");
+            sb.AppendLine("    sealed class MsgPackSerializerRegister");
             sb.AppendLine("    {");
-            sb.AppendLine("        static readonly SerializationContext Context = new SerializationContext");
-            sb.AppendLine("        {");
-            sb.AppendLine("            EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue,");
-            sb.AppendLine("            SerializationMethod = SerializationMethod.Array,");
-            sb.AppendLine("        };");
-            sb.AppendLine("        static MsgPackSerializer()");
+            sb.AppendLine("        [RuntimeInitializeOnLoadMethod]");
+            sb.AppendLine("        private static void RuntimeInitializeOnLoadMethod()");
             sb.AppendLine("        {");
 
             foreach (var genFile in genFiles)
@@ -70,13 +66,9 @@ namespace SocialGame.Editor
                 if (string.IsNullOrEmpty(genFile))
                     continue;
                 var className = Path.GetFileNameWithoutExtension(genFile);
-                sb.AppendLine($"            Context.Serializers.Register(new {className}(Context));");
+                sb.AppendLine($"            MsgPackSerializer.Register(new {ns}.{className}(MsgPackSerializer.Context));");
             }
 
-            sb.AppendLine("        }");
-            sb.AppendLine("        public static MessagePackSerializer<T> Get<T>()");
-            sb.AppendLine("        {");
-            sb.AppendLine("            return Context.GetSerializer<T>();");
             sb.AppendLine("        }");
             sb.AppendLine("    }");
             sb.AppendLine("}");
