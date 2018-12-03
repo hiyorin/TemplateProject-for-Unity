@@ -5,12 +5,12 @@ using UniRx;
 
 namespace SocialGame.Internal.Network.FormatContent
 {
-	internal sealed class LZ4MsgPackContent : IFormatContent
+	internal sealed class MessagePackContent : IFormatContent
 	{
 		#region IFormatContent implementation
 		void IFormatContent.SetRequestHeader(UnityWebRequest request)
 		{
-			request.SetRequestHeader("Content-Type", "application/x-lz4msgpack; charset=UTF-8");
+			request.SetRequestHeader("Content-Type", "application/x-msgpack; charset=UTF-8");
 		}
 
 		byte[] IFormatContent.Serialize<T>(T data)
@@ -20,7 +20,7 @@ namespace SocialGame.Internal.Network.FormatContent
 
 		IObservable<T> IFormatContent.Deserialize<T>(byte[] data)
 		{
-			return Observable.Start(() => LZ4MessagePackSerializer.Deserialize<T>(data));
+			return Observable.Start(() => MessagePackSerializer.Deserialize<T>(data));
 		}
 		#endregion
 	}
