@@ -65,7 +65,6 @@ namespace SocialGame.Editor
                 if (string.IsNullOrEmpty(genFile))
                     continue;
                 var split = genFile.Split(Path.DirectorySeparatorChar);
-                Debug.Log(split[split.Length - 1]);
                 var className = split[split.Length-1].Replace(".cs", "");
                 sb.AppendLine($"            MsgPackSerializer.Register(new {ns}.{className}(MsgPackSerializer.Context));");
             }

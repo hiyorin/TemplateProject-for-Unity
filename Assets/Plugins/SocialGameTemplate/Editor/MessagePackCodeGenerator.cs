@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System;
+using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEditor;
@@ -14,39 +16,57 @@ namespace SocialGame.Editor
         private static void CodeGenerate()
         {
             string rootPath = Path.GetFullPath(Application.dataPath + "/../");
-            string srcPath = rootPath + "Assembly-CSharp.csproj";
-            string dstPath = rootPath + typeof(MessagePackCodeGenerator).Name + ".csproj";
-            
-            XDocument document = XDocument.Load(srcPath);
-            string ns = "{" + document.Root.Name.Namespace + "}";
-            
-            // Insert self references
-            var selfItemGroup = GenerateItemGroup(ns, rootPath, "Assets/Plugins/SocialGameTemplate");
-            document.Root.AddFirst(selfItemGroup);
+            string srcPath;
 
-            // Insert MessagePack references
-            var mgsItemGroup = GenerateItemGroup(ns, rootPath, "Assets/Plugins/MessagePack/");
-            document.Root.AddFirst(mgsItemGroup);
+            if (Application.platform == RuntimePlatform.OSXEditor)
+            {
+                srcPath = rootPath + "Assembly-CSharp.csproj";
+                string dstPath = rootPath + typeof(MessagePackCodeGenerator).Name + ".csproj";
 
-            // To avoid many open files error. Remove unused references.
-            document.Root.LastNode.Remove();
-            document.Root.LastNode.Remove();
-            document.Root.LastNode.Remove();
-            document.Root.LastNode.Remove();
-            
-            document.Save(dstPath);
-            
-            // execute mpc process
-            string exe = Application.dataPath + "/" + ProjectModel.RootPath + "/Editor/tools/mpc/mpc.exe";
-            string input = dstPath;
-            string output = Application.dataPath + "/" + ProjectModel.RootPath + "/Scripts/Internal/MessagePackGenerated.cs";
-            string cmd = $"{exe} -i {input} -o {output}";
-            var log = ProcessUtility.DoBashCommand(cmd);
-            
-            // delete temp csproj file
-            File.Delete(dstPath);
+                XDocument document = XDocument.Load(srcPath);
+                string ns = "{" + document.Root.Name.Namespace + "}";
 
-            Debug.LogFormat("[Complete] Generated MessagePack Code\n\n{0}", log);
+                // Insert self references
+                var selfItemGroup = GenerateItemGroup(ns, rootPath, "Assets/Plugins/SocialGameTemplate");
+                document.Root.AddFirst(selfItemGroup);
+
+                // Insert MessagePack references
+                var mgsItemGroup = GenerateItemGroup(ns, rootPath, "Assets/Plugins/MessagePack/");
+                document.Root.AddFirst(mgsItemGroup);
+
+                // To avoid many open files error. Remove unused references.
+                document.Root.LastNode.Remove();
+                document.Root.LastNode.Remove();
+                document.Root.LastNode.Remove();
+                document.Root.LastNode.Remove();
+
+                document.Save(dstPath);
+
+                // execute mpc process
+                string cmd = Application.dataPath + "/" + ProjectModel.RootPath + "/Editor/tools/mpc/mpc.exe";
+                string input = dstPath;
+                string output = Application.dataPath + "/" + ProjectModel.RootPath + "/Scripts/Internal/MessagePackGenerated.cs";
+                string argsFormat = $"-i {{0}} -o {{1}}";
+                string log = ProcessUtility.DoExeCommand(cmd, argsFormat, input, output);
+
+                // delete temp csproj file
+                File.Delete(dstPath);
+
+                Debug.LogFormat("[Complete] Generated MessagePack Code\n\n{0}", log);
+            }
+            else
+            {
+                srcPath = rootPath + $"{rootPath.Split(new[] { Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()}.csproj";
+
+                // execute mpc process
+                string cmd = Application.dataPath + "/" + ProjectModel.RootPath + "/Editor/tools/mpc/mpc.exe";
+                string input = srcPath;
+                string output = Application.dataPath + "/" + ProjectModel.RootPath + "/Scripts/Internal/MessagePackGenerated.cs";
+                string argsFormat = $"-i {{0}} -o {{1}}";
+                string log = ProcessUtility.DoExeCommand(cmd, argsFormat, input, output);
+
+                Debug.LogFormat("[Complete] Generated MessagePack Code\n\n{0}", log);
+            }
         }
         
         private static XElement GenerateItemGroup(string ns, string rootPath, string dir)
