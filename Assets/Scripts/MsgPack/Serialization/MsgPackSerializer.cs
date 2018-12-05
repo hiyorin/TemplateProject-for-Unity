@@ -7,7 +7,7 @@ namespace MsgPack.Serialization
         [RuntimeInitializeOnLoadMethod]
         private static void RuntimeInitializeOnLoadMethod()
         {
-            MsgPackSerializer.Register(new MsgPack.Serialization.GeneratedSerializers.DataSerializer(MsgPackSerializer.Context));
+            MsgPackSerializer.Register(new MsgPack.Serialization.GeneratedSerializers.DataSerializer(MsgPackSerializer.Context));
         }
     }
 }

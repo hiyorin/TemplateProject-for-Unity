@@ -1,8 +1,9 @@
 ﻿using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
-using UnityExtensions;
 using SocialGame.Internal;
 
 namespace SocialGame.Editor
@@ -27,23 +28,21 @@ namespace SocialGame.Editor
 
         private static void MCS(string dllPath)
         {
-            StringBuilder sb = new StringBuilder();
+            List<string> sources = new List<string>();
             foreach (var path in Paths)
             {
-                var sources = Directory.GetFiles(Path.Combine(Application.dataPath, path), "*.cs",
-                    SearchOption.AllDirectories);
-                sources.ForEach(x => sb.Append(x).Append(" "));
+                var src = Directory.GetFiles(Path.Combine(Application.dataPath, path), "*.cs", SearchOption.AllDirectories);
+                sources.AddRange(src);
             }
-            
-            ProcessUtility.DoBuildDllCommand(dllPath, sb.ToString());
+            ProcessUtility.DoBuildDllCommand(dllPath, sources.ToArray());
         }
 
         private static void MPU(string src, string dst)
         {
             var mpu = Path.Combine(Application.dataPath, ProjectModel.RootPath, "Editor/tools/mpu/mpu.exe");
             var ns = "MsgPack.Serialization.GeneratedSerializers";
-            var command = $"{mpu} -s -a -n {ns} -o {dst} {src}";
-            var output = ProcessUtility.DoBashCommand(command);
+            var argsFormat = $"-s -a -n {ns} -o {{0}} {{1}}";
+            var output = ProcessUtility.DoExeCommand(mpu, argsFormat, dst, src);
 
             if (string.IsNullOrEmpty(output))
                 return;
@@ -65,7 +64,9 @@ namespace SocialGame.Editor
             {
                 if (string.IsNullOrEmpty(genFile))
                     continue;
-                var className = Path.GetFileNameWithoutExtension(genFile);
+                var split = genFile.Split(Path.DirectorySeparatorChar);
+                Debug.Log(split[split.Length - 1]);
+                var className = split[split.Length-1].Replace(".cs", "");
                 sb.AppendLine($"            MsgPackSerializer.Register(new {ns}.{className}(MsgPackSerializer.Context));");
             }
 
