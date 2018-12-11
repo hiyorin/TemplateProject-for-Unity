@@ -13,5 +13,7 @@ namespace SocialGame.Scene
         void Next(string sceneName, object transData, TransMode transMode=TransMode.None);
 
         void Back();
+
+        void Reload();
     }
 }

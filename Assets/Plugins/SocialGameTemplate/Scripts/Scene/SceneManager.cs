@@ -4,11 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using SocialGame.Transition;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityExtensions;
 using Zenject;
 using UniRx;
-using UnityEngine.EventSystems;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -60,6 +60,13 @@ namespace SocialGame.Scene
                 Debug.unityLogger.LogWarning(GetType().Name, "Loading");
                 return;
             }
+
+            if (_histories.Count > 0 && _histories.Peek().SceneName == sceneName)
+            {
+                Reload();
+                return;
+            }
+            
             IsLoading = true;
 
             _histories.Push(new History() { SceneName = sceneName, TransData = transData });
@@ -89,6 +96,32 @@ namespace SocialGame.Scene
             _loadContext = nextContext;
         }
 
+        private void Reload()
+        {
+            if (IsLoading)
+            {
+                Debug.unityLogger.LogWarning(GetType().Name, "Loading");
+                return;
+            }
+            
+            IsLoading = true;
+            StartCoroutine(Reload(_loadContext));
+        }
+
+        private IEnumerator Reload(LoadContext context)
+        {
+            _eventSystem.enabled = false;
+            yield return context.TransOut().StartAsCoroutine();
+            yield return _transController.TransIn(context.TransMode);
+            yield return context.Unload().StartAsCoroutine();
+            yield return context.Load().StartAsCoroutine();
+            yield return _transController.TransOut();
+            yield return context.TransIn().StartAsCoroutine();
+            context.TransComplate();
+            IsLoading = false;
+            _eventSystem.enabled = true;
+        }
+        
         private IEnumerator Load(LoadContext next, LoadContext prev)
         {
             _eventSystem.enabled = false;
@@ -207,6 +240,11 @@ namespace SocialGame.Scene
         void ISceneManager.Back()
         {
             Back();
+        }
+
+        void ISceneManager.Reload()
+        {
+            Reload();
         }
         #endregion
 

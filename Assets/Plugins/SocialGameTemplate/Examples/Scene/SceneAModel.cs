@@ -42,6 +42,10 @@ namespace Sandbox.Scene
                 .Where(_ => Input.GetKeyDown(KeyCode.Mouse0))
                 .Subscribe(_ => _sceneManager.Next("SceneB", "prev SceneA", TransMode.BlackFade))
                 .AddTo(_disposable);
+            Observable.EveryUpdate()
+                .Where(_ => Input.GetKeyDown(KeyCode.R))
+                .Subscribe(_ => _sceneManager.Reload())
+                .AddTo(_disposable);
         }
 
         IObservable<Unit> ISceneLifecycle.OnTransOut()

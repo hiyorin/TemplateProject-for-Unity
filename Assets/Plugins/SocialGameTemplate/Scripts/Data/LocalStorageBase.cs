@@ -56,7 +56,7 @@ namespace SocialGame.Data
                 }
                 catch (Exception e)
                 {
-                    Debug.unityLogger.LogWarning(GetType().Name, $"Crash save file. {FileName}");
+                    Debug.unityLogger.LogWarning(GetType().Name, $"Crash save file. {FileName}\n{e.Message}");
                 }
             }
             
