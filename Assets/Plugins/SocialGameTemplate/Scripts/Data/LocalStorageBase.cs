@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Text;
-using MessagePack;
 using UnityEngine;
 using UnityExtensions;
-using Zenject;
 using UniRx;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -27,7 +25,7 @@ namespace SocialGame.Data
         /// <summary>
         /// 保存するデータ
         /// </summary>
-        public T Model { get { return _model; } }
+        public T Model => _model;
 
         /// <summary>
         /// ファイル名
@@ -50,13 +48,20 @@ namespace SocialGame.Data
         {
             if (FileUtility.Exists(FilePath))
             {
-                Load();
+                try
+                {
+                    Load();
+                    OnInitialize();
+                    return;
+                }
+                catch (Exception e)
+                {
+                    Debug.unityLogger.LogWarning(GetType().Name, $"Crash save file. {FileName}");
+                }
             }
-            else
-            {
-                _model = OnCreate();
-                Save();
-            }
+            
+            _model = OnCreate();
+            Save();
             OnInitialize();
         }
 
@@ -75,8 +80,8 @@ namespace SocialGame.Data
 
         public void Save()
         {
-            // Serialize and encryot
-            byte[] pack = MessagePackSerializer.Serialize(Model);;
+            // Serialize and encrypt
+            byte[] pack = Encoding.UTF8.GetBytes(JsonUtility.ToJson(Model));;
             byte[] iv = null;
             byte[] data = null;
             CryptUtility.EncryptAESWithCBC(pack, Encoding.UTF8.GetBytes(EncryptKey), EncryptKeyCount, out iv, out data);
@@ -110,10 +115,10 @@ namespace SocialGame.Data
                 data = reader.ReadBytes(length);
             });
 
-            // Decrypt and Desirialize
+            // Decrypt and Deserialize
             byte[] pack = null;
             CryptUtility.DecryptAESWithCBC(data, Encoding.UTF8.GetBytes(EncryptKey), iv, out pack);
-            _model = MessagePackSerializer.Deserialize<T>(pack);
+            _model = JsonUtility.FromJson<T>(Encoding.UTF8.GetString(pack));
         }
 
         public IObservable<Unit> LoadAsync()
