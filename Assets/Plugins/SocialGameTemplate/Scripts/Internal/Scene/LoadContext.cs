@@ -2,12 +2,13 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityExtensions;
+using SocialGame.Scene;
 using SocialGame.Transition;
 using UniRx;
 
-namespace SocialGame.Scene
+namespace SocialGame.Internal.Scene
 {
-    public sealed class LoadContext
+    internal sealed class LoadContext
     {
         public class Scene
         {

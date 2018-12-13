@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using SocialGame.Scene;
 using SocialGame.Transition;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,14 +10,15 @@ using UnityEngine.SceneManagement;
 using UnityExtensions;
 using Zenject;
 using UniRx;
+using SceneType = SocialGame.Scene.Scene; 
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace SocialGame.Scene
+namespace SocialGame.Internal.Scene
 {
-    public sealed class SceneManager : MonoBehaviour, ISceneManager
+    internal sealed class SceneManager : MonoBehaviour, ISceneManager
     {
         private class History
         {
@@ -40,16 +42,6 @@ namespace SocialGame.Scene
             var context = FindSceneContext(scene.name);
             yield return new WaitUntil(() => context.Initialized);
 
-            /*
-            _loadContext = new LoadContext() {
-                NextScene = new SceneData() {
-                    Name = scene.name,
-                    Lifecycles = context.Container.ResolveAll<ISceneLifecycle>(),
-                },
-                AdditiveScenes = new List<SceneData>(),
-            };
-            _loadContext.NextScene.Lifecycles.ForEach(x => x.OnTransComplete());
-            */
             Next(scene.name, null, TransMode.None);
         }
 
@@ -217,12 +209,12 @@ namespace SocialGame.Scene
         }
 
         #region ISceneManager implementation
-        void ISceneManager.Next(Scene scene)
+        void ISceneManager.Next(SceneType scene)
         {
             Next(scene.ToString(), null, TransMode.None);
         }
 
-        void ISceneManager.Next(Scene scene, object transData, TransMode transMode)
+        void ISceneManager.Next(SceneType scene, object transData, TransMode transMode)
         {
             Next(scene.ToString(), transData, transMode);
         }

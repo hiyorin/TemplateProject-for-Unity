@@ -9,6 +9,7 @@ using SocialGame.Sound;
 using SocialGame.DebugMode;
 using SocialGame.Internal.Data;
 using SocialGame.Internal.Data.DataStore;
+using SocialGame.Internal.Scene;
 using SocialGame.Internal.Network;
 using UnityEngine;
 using UnityEngine.EventSystems;
