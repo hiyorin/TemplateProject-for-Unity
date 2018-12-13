@@ -14,7 +14,7 @@ using UnityEditor.VersionControl;
 namespace SocialGame.Internal.Dialog
 {
     [CreateAssetMenu(fileName = "DialogSettings", menuName = "Installers/DialogSettings")]
-    public class DialogSettingsInstaller : ScriptableObjectInstaller<DialogSettingsInstaller>
+    public sealed class DialogSettingsInstaller : ScriptableObjectInstaller<DialogSettingsInstaller>
     {
         [SerializeField] private DialogSettings _settings = null;
 

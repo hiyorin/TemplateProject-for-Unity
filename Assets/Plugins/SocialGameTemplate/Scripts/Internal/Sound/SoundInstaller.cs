@@ -6,10 +6,10 @@ namespace SocialGame.Internal.Sound
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<SoundModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<BGMModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<SEModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<VoiceModel>().AsSingle();
+            Container.BindInterfacesTo<SoundModel>().AsSingle();
+            Container.BindInterfacesTo<BGMModel>().AsSingle();
+            Container.BindInterfacesTo<SEModel>().AsSingle();
+            Container.BindInterfacesTo<VoiceModel>().AsSingle();
         }
     }
 }

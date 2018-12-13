@@ -11,8 +11,8 @@ namespace SocialGame.Internal.Toast
 
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<ToastModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<ToastFactory>().AsSingle();
+            Container.BindInterfacesTo<ToastModel>().AsSingle();
+            Container.BindInterfacesTo<ToastFactory>().AsSingle();
             Container.BindInstance(_sample).AsSingle();
         }
     }

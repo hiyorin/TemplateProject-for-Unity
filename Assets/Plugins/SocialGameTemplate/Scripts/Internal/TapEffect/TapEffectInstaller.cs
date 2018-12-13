@@ -11,8 +11,8 @@ namespace SocialGame.Internal.TapEffect
 
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<TapEffectModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<TapEffectFactory>().AsSingle();
+            Container.BindInterfacesTo<TapEffectModel>().AsSingle();
+            Container.BindInterfacesTo<TapEffectFactory>().AsSingle();
             Container.BindInstance(_sample).AsSingle();
         }
     }

@@ -4,17 +4,17 @@ using Zenject;
 
 namespace SocialGame.Internal.Transition
 {
-    internal class TransitionInstaller : MonoInstaller
+    internal sealed class TransitionInstaller : MonoInstaller
     {
         [SerializeField] private BlackFadeTransition _blackFade = null;
 
         public override void InstallBindings()
         {
             // models
-            Container.BindInterfacesAndSelfTo<TransitionModel>().AsSingle();
+            Container.BindInterfacesTo<TransitionModel>().AsSingle();
 
             // factories
-            Container.BindInterfacesAndSelfTo<TransitionFactory>().AsSingle();
+            Container.BindInterfacesTo<TransitionFactory>().AsSingle();
 
             // prefabs
             Container.BindInstance(_blackFade).AsSingle();

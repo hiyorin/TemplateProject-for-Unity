@@ -42,7 +42,7 @@ namespace SocialGame.Internal
         
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<ProjectModel>().AsSingle();
+            Container.BindInterfacesTo<ProjectModel>().AsSingle();
             Container.BindInstance<ISceneManager>(_sceneManager).AsSingle();
             Container.BindInterfacesAndSelfTo<TransitionController>().AsSingle();
             Container.BindInterfacesAndSelfTo<DialogController>().AsSingle();
@@ -57,8 +57,8 @@ namespace SocialGame.Internal
             
             // data
             Container.BindInstance(_resolutionStorage).AsSingle();
-            Container.BindInterfacesAndSelfTo<ResolutionLocalDataStore>().AsSingle();
-            Container.BindInterfacesAndSelfTo<ResolutionController>().AsSingle();
+            Container.BindInterfacesTo<ResolutionLocalDataStore>().AsSingle();
+            Container.BindInterfacesTo<ResolutionController>().AsSingle();
 
             var resolutionSettings = Resources.Load<ResolutionSettings>(ResolutionSettings.FileName);
             Container.BindInstance(resolutionSettings).AsSingle();
@@ -71,12 +71,12 @@ namespace SocialGame.Internal
             var networkSettings = Resources.Load<NetworkSettings>(NetworkSettings.FileName);
             Container.BindInstance(networkSettings.General);
             Container.BindInstance(networkSettings.Http);
-            Container.BindInterfacesAndSelfTo<HttpConnection>().AsSingle();
+            Container.BindInterfacesTo<HttpConnection>().AsSingle();
 
             // Debug mode
-            Container.BindInterfacesAndSelfTo<DebugMode.FPSModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<DebugMode.MemoryModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<DebugMode.ExtensionModel>().AsSingle();
+            Container.BindInterfacesTo<DebugMode.FPSModel>().AsSingle();
+            Container.BindInterfacesTo<DebugMode.MemoryModel>().AsSingle();
+            Container.BindInterfacesTo<DebugMode.ExtensionModel>().AsSingle();
         }
     }
 }

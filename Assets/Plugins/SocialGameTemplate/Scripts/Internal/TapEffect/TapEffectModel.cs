@@ -16,7 +16,7 @@ namespace SocialGame.Internal.TapEffect
 
         [Inject] private ITapEffectIntent _intent = null;
 
-        [Inject] private TapEffectFactory _factory = null;
+        [Inject] private ITapEffectFactory _factory = null;
 
         private readonly ReactiveProperty<Context> _currentContext = new ReactiveProperty<Context>();
 

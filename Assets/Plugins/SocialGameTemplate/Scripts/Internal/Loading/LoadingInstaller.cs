@@ -11,8 +11,8 @@ namespace SocialGame.Internal.Loading
 
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<LoadingModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<LoadingFactory>().AsSingle();
+            Container.BindInterfacesTo<LoadingModel>().AsSingle();
+            Container.BindInterfacesTo<LoadingFactory>().AsSingle();
             Container.BindInstance(_sample).AsSingle();
         }
     }

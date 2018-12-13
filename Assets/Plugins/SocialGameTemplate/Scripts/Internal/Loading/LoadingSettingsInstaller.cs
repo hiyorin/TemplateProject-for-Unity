@@ -14,7 +14,7 @@ using UnityEditor.VersionControl;
 namespace SocialGame.Internal.Loading
 {
     [CreateAssetMenu(fileName = "LoadingSettings", menuName = "Installers/LoadingSettings")]
-    public class LoadingSettingsInstaller : ScriptableObjectInstaller<LoadingSettingsInstaller>
+    public sealed class LoadingSettingsInstaller : ScriptableObjectInstaller<LoadingSettingsInstaller>
     {
         [SerializeField] private LoadingSettings _settings = null;
 

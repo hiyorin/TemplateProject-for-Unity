@@ -4,7 +4,7 @@ using Zenject;
 
 namespace SocialGame.Internal.TapEffect
 {
-    internal sealed class TapEffectFactory
+    internal sealed class TapEffectFactory : ITapEffectFactory
     {
         [Inject] private DiContainer _container = null;
 
