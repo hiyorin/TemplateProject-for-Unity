@@ -8,7 +8,7 @@ namespace Sandbox.Toast
 {
     public sealed class ToastTestModel : IInitializable, IDisposable
     {
-        [Inject] private ToastController _controller = null;
+        [Inject] private IToastController _controller = null;
 
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
 

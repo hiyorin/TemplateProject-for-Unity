@@ -1,18 +1,20 @@
 ﻿using System;
-using SocialGame.Internal.Toast;
+using SocialGame.Toast;
 using UniRx;
 
-namespace SocialGame.Toast
+namespace SocialGame.Internal.Toast
 {
-    public sealed class ToastController : IToastIntent
+    public sealed class ToastController : IToastIntent, IToastController
     {
         private readonly Subject<RequestToast> _onOpen = new Subject<RequestToast>();
 
-        public void Open(RequestToast request)
+        #region IToastController implementation
+        void IToastController.Open(RequestToast request)
         {
             _onOpen.OnNext(request);
         }
-
+        #endregion
+        
         #region IToastIntent implementation
         IObservable<RequestToast> IToastIntent.OnOpenAsObservable()
         {

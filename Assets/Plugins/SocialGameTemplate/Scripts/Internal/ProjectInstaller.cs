@@ -1,7 +1,6 @@
 using MessagePack.Resolvers;
 using SocialGame.Scene;
 using SocialGame.Transition;
-using SocialGame.Toast;
 using SocialGame.Loading;
 using SocialGame.TapEffect;
 using SocialGame.Sound;
@@ -9,6 +8,7 @@ using SocialGame.DebugMode;
 using SocialGame.Internal.Data;
 using SocialGame.Internal.Data.DataStore;
 using SocialGame.Internal.Scene;
+using SocialGame.Internal.Toast;
 using SocialGame.Internal.Dialog;
 using SocialGame.Internal.Network;
 using UnityEngine;
@@ -47,7 +47,7 @@ namespace SocialGame.Internal
             Container.BindInstance<ISceneManager>(_sceneManager).AsSingle();
             Container.BindInterfacesAndSelfTo<TransitionController>().AsSingle();
             Container.BindInterfacesTo<DialogController>().AsSingle();
-            Container.BindInterfacesAndSelfTo<ToastController>().AsSingle();
+            Container.BindInterfacesTo<ToastController>().AsSingle();
             Container.BindInterfacesAndSelfTo<TapEffectController>().AsSingle();
             Container.BindInterfacesAndSelfTo<LoadingController>().AsSingle();
             Container.BindInterfacesAndSelfTo<SoundController>().AsSingle();
