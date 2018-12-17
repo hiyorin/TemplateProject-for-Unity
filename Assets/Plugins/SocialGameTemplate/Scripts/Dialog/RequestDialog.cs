@@ -7,10 +7,18 @@ namespace SocialGame.Dialog
 
         public readonly object Param;
 
-        public RequestDialog(DialogType type, object param)
+        public readonly bool Primary;
+        
+        public RequestDialog(DialogType type, object param) : this(type, param, false)
+        {
+            
+        }
+
+        public RequestDialog(DialogType type, object param, bool primary)
         {
             Type = type;
             Param = param;
+            Primary = primary;
         }
     }
 }

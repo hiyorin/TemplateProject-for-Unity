@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SocialGame.Dialog;
 using UnityEngine;
+using UnityExtensions;
 using Zenject;
 using UniRx;
 
@@ -54,12 +56,14 @@ namespace SocialGame.Internal.Dialog
                 .AddTo(_disposable);
 
             Observable
-                .Merge(_intent.OnOpenAsObservable().Where(_ => !_isOpen.Value), _onOpen)
+                .Merge(
+                    _intent.OnOpenAsObservable().Where(x => x.Primary || !_isOpen.Value),
+                    _onOpen)
                 .Select(request => {
                     Context context = null;
                     if (!_contexts.TryGetValue(request.Type, out context))
                     {
-                        var dialogObject = _factory.Create(request.Type);
+                        var dialogObject = _factory.Spawn(request.Type);
                         context = new Context() {
                             Dialog = dialogObject.GetComponent<IDialog>(),
                             Object = dialogObject,
@@ -82,16 +86,16 @@ namespace SocialGame.Internal.Dialog
                     _stack.Push(x);
                     _isOpen.Value = true;
                 })
-                .SelectMany(x => x.Dialog.OnOpenAsObservable().First().Select(_ => x))
-                .SelectMany(x => x.Dialog.OnStartAsObservable(x.Param).First())
+                .SelectMany(x => x.Dialog.OnStartAsObservable(x.Param).First().Select(_ => x))
+                .SelectMany(x => x.Dialog.OnOpenAsObservable().First())
                 .Subscribe()
                 .AddTo(_disposable);
 
             var close = _onClose
                 .Where(_ => _stack.Count > 0)
                 .SelectMany(x => _stack.Pop().Dialog.OnCloseAsObservable()
-                        .First()
-                        .Select(_ => x))
+                    .First()
+                    .Select(_ => x))
                 .Publish()
                 .RefCount();
 
@@ -109,11 +113,23 @@ namespace SocialGame.Internal.Dialog
                 .SelectMany(x => x.Dialog.OnResumeAsObservable(x.Param).First())
                 .Subscribe()
                 .AddTo(_disposable);
+
+            _intent.OnClearAsObservable()
+                .SelectMany(_ => _stack.Select(x => x.Dialog.OnCloseAsObservable()).WhenAll())
+                .Subscribe(_ =>
+                {
+                    _stack.Clear();
+                    _isOpen.Value = false;
+                    _intent.Close(null);
+                })
+                .AddTo(_disposable);
         }
 
         void IDisposable.Dispose()
         {
             _disposable.Dispose();
+            _contexts.ForEach(x => _factory.Despawn(x.Key, x.Value.Object));
+            _contexts.Clear();
         }
 
         #region IDialogModel implementation
