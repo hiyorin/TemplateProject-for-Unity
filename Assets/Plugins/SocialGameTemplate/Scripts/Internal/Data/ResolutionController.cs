@@ -88,7 +88,7 @@ namespace SocialGame.Internal.Data
         #region IResolutionController implementation
         IObservable<Unit> IResolutionController.Put(Quality quality)
         {
-            GetResolutionSize(quality);
+            Apply(quality);
             return _datastore.Put(quality);
         }
 
