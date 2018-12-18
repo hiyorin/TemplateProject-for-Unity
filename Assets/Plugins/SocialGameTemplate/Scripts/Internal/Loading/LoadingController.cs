@@ -1,25 +1,27 @@
 ﻿using System;
-using SocialGame.Internal.Loading;
+using SocialGame.Loading;
 using UniRx;
 
-namespace SocialGame.Loading
+namespace SocialGame.Internal.Loading
 {
-    public sealed class LoadingController : ILoadingIntent
+    internal sealed class LoadingController : ILoadingController, ILoadingIntent
     {
         private readonly Subject<LoadingType> _onShow = new Subject<LoadingType>();
 
         private readonly Subject<Unit> _onHide = new Subject<Unit>();
 
-        public void Show(LoadingType type)
+        #region ILoadingController implementation
+        void ILoadingController.Show(LoadingType type)
         {
             _onShow.OnNext(type);
         }
 
-        public void Hide()
+        void ILoadingController.Hide()
         {
             _onHide.OnNext(Unit.Default);
         }
-
+        #endregion
+        
         #region ILoadingIntent implementation
         IObservable<LoadingType> ILoadingIntent.OnShowAsObservable()
         {

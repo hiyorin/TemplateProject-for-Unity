@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using UniRx.Toolkit;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using Zenject;
 using UnityObject = UnityEngine.Object;
 
 namespace SocialGame.Internal
 {
-    public sealed class ObjectPool : IDisposable
+    internal sealed class ObjectPool : IDisposable
     {
         private readonly DiContainer _diContainer;
         

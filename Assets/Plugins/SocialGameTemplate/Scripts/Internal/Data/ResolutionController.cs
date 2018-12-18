@@ -1,7 +1,6 @@
 ﻿using System;
 using SocialGame.Data;
 using SocialGame.Internal.Data.DataStore;
-using SocialGame.Internal.Data.Entity;
 using Zenject;
 using UniRx;
 using UnityEngine;
@@ -40,7 +39,7 @@ namespace SocialGame.Internal.Data
                     resolution = GetResolutionRate(quality);
                     break;
                 default:
-                    Debug.unityLogger.LogWarning(GetType().Name, string.Format("Not supported {0}", _settings.Type));
+                    Debug.unityLogger.LogWarning(GetType().Name, $"Not supported {_settings.Type}");
                     resolution = _defaultSize;
                     break;
             }
@@ -58,7 +57,7 @@ namespace SocialGame.Internal.Data
                 case Quality.High:
                     return _settings.HighSize;
                 default:
-                    Debug.unityLogger.LogWarning(GetType().Name, string.Format("Not supported {0}", quality));
+                    Debug.unityLogger.LogWarning(GetType().Name, $"Not supported {quality}");
                     return _settings.StandardSize;
             }
         }
@@ -78,7 +77,7 @@ namespace SocialGame.Internal.Data
                     rate = _settings.HighRate;
                     break;
                 default:
-                    Debug.unityLogger.LogWarning(GetType().Name, string.Format("Not supported {0}", quality));
+                    Debug.unityLogger.LogWarning(GetType().Name, $"Not supported {quality}");
                     rate = _settings.StandardRate;
                     break;
             }

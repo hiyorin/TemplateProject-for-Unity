@@ -8,7 +8,7 @@ namespace Sandbox.TapEffect
 {
     public sealed class TapEffectTestModel : IInitializable, IDisposable
     {
-        [Inject] private TapEffectController _controller = null;
+        [Inject] private ITapEffectController _controller = null;
 
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
 

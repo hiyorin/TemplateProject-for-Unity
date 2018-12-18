@@ -8,7 +8,7 @@ namespace Sandbox.Loading
 {
     public sealed class LoadingTestModel : IInitializable, IDisposable
     {
-        [Inject] private LoadingController _controller = null;
+        [Inject] private ILoadingController _controller = null;
 
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
 

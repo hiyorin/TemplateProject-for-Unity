@@ -1,7 +1,7 @@
 ﻿
 namespace SocialGame.Dialog
 {
-    public class RequestDialog
+    public sealed class RequestDialog
     {
         public readonly DialogType Type;
 

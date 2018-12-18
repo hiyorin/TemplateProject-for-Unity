@@ -4,7 +4,7 @@ using UniRx;
 
 namespace SocialGame.Internal.Toast
 {
-    public sealed class ToastController : IToastIntent, IToastController
+    internal sealed class ToastController : IToastIntent, IToastController
     {
         private readonly Subject<RequestToast> _onOpen = new Subject<RequestToast>();
 
