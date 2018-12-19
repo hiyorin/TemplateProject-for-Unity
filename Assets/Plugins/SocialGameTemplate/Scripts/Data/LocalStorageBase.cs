@@ -44,7 +44,7 @@ namespace SocialGame.Data
             }
         }
 
-        private void Start()
+        private void Awake()
         {
             if (FileUtility.Exists(FilePath))
             {
