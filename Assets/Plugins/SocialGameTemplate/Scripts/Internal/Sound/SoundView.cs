@@ -22,18 +22,18 @@ namespace SocialGame.Internal.Sound
         private void Start()
         {
             _bgmModel
-                .OnAddAudioSourceAsObservable()
-                .Subscribe(x => x.transform.parent = _bgmContainer)
+                .OnAddObjectAsObservable()
+                .Subscribe(x => x.parent = _bgmContainer)
                 .AddTo(this);
 
             _seModel
-                .OnAddAudioSourceAsObservable()
-                .Subscribe(x => x.transform.parent = _seContainer)
+                .OnAddObjectAsObservable()
+                .Subscribe(x => x.parent = _seContainer)
                 .AddTo(this);
 
             _voiceModel
-                .OnAddAudioSourceAsObservable()
-                .Subscribe(x => x.transform.parent = _voiceContainer)
+                .OnAddObjectAsObservable()
+                .Subscribe(x => x.parent = _voiceContainer)
                 .AddTo(this);
         }
     }

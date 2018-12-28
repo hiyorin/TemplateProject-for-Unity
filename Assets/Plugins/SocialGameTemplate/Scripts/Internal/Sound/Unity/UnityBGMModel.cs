@@ -6,27 +6,15 @@ using UnityExtensions;
 using Zenject;
 using UniRx;
 
-namespace SocialGame.Internal.Sound
+namespace SocialGame.Internal.Sound.Unity
 {
-    internal interface IBGMIntent
-    {
-        IObservable<BGM> OnPlayAsObservable();
-
-        IObservable<Unit> OnStopAsObservable();
-    }
-
-    internal interface IBGMModel
-    {
-        IObservable<AudioSource> OnAddAudioSourceAsObservable();
-    }
-
-    internal sealed class BGMModel : IInitializable, IDisposable, IBGMModel
+    internal sealed class UnityBGMModel : IInitializable, IDisposable, IBGMModel
     {
         [Inject] private IBGMIntent _intent = null;
 
         [Inject] private ISoundVolumeIntent _volumeIntent = null;
 
-        [Inject] private BGMSettings _settings = null;
+        [Inject] private UnityBGMSettings _settings = null;
 
         private ReactiveCollection<AudioSource> _audioSources = new ReactiveCollection<AudioSource>();
 
@@ -97,11 +85,11 @@ namespace SocialGame.Internal.Sound
         }
 
         #region IBGMModel implementation
-        IObservable<AudioSource> IBGMModel.OnAddAudioSourceAsObservable()
+        IObservable<Transform> IBGMModel.OnAddObjectAsObservable()
         {
             return _audioSources
                 .ObserveAdd()
-                .Select(x => x.Value);
+                .Select(x => x.Value.transform);
         }
         #endregion
     }

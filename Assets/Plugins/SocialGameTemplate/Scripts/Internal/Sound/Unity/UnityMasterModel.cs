@@ -1,16 +1,15 @@
 ﻿using System;
-using SocialGame.Sound;
 using UnityEngine;
 using Zenject;
 using UniRx;
 
-namespace SocialGame.Internal.Sound
+namespace SocialGame.Internal.Sound.Unity
 {
-    internal sealed class SoundModel : IInitializable, IDisposable
+    internal sealed class UnityMasterModel : IInitializable, IDisposable
     {
         [Inject] private ISoundVolumeIntent _volumeIntent = null;
 
-        [Inject] private SoundSettings _settings = null;
+        [Inject] private UnityMasterSettings _settings = null;
 
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
 

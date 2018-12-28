@@ -7,25 +7,15 @@ using UnityExtensions;
 using Zenject;
 using UniRx;
 
-namespace SocialGame.Internal.Sound
+namespace SocialGame.Internal.Sound.Unity
 {
-    internal interface ISEIntent
-    {
-        IObservable<SE> OnPlayAsObservable();
-    }
-
-    internal interface ISEModel
-    {
-        IObservable<AudioSource> OnAddAudioSourceAsObservable();
-    }
-
-    internal sealed class SEModel : IInitializable, IDisposable, ISEModel
+    internal sealed class UnitySEModel : IInitializable, IDisposable, ISEModel
     {
         [Inject] private ISEIntent _intent = null;
 
         [Inject] private ISoundVolumeIntent _volumeIntent = null;
 
-        [Inject] private SESettings _settings = null;
+        [Inject] private UnitySESettings _settings = null;
 
         private readonly ReactiveCollection<AudioSource> _audioSources = new ReactiveCollection<AudioSource>();
 
@@ -80,11 +70,11 @@ namespace SocialGame.Internal.Sound
         }
 
         #region ISEModel implementation
-        IObservable<AudioSource> ISEModel.OnAddAudioSourceAsObservable()
+        IObservable<Transform> ISEModel.OnAddObjectAsObservable()
         {
             return _audioSources
                 .ObserveAdd()
-                .Select(x => x.Value);
+                .Select(x => x.Value.transform);
         }
         #endregion
     }

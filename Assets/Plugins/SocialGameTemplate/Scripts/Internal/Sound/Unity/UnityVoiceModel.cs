@@ -1,31 +1,19 @@
 ﻿using System;
 using System.Linq;
-using SocialGame.Sound;
 using UnityEngine;
 using UnityExtensions;
 using Zenject;
 using UniRx;
 
-namespace SocialGame.Internal.Sound
+namespace SocialGame.Internal.Sound.Unity
 {
-    internal interface IVoiceIntent
-    {
-        IObservable<Voice> OnPlayAsObservable();
-        IObservable<Unit> OnStopAsObservable();
-    }
-
-    internal interface IVoiceModel
-    {
-        IObservable<AudioSource> OnAddAudioSourceAsObservable();
-    }
-
-    public sealed class VoiceModel : IInitializable, IDisposable, IVoiceModel
+    internal sealed class UnityVoiceModel : IInitializable, IDisposable, IVoiceModel
     {
         [Inject] private IVoiceIntent _intent = null;
 
         [Inject] private ISoundVolumeIntent _volumeIntent = null;
 
-        [Inject] private VoiceSettings _settings = null;
+        [Inject] private UnityVoiceSettings _settings = null;
 
         private ReactiveCollection<AudioSource> _audioSources = new ReactiveCollection<AudioSource>();
 
@@ -72,11 +60,11 @@ namespace SocialGame.Internal.Sound
         }
 
         #region IVoiceModel implementation
-        IObservable<AudioSource> IVoiceModel.OnAddAudioSourceAsObservable()
+        IObservable<Transform> IVoiceModel.OnAddObjectAsObservable()
         {
             return _audioSources
                 .ObserveAdd()
-                .Select(x => x.Value);
+                .Select(x => x.Value.transform);
         }
         #endregion
     }

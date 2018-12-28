@@ -1,10 +1,28 @@
 ﻿using System;
-using SocialGame.Internal.Sound;
+using SocialGame.Sound;
 using UniRx;
 
-namespace SocialGame.Sound
+namespace SocialGame.Internal.Sound
 {
-    public sealed class SoundController : IBGMIntent, ISEIntent, IVoiceIntent
+    internal interface IBGMIntent
+    {
+        IObservable<BGM> OnPlayAsObservable();
+
+        IObservable<Unit> OnStopAsObservable();
+    }
+
+    internal interface ISEIntent
+    {
+        IObservable<SE> OnPlayAsObservable();
+    }
+    
+    internal interface IVoiceIntent
+    {
+        IObservable<Voice> OnPlayAsObservable();
+        IObservable<Unit> OnStopAsObservable();
+    }
+
+    internal sealed class SoundController : ISoundController, IBGMIntent, ISEIntent, IVoiceIntent
     {
         private readonly BoolReactiveProperty _initialized = new BoolReactiveProperty();
 
@@ -18,37 +36,39 @@ namespace SocialGame.Sound
 
         private readonly Subject<Unit> _onStopVoice = new Subject<Unit>();
 
-        public void PlayBGM(BGM value)
-        {
-            _onPlayBGM.OnNext(value);
-        }
-
-        public void StopBGM()
-        {
-            _onStopBGM.OnNext(Unit.Default);
-        }
-
-        public void PlaySE(SE value)
-        {
-            _onPlaySE.OnNext(value);
-        }
-
-        public void PlayVoice(Voice value)
-        {
-            _onPlayVoice.OnNext(value);
-        }
-
-        public void StopVoice()
-        {
-            _onStopVoice.OnNext(Unit.Default);
-        }
-
-        public IObservable<Unit> OnInitializedAsObservable()
+        #region ISoundController implementation
+        IObservable<Unit> ISoundController.OnInitializedAsObservable()
         {
             return _initialized
                 .Where(x => x)
                 .AsUnitObservable();
         }
+        
+        void ISoundController.PlayBGM(BGM value)
+        {
+            _onPlayBGM.OnNext(value);
+        }
+
+        void ISoundController.StopBGM()
+        {
+            _onStopBGM.OnNext(Unit.Default);
+        }
+
+        void ISoundController.PlaySE(SE value)
+        {
+            _onPlaySE.OnNext(value);
+        }
+
+        void ISoundController.PlayVoice(Voice value)
+        {
+            _onPlayVoice.OnNext(value);
+        }
+        
+        void ISoundController.StopVoice()
+        {
+            _onStopVoice.OnNext(Unit.Default);
+        }
+        #endregion
 
         #region IBGMIntent implementation
         IObservable<BGM> IBGMIntent.OnPlayAsObservable()
