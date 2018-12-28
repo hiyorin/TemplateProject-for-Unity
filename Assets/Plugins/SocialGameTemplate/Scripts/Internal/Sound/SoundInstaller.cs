@@ -6,8 +6,8 @@ namespace SocialGame.Internal.Sound
     {
         public override void InstallBindings()
         {
-#if STG_ADX2
-            Container.Install<ADX2.ADX2Installer>();
+#if SGT_ADX2
+            Container.Install<ADX2.ADX2SoundInstaller>();
 #else
             Container.Install<Unity.UnitySoundInstaller>();
 #endif

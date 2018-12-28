@@ -7,7 +7,7 @@ using UniRx;
 
 namespace SocialGame.Internal.Sound.Unity
 {
-    internal sealed class UnityVoiceModel : IInitializable, IDisposable, IVoiceModel
+    internal sealed class UnityVoiceModel : IInitializable, IDisposable, ISoundModel
     {
         [Inject] private IVoiceIntent _intent = null;
 
@@ -60,7 +60,12 @@ namespace SocialGame.Internal.Sound.Unity
         }
 
         #region IVoiceModel implementation
-        IObservable<Transform> IVoiceModel.OnAddObjectAsObservable()
+        IObservable<Unit> ISoundModel.OnInitializeAsObservable()
+        {
+            return Observable.ReturnUnit();
+        }
+        
+        IObservable<Transform> ISoundModel.OnAddObjectAsObservable()
         {
             return _audioSources
                 .ObserveAdd()

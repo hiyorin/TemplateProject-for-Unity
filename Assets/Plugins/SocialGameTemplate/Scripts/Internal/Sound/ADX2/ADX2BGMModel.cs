@@ -5,7 +5,7 @@ using UniRx;
 
 namespace SocialGame.Internal.Sound.ADX2
 {
-    internal sealed class ADX2BGMModel : IInitializable, IDisposable, IBGMModel
+    internal sealed class ADX2BGMModel : IInitializable, IDisposable, ISoundModel
     {
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
         
@@ -19,8 +19,13 @@ namespace SocialGame.Internal.Sound.ADX2
             _disposable.Dispose();
         }
         
-        #region IBGMModel implementation
-        IObservable<Transform> IBGMModel.OnAddObjectAsObservable()
+        #region ISoundModel implementation
+        IObservable<Unit> ISoundModel.OnInitializeAsObservable()
+        {
+            return Observable.ReturnUnit();
+        }
+        
+        IObservable<Transform> ISoundModel.OnAddObjectAsObservable()
         {
             return Observable.Empty<Transform>();
         }

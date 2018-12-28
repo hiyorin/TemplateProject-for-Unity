@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using SocialGame.Sound;
 using UniRx;
+using Zenject;
 
 namespace SocialGame.Internal.Sound
 {
@@ -22,8 +24,10 @@ namespace SocialGame.Internal.Sound
         IObservable<Unit> OnStopAsObservable();
     }
 
-    internal sealed class SoundController : ISoundController, IBGMIntent, ISEIntent, IVoiceIntent
+    internal sealed class SoundController : IInitializable, IDisposable, ISoundController, IBGMIntent, ISEIntent, IVoiceIntent
     {
+        [Inject] private ISoundModel[] _models = null;
+        
         private readonly BoolReactiveProperty _initialized = new BoolReactiveProperty();
 
         private readonly Subject<BGM> _onPlayBGM = new Subject<BGM>();
@@ -36,6 +40,22 @@ namespace SocialGame.Internal.Sound
 
         private readonly Subject<Unit> _onStopVoice = new Subject<Unit>();
 
+        private readonly CompositeDisposable _disposable = new CompositeDisposable();
+        
+        void IInitializable.Initialize()
+        {
+            _models
+                .Select(x => x.OnInitializeAsObservable())
+                .WhenAll()
+                .Subscribe(_ => _initialized.Value = true)
+                .AddTo(_disposable);
+        }
+
+        void IDisposable.Dispose()
+        {
+            _disposable.Dispose();
+        }
+        
         #region ISoundController implementation
         IObservable<Unit> ISoundController.OnInitializedAsObservable()
         {

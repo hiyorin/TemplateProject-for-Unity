@@ -4,8 +4,10 @@ using UniRx;
 
 namespace SocialGame.Internal.Sound
 {
-    internal interface IBGMModel
+    public interface ISoundModel
     {
+        IObservable<Unit> OnInitializeAsObservable();
+        
         IObservable<Transform> OnAddObjectAsObservable();
     }
 }

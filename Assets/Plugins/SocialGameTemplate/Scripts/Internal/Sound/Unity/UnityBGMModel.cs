@@ -8,7 +8,7 @@ using UniRx;
 
 namespace SocialGame.Internal.Sound.Unity
 {
-    internal sealed class UnityBGMModel : IInitializable, IDisposable, IBGMModel
+    internal sealed class UnityBGMModel : IInitializable, IDisposable, ISoundModel
     {
         [Inject] private IBGMIntent _intent = null;
 
@@ -84,8 +84,13 @@ namespace SocialGame.Internal.Sound.Unity
             _disposable.Dispose();
         }
 
-        #region IBGMModel implementation
-        IObservable<Transform> IBGMModel.OnAddObjectAsObservable()
+        #region ISoundModel implementation
+        IObservable<Unit> ISoundModel.OnInitializeAsObservable()
+        {
+            return Observable.ReturnUnit();
+        }
+        
+        IObservable<Transform> ISoundModel.OnAddObjectAsObservable()
         {
             return _audioSources
                 .ObserveAdd()

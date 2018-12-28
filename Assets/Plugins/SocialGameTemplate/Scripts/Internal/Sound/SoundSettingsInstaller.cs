@@ -152,7 +152,7 @@ namespace SocialGame.Internal.Sound
 
             public override void OnInspectorGUI()
             {
-                if (System.Type.GetType("CriWare, Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null") != null)
+                if (System.Type.GetType("CriWare, CriWare, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null") != null)
                     _owner._type = (Type)EditorGUILayout.EnumPopup(typeof(Type).Name, _owner._type);
                 else
                     _owner._type = Type.Unity;

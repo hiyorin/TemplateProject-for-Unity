@@ -6,6 +6,7 @@ namespace SocialGame.Internal.Sound.ADX2
     {
         public override void InstallBindings()
         {
+            Container.BindInterfacesTo<ADX2MasterModel>().AsSingle();
             Container.BindInterfacesTo<ADX2BGMModel>().AsSingle();
             Container.BindInterfacesTo<ADX2SEModel>().AsSingle();
             Container.BindInterfacesTo<ADX2VoiceModel>().AsSingle();

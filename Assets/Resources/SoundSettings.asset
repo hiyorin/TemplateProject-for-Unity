@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd86564234ee45628b71a202178e0ec, type: 3}
   m_Name: SoundSettings
   m_EditorClassIdentifier: 
-  _type: 0
+  _type: 1
   _general:
     _defaultMasterVolume: 1
     _defaultBGMVolume: 1
@@ -36,3 +36,6 @@ MonoBehaviour:
     _volumeExposedParameter: VoiceVolume
     _maxPlayCount: 10
     _clips: []
+  _adx2Master:
+    _initializerPrefab: {fileID: 114159226371663236, guid: fa4a3c879c91a44389c8b55834dc1427,
+      type: 2}

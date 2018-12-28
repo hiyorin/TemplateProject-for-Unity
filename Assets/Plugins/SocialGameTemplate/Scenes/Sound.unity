@@ -140,9 +140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f56574def2742c4915a8ee6eed6270, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bgmContainer: {fileID: 1465709592}
-  _seContainer: {fileID: 1630994275}
-  _voiceContainer: {fileID: 750739167}
 --- !u!4 &357285837
 Transform:
   m_ObjectHideFlags: 0
