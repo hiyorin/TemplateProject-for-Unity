@@ -6,7 +6,8 @@
         "UniRx.Async",
         "MessagePack",
         "MemoryInfoPlugin",
-        "UnityExtensions"
+        "UnityExtensions",
+        "CriWare"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

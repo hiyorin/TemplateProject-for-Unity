@@ -1,3 +1,4 @@
+#if SGT_ADX2
 using Zenject;
 
 namespace SocialGame.Internal.Sound.ADX2
@@ -13,3 +14,4 @@ namespace SocialGame.Internal.Sound.ADX2
         }
     }
 }
+#endif

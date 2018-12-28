@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityExtensions.Editor;
 
-namespace SocialGame.Internal
+namespace SocialGame.Internal.Editor
 {
     internal static class MessagePackUnsafeEditor
     {

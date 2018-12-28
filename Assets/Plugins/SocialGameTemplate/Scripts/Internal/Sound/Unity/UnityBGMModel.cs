@@ -72,7 +72,7 @@ namespace SocialGame.Internal.Sound.Unity
 
             for (var i = 0; i < 2; i++)
             {
-                var audioSource = new GameObject(i.ToString("000")).AddComponent<AudioSource>();
+                var audioSource = new GameObject($"BGM_{i:000}").AddComponent<AudioSource>();
                 audioSource.outputAudioMixerGroup = _settings.Group;
                 audioSource.enabled = false;
                 _audioSources.Add(audioSource);

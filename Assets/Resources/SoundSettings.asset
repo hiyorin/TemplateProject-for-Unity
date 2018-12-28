@@ -11,31 +11,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd86564234ee45628b71a202178e0ec, type: 3}
   m_Name: SoundSettings
   m_EditorClassIdentifier: 
-  _type: 1
-  _general:
+  Type: 1
+  General:
     _defaultMasterVolume: 1
     _defaultBGMVolume: 1
     _defaultSEVolume: 1
     _defaultVoiceVolume: 1
-  _unityMaster:
+  UnityMaster:
     _group: {fileID: 24300002, guid: 01da48b85422f44b2aa067da7737f9de, type: 2}
     _volumeExposedParameter: MasterVolume
-  _unityBgm:
+  UnityBgm:
     _group: {fileID: 243002192027139652, guid: 01da48b85422f44b2aa067da7737f9de, type: 2}
-    _volumeExposedParameter: BGMVolume
+    _volumeExposedParameter: MasterVolume
     _fadeInDuration: 0.2
     _fadeOutDuration: 0.2
     _clips: []
-  _unitySe:
+  UnitySe:
     _group: {fileID: 243666949732668740, guid: 01da48b85422f44b2aa067da7737f9de, type: 2}
     _volumeExposedParameter: SEVolume
     _maxPlayCount: 10
     _clips: []
-  _unityVoice:
+  UnityVoice:
     _group: {fileID: 243341714766785568, guid: 01da48b85422f44b2aa067da7737f9de, type: 2}
     _volumeExposedParameter: VoiceVolume
     _maxPlayCount: 10
     _clips: []
-  _adx2Master:
+  Adx2Master:
     _initializerPrefab: {fileID: 114159226371663236, guid: fa4a3c879c91a44389c8b55834dc1427,
       type: 2}
