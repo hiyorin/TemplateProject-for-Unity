@@ -89,8 +89,6 @@ namespace SocialGame.Internal
 
         private void SetupAssemblyDefinitionFiles()
         {
-            new AssemblyDefinitionBuilder("Plugins/MessagePack/MessagePack")
-                .Write();
             new AssemblyDefinitionBuilder("Plugins/UnityExtensions/UnityExtensions")
                 .AddReferences(
                     "UniRx",
@@ -101,7 +99,6 @@ namespace SocialGame.Internal
                     "Zenject",
                     "UniRx",
                     "UniRx.Async",
-                    "MessagePack",
                     "MemoryInfoPlugin",
                     "UnityExtensions")
                 .Write();

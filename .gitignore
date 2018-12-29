@@ -46,8 +46,6 @@ sysinfo.txt
 /Assets/Haste.meta
 /Assets/Plugins/UniRx/*
 /Assets/Plugins/UniRx.meta
-/Assets/Plugins/MessagePack/*
-/Assets/Plugins/MessagePack.meta
 /Assets/Plugins/Zenject/*
 /Assets/Plugins/Zenject.meta
 /Assets/Plugins/UnityExtensions/*

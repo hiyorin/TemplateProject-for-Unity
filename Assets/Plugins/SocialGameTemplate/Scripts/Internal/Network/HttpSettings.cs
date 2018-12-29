@@ -9,8 +9,6 @@ namespace SocialGame.Internal.Network
         public enum Format
         {
             JSON,
-            MessagePack,
-            LZ4MessagePack,
             MsgPack,
             XML,
         }
