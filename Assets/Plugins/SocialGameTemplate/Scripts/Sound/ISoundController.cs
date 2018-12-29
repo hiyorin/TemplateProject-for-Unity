@@ -9,11 +9,17 @@ namespace SocialGame.Sound
         
         void PlayBGM(BGM value);
 
+        void PlayBGM(string name);
+
         void StopBGM();
 
         void PlaySE(SE value);
 
+        void PlaySE(string name);
+        
         void PlayVoice(Voice value);
+
+        void PlayVoice(string name);
         
         void StopVoice();
     }

@@ -13,7 +13,7 @@ namespace SocialGame.Internal.Sound.ADX2
                 throw new ArgumentException();
 
             if (string.IsNullOrEmpty(cueSheet.name))
-                Observable.Return(cueSheet);
+                return Observable.Return((CriAtomCueSheet)null);
             
             return Observable
                 .Return(CriAtom.AddCueSheet(cueSheet.name, cueSheet.acbFile, cueSheet.awbFile))

@@ -10,17 +10,24 @@ namespace SocialGame.Internal.Sound
     {
         IObservable<BGM> OnPlayAsObservable();
 
+        IObservable<string> OnPlayForNameAsObservable();
+
         IObservable<Unit> OnStopAsObservable();
     }
 
     internal interface ISEIntent
     {
         IObservable<SE> OnPlayAsObservable();
+
+        IObservable<string> OnPlayForNameAsObservable();
     }
     
     internal interface IVoiceIntent
     {
         IObservable<Voice> OnPlayAsObservable();
+
+        IObservable<string> OnPlayForNameAsObservable();
+
         IObservable<Unit> OnStopAsObservable();
     }
 
@@ -31,13 +38,19 @@ namespace SocialGame.Internal.Sound
         private readonly BoolReactiveProperty _initialized = new BoolReactiveProperty();
 
         private readonly Subject<BGM> _onPlayBGM = new Subject<BGM>();
+        
+        private readonly Subject<string> _onPlayBGMForName = new Subject<string>();
 
         private readonly Subject<Unit> _onStopBGM = new Subject<Unit>();
 
         private readonly Subject<SE> _onPlaySE = new Subject<SE>();
+        
+        private readonly Subject<string> _onPlaySEForName = new Subject<string>();
 
         private readonly Subject<Voice> _onPlayVoice = new Subject<Voice>();
 
+        private readonly Subject<string> _onPlayVoiceForName = new Subject<string>();
+        
         private readonly Subject<Unit> _onStopVoice = new Subject<Unit>();
 
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
@@ -69,6 +82,11 @@ namespace SocialGame.Internal.Sound
             _onPlayBGM.OnNext(value);
         }
 
+        void ISoundController.PlayBGM(string name)
+        {
+            _onPlayBGMForName.OnNext(name);
+        }
+        
         void ISoundController.StopBGM()
         {
             _onStopBGM.OnNext(Unit.Default);
@@ -79,9 +97,19 @@ namespace SocialGame.Internal.Sound
             _onPlaySE.OnNext(value);
         }
 
+        void ISoundController.PlaySE(string name)
+        {
+            _onPlaySEForName.OnNext(name);
+        }
+        
         void ISoundController.PlayVoice(Voice value)
         {
             _onPlayVoice.OnNext(value);
+        }
+
+        void ISoundController.PlayVoice(string name)
+        {
+            _onPlayVoiceForName.OnNext(name);
         }
         
         void ISoundController.StopVoice()
@@ -96,6 +124,11 @@ namespace SocialGame.Internal.Sound
             return _onPlayBGM;
         }
 
+        IObservable<string> IBGMIntent.OnPlayForNameAsObservable()
+        {
+            return _onPlayBGMForName;
+        }
+
         IObservable<Unit> IBGMIntent.OnStopAsObservable()
         {
             return _onStopBGM;
@@ -107,6 +140,11 @@ namespace SocialGame.Internal.Sound
         {
             return _onPlaySE;
         }
+
+        IObservable<string> ISEIntent.OnPlayForNameAsObservable()
+        {
+            return _onPlaySEForName;
+        }
         #endregion
 
         #region IVoiceModel implementation
@@ -115,6 +153,11 @@ namespace SocialGame.Internal.Sound
             return _onPlayVoice;
         }
 
+        IObservable<string> IVoiceIntent.OnPlayForNameAsObservable()
+        {
+            return _onPlayVoiceForName;
+        }
+        
         IObservable<Unit> IVoiceIntent.OnStopAsObservable()
         {
             return _onStopVoice;

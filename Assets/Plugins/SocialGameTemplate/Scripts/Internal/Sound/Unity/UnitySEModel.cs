@@ -19,7 +19,7 @@ namespace SocialGame.Internal.Sound.Unity
 
         private readonly ReactiveCollection<AudioSource> _audioSources = new ReactiveCollection<AudioSource>();
 
-        private readonly Queue<SE> _playQueue = new Queue<SE>();
+        private readonly Queue<AudioClip> _playQueue = new Queue<AudioClip>();
 
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
@@ -28,26 +28,27 @@ namespace SocialGame.Internal.Sound.Unity
             if (_settings.Group == null)
                 return;
             
-            _intent
-                .OnPlayAsObservable()
+            _intent.OnPlayAsObservable()
+                .Select(x => _settings.Clips.ElementAt((int)x))
                 .Subscribe(x => _playQueue.Enqueue(x))
                 .AddTo(_disposable);
+
+            _intent.OnPlayForNameAsObservable()
+                .Subscribe(_ => Debug.unityLogger.LogWarning(GetType().Name, "not supported"))
+                .AddTo(_disposable);
             
-            _volumeIntent
-                .OnSEVolumeAsObservable()
+            _volumeIntent.OnSEVolumeAsObservable()
                 .Select(x => Mathf.Lerp(-80.0F, 0.0F, Mathf.Clamp01(x)))
                 .Subscribe(x => _settings.Group.audioMixer.SetFloat(_settings.VolumeExposedParameter, x))
                 .AddTo(_disposable);
-
+            
             int playIndex = 0;
-            Observable
-                .EveryUpdate()
+            Observable.EveryUpdate()
                 .Where(_ => _playQueue.Count > 0)
                 .Select(_ => _playQueue.Distinct())
                 .Subscribe(x => {
-                    x.ForEach(se => {
+                    x.ForEach(clip => {
                         var audioSource = _audioSources[playIndex];
-                        var clip = _settings.Clips.ElementAt((int)se);
                         audioSource.PlayOneShot(clip);
                         if (++playIndex >= _audioSources.Count)
                             playIndex = 0;

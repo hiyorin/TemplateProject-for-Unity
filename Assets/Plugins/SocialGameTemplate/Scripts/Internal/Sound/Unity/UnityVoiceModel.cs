@@ -25,8 +25,7 @@ namespace SocialGame.Internal.Sound.Unity
                 return;
             
             var playIndex = 0;
-            _intent
-                .OnPlayAsObservable()
+            _intent.OnPlayAsObservable()
                 .Subscribe(voice => {
                     var audioSource =_audioSources[playIndex];
                     var clip = _settings.Clips.ElementAt((int)voice);
@@ -35,13 +34,15 @@ namespace SocialGame.Internal.Sound.Unity
                 })
                 .AddTo(_disposable);
 
-            _intent
-                .OnStopAsObservable()
+            _intent.OnPlayForNameAsObservable()
+                .Subscribe(_ => Debug.unityLogger.LogWarning(GetType().Name, "not supported"))
+                .AddTo(_disposable);
+            
+            _intent.OnStopAsObservable()
                 .Subscribe(_ => _audioSources.ForEach(x => x.Stop()))
                 .AddTo(_disposable);
 
-            _volumeIntent
-                .OnVoiceVolumeAsObservable()
+            _volumeIntent.OnVoiceVolumeAsObservable()
                 .Select(x => Mathf.Lerp(-80.0F, 0.0F, Mathf.Clamp01(x)))
                 .Subscribe(x => _settings.Group.audioMixer.SetFloat(_settings.VolumeExposedParameter, x))
                 .AddTo(_disposable);

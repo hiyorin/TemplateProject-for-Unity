@@ -25,8 +25,7 @@ namespace SocialGame.Internal.Sound.Unity
             if (_settings.Group == null)
                 return;
             
-            _intent
-                .OnPlayAsObservable()
+            _intent.OnPlayAsObservable()
                 .SelectMany(bgm => {
                     var afterSource = _audioSources.FirstOrDefault(x => !x.enabled);
                     if (afterSource == null)
@@ -49,9 +48,12 @@ namespace SocialGame.Internal.Sound.Unity
                 })
                 .Subscribe()
                 .AddTo(_disposable);
+
+            _intent.OnPlayForNameAsObservable()
+                .Subscribe(_ => Debug.unityLogger.LogWarning(GetType().Name, "Not supported"))
+                .AddTo(_disposable);
             
-            _intent
-                .OnStopAsObservable()
+            _intent.OnStopAsObservable()
                 .SelectMany(_ => _audioSources
                     .Select(x => x.FadeOutAsCoroutine(_settings.FadeOutDuration).ToObservable())
                     .WhenAll()
@@ -64,8 +66,7 @@ namespace SocialGame.Internal.Sound.Unity
                 })
                 .AddTo(_disposable);
             
-            _volumeIntent
-                .OnBGMVolumeAsObservable()
+            _volumeIntent.OnBGMVolumeAsObservable()
                 .Select(x => Mathf.Lerp(-80.0F, 0.0F, Mathf.Clamp01(x)))
                 .Subscribe(x => _settings.Group.audioMixer.SetFloat(_settings.VolumeExposedParameter, x))
                 .AddTo(_disposable);
