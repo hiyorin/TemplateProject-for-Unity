@@ -200,6 +200,7 @@ GameObject:
   - component: {fileID: 1733436641}
   - component: {fileID: 1733436640}
   - component: {fileID: 1733436639}
+  - component: {fileID: 1733436642}
   m_Layer: 0
   m_Name: SceneContext
   m_TagString: Untagged
@@ -250,3 +251,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1733436642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1733436638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba13f4b86cab47ffb80eab2457be7dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _subs: []

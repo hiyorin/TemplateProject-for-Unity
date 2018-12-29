@@ -7,7 +7,7 @@ namespace SocialGame.Internal
 {
     public sealed class ResolutionSettings : ScriptableObject
     {
-        public enum ResType
+        internal enum ResType
         {
             Static,
             Variable,
@@ -29,6 +29,8 @@ namespace SocialGame.Internal
 
         [SerializeField] private float _highRate = 1.0f;
 
+        [SerializeField] private Vector2Int _canvasSize = new Vector2Int(1280, 720);
+        
         internal ResType Type => _type;
         
         internal Vector2Int LowSize => _lowSize;
@@ -42,6 +44,8 @@ namespace SocialGame.Internal
         internal float StandardRate => _standardRate;
 
         internal float HighRate => _highRate;
+
+        internal Vector2Int CanvasSize => _canvasSize;
         
         #if UNITY_EDITOR
         [CustomEditor(typeof(ResolutionSettings))]
@@ -56,6 +60,16 @@ namespace SocialGame.Internal
 
             public override void OnInspectorGUI()
             {
+                ScreenResolutionGUI();
+                EditorGUILayout.Space();
+                CanvasResolutionGUI();
+            }
+
+            private void ScreenResolutionGUI()
+            {
+                EditorGUILayout.LabelField("Screen");
+                EditorGUI.indentLevel++;
+                
                 _owner._type = (ResType) EditorGUILayout.EnumPopup("Type", _owner.Type);
 
                 switch (_owner.Type)
@@ -74,6 +88,18 @@ namespace SocialGame.Internal
                         Debug.unityLogger.LogError(GetType().Name, string.Format("Not supported {0}", _owner.Type));
                         break;
                 }
+
+                EditorGUI.indentLevel--;
+            }
+            
+            private void CanvasResolutionGUI()
+            {
+                EditorGUILayout.LabelField("Canvas");
+                EditorGUI.indentLevel++;
+
+                _owner._canvasSize = EditorGUILayout.Vector2IntField("Size", _owner._canvasSize);
+
+                EditorGUI.indentLevel--;
             }
         }
         #endif
