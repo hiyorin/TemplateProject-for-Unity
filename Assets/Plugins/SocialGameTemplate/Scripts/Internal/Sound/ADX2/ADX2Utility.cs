@@ -1,5 +1,7 @@
+#if SGT_ADX2
 using System;
 using System.IO;
+using System.Threading;
 using UnityEngine;
 using UniRx;
 
@@ -37,6 +39,7 @@ namespace SocialGame.Internal.Sound.ADX2
         {
             string filePath = string.Format("{0}/{1}", Application.streamingAssetsPath, fileName);
             IObservable<byte[]> result = null;
+            
 #if UNITY_ANDROID && !UNITY_EDITOR
             var www = new WWW(filePath);
             return www.ToObservable().Select(_ => www.bytes);
@@ -47,5 +50,67 @@ namespace SocialGame.Internal.Sound.ADX2
 #endif
             return result;
         }
+        
+#if UNITY_EDITOR
+        public static void Initialize()
+        {
+            CriAtomConfig atomConfig = new CriAtomConfig();
+            CriAtomPlugin.SetConfigParameters(
+                Math.Max(atomConfig.maxVirtualVoices, CriAtomPlugin.GetRequiredMaxVirtualVoices(atomConfig)),
+                atomConfig.maxVoiceLimitGroups,
+                atomConfig.maxCategories,
+                atomConfig.standardVoicePoolConfig.memoryVoices,
+                atomConfig.standardVoicePoolConfig.streamingVoices,
+                atomConfig.hcaMxVoicePoolConfig.memoryVoices,
+                atomConfig.hcaMxVoicePoolConfig.streamingVoices,
+                atomConfig.outputSamplingRate,
+                atomConfig.asrOutputChannels,
+                atomConfig.usesInGamePreview,
+                atomConfig.serverFrequency,
+                atomConfig.maxParameterBlocks,
+                atomConfig.categoriesPerPlayback,
+                atomConfig.maxBuses,
+                false);
+            CriAtomPlugin.InitializeLibrary();
+        }
+
+        public static void Finalize()
+        {
+            CriAtomPlugin.FinalizeLibrary();
+        }
+        
+        public static CriAtomEx.CueInfo[] GetCueInfoList(CriAtomCueSheet cueSheet)
+        {
+            if (string.IsNullOrEmpty(cueSheet.name))
+                return null;
+
+            if (CriFsPlugin.isInitialized || CriAtomPlugin.isInitialized)
+                return null;
+            
+            CriAtomEx.CueInfo[] result = null;
+            
+            while (!CriAtomPlugin.isInitialized)
+            {
+                Debug.Log("Sleep");
+                Thread.Sleep(1000);
+            }
+
+            try
+            {
+                var acb = CriAtomExAcb.LoadAcbFile(null,
+                    Path.Combine(Application.streamingAssetsPath, cueSheet.acbFile),
+                    Path.Combine(Application.streamingAssetsPath, cueSheet.awbFile));
+                if (acb != null)
+                    result = acb.GetCueInfoList();
+            }
+            catch (Exception e)
+            {
+                Debug.unityLogger.LogException(e);
+            }
+
+            return result;
+        }
+#endif
     }
 }
+#endif

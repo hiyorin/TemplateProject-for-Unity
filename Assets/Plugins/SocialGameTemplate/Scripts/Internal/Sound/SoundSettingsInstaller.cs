@@ -1,16 +1,5 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using SocialGame.Sound;
 using UnityEngine;
-using UnityExtensions;
 using Zenject;
-#if UNITY_EDITOR
-using System.IO;
-using System.Text;
-using UnityEditor;
-using UnityEditor.VersionControl;
-#endif
 
 namespace SocialGame.Internal.Sound
 {
@@ -66,58 +55,5 @@ namespace SocialGame.Internal.Sound
                     break;
             }
         }
-
-        #if UNITY_EDITOR
-        public void OnValidate()
-        {
-            if (EditorApplication.isPlaying)
-                return;
-
-            bool refresh = false;
-            refresh |= Generate(typeof(BGM).Name, UnityBgm.Clips);
-            refresh |= Generate(typeof(SE).Name, UnitySe.Clips);
-            refresh |= Generate(typeof(Voice).Name, UnityVoice.Clips);
-            if (!refresh)
-                return;
-            
-            AssetDatabase.Refresh(ImportAssetOptions.ImportRecursive);
-
-            Debug.unityLogger.Log(GetType().Name, "auto-generated Sound");
-        }
-        
-        private bool Generate(string type, IEnumerable<AudioClip> clips)
-        {
-            string fileName = Path.Combine(ProjectModel.RootPath, "Scripts/Sound", type + ".cs");
-            string filePath = Path.Combine(Application.dataPath, fileName);
-            
-            StringBuilder builder = new StringBuilder();
-            builder.AppendLine("// this file was auto-generated.");
-            builder.AppendLine("namespace SocialGame.Sound");
-            builder.AppendLine("{");
-            builder.AppendLine("    public enum " + type);
-            builder.AppendLine("    {");
-
-            foreach (var clip in clips.Where(x => x != null))
-            {
-                builder.AppendLineFormat("        {0},", clip.name);
-            }
-            
-            builder.AppendLine("    }");
-            builder.AppendLine("}");            
-            
-            string text = builder.ToString();
-            if (File.Exists(filePath))
-            {
-                if (File.ReadAllText(filePath) == text)
-                    return false;
-                
-                if (Provider.isActive)
-                    Provider.Checkout(Path.Combine("Assets", fileName), CheckoutMode.Asset).Wait();
-            }
-            
-            File.WriteAllText(filePath, text, Encoding.UTF8);
-            return true;
-        }
-        #endif
     }
 }

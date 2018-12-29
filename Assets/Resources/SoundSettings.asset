@@ -39,3 +39,18 @@ MonoBehaviour:
   Adx2Master:
     _initializerPrefab: {fileID: 114159226371663236, guid: fa4a3c879c91a44389c8b55834dc1427,
       type: 2}
+  Adx2Bgm:
+    _builtInCueSheet:
+      name: 
+      acbFile: 
+      awbFile: 
+  Adx2Se:
+    _builtInCueSheet:
+      name: 
+      acbFile: 
+      awbFile: 
+  Adx2Voice:
+    _builtInCueSheet:
+      name: 
+      acbFile: 
+      awbFile: 
