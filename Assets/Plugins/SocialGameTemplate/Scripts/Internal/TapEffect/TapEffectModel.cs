@@ -26,8 +26,7 @@ namespace SocialGame.Internal.TapEffect
 
         void IInitializable.Initialize()
         {
-            _intent
-                .OnStartAsObservable()
+            _intent.OnStartAsObservable()
                 .Select(x => {
                     Context context = null;
                     if (!_contexts.TryGetValue(x, out context))
@@ -44,8 +43,9 @@ namespace SocialGame.Internal.TapEffect
                 .Subscribe(x => _currentContext.Value = x)
                 .AddTo(_disposable);
 
-            _intent
-                .OnStopAsObservable()
+            _intent.OnStopAsObservable()
+                .Where(_ => _currentContext.Value != null)
+                .SelectMany(_ => _currentContext.Value.TapEffect.OnHideAsObservable())
                 .Subscribe(_ => _currentContext.Value = null)
                 .AddTo(_disposable);
 
