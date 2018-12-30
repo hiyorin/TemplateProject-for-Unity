@@ -19,13 +19,13 @@ namespace SocialGame.Internal
         
         [SerializeField] private Vector2Int _lowSize = new Vector2Int(1136, 640);
 
-        [SerializeField] private Vector2Int _standardSize = new Vector2Int(1280, 720);
+        [SerializeField] private Vector2Int _middleSize = new Vector2Int(1280, 720);
 
         [SerializeField] private Vector2Int _highSize = new Vector2Int(1920, 1080);
 
         [SerializeField] private float _lowRate = 0.6f;
 
-        [SerializeField] private float _standardRate = 0.8f;
+        [SerializeField] private float _middleRate = 0.8f;
 
         [SerializeField] private float _highRate = 1.0f;
 
@@ -35,13 +35,13 @@ namespace SocialGame.Internal
         
         internal Vector2Int LowSize => _lowSize;
 
-        internal Vector2Int StandardSize => _standardSize;
+        internal Vector2Int MiddleSize => _middleSize;
 
         internal Vector2Int HighSize => _highSize;
 
         internal float LowRate => _lowRate;
 
-        internal float StandardRate => _standardRate;
+        internal float MiddleRate => _middleRate;
 
         internal float HighRate => _highRate;
 
@@ -63,6 +63,7 @@ namespace SocialGame.Internal
                 ScreenResolutionGUI();
                 EditorGUILayout.Space();
                 CanvasResolutionGUI();
+                EditorUtility.SetDirty(_owner);
             }
 
             private void ScreenResolutionGUI()
@@ -76,16 +77,16 @@ namespace SocialGame.Internal
                 {
                     case ResType.Static:
                         _owner._lowSize = EditorGUILayout.Vector2IntField("Low", _owner.LowSize);
-                        _owner._standardSize = EditorGUILayout.Vector2IntField("Standard", _owner.StandardSize);
+                        _owner._middleSize = EditorGUILayout.Vector2IntField("Middle", _owner.MiddleSize);
                         _owner._highSize = EditorGUILayout.Vector2IntField("High", _owner.HighSize);
                         break;
                     case ResType.Variable:
                         _owner._lowRate = EditorGUILayout.Slider("Low", _owner.LowRate, 0.1f, 1.0f);
-                        _owner._standardRate = EditorGUILayout.Slider("Standard", _owner.StandardRate, 0.1f, 1.0f);
+                        _owner._middleRate = EditorGUILayout.Slider("Middle", _owner.MiddleRate, 0.1f, 1.0f);
                         _owner._highRate = EditorGUILayout.Slider("High", _owner.HighRate, 0.1f, 1.0f);
                         break;
                     default:
-                        Debug.unityLogger.LogError(GetType().Name, string.Format("Not supported {0}", _owner.Type));
+                        Debug.unityLogger.LogError(GetType().Name, $"Not supported {_owner.Type}");
                         break;
                 }
 

@@ -13,8 +13,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 0
   _lowSize: {x: 1136, y: 640}
-  _standardSize: {x: 1280, y: 720}
+  _middleSize: {x: 1280, y: 720}
   _highSize: {x: 1920, y: 1080}
   _lowRate: 0.6
-  _standardRate: 0.8
+  _middleRate: 0.8
   _highRate: 1
+  _canvasSize: {x: 1280, y: 720}

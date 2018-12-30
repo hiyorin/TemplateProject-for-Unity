@@ -52,13 +52,13 @@ namespace SocialGame.Internal.Data
             {
                 case Quality.Low:
                     return _settings.LowSize;
-                case Quality.Standard:
-                    return _settings.StandardSize;
+                case Quality.Middle:
+                    return _settings.MiddleSize;
                 case Quality.High:
                     return _settings.HighSize;
                 default:
                     Debug.unityLogger.LogWarning(GetType().Name, $"Not supported {quality}");
-                    return _settings.StandardSize;
+                    return _settings.MiddleSize;
             }
         }
 
@@ -70,25 +70,25 @@ namespace SocialGame.Internal.Data
                 case Quality.Low:
                     rate = _settings.LowRate;
                     break;
-                case Quality.Standard:
-                    rate = _settings.StandardRate;
+                case Quality.Middle:
+                    rate = _settings.MiddleRate;
                     break;
                 case Quality.High:
                     rate = _settings.HighRate;
                     break;
                 default:
                     Debug.unityLogger.LogWarning(GetType().Name, $"Not supported {quality}");
-                    rate = _settings.StandardRate;
+                    rate = _settings.MiddleRate;
                     break;
             }
             return new Vector2Int((int)(_defaultSize.x * rate), (int)(_defaultSize.y * rate));
         }
 
         #region IResolutionController implementation
-        IObservable<Unit> IResolutionController.Put(Quality quality)
+        IObservable<Quality> IResolutionController.Put(Quality quality)
         {
             Apply(quality);
-            return _datastore.Put(quality);
+            return _datastore.Put(quality).Select(_ => quality);
         }
 
         IObservable<Quality> IResolutionController.Get()

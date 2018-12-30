@@ -7,13 +7,13 @@ namespace SocialGame.Data
     public enum Quality
     {
         Low,
-        Standard,
+        Middle,
         High,
     }
 
     public interface IResolutionController
     {
-        IObservable<Unit> Put(Quality quality);
+        IObservable<Quality> Put(Quality quality);
 
         IObservable<Quality> Get();
     }
