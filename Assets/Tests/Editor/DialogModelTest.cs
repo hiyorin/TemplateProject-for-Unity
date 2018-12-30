@@ -16,9 +16,9 @@ public sealed class DialogModelTest : ZenjectUnitTestFixture
 
         public readonly Subject<Unit> Prev = new Subject<Unit>();
 
-        public IObservable<Unit> OnOpenAsObservable() { return Observable.ReturnUnit(); }
+        public IObservable<Unit> OnOpenAsObservable(float defaultDuration) { return Observable.ReturnUnit(); }
 
-        public IObservable<Unit> OnCloseAsObservable() { return Observable.ReturnUnit(); }
+        public IObservable<Unit> OnCloseAsObservable(float defaultDuration) { return Observable.ReturnUnit(); }
 
         public IObservable<Unit> OnStartAsObservable(object param) { return Observable.ReturnUnit(); }
 

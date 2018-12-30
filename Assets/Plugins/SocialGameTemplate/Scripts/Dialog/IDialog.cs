@@ -5,9 +5,9 @@ namespace SocialGame.Dialog
 {
     public interface IDialog
     {
-        IObservable<Unit> OnOpenAsObservable();
+        IObservable<Unit> OnOpenAsObservable(float defaultDuration);
 
-        IObservable<Unit> OnCloseAsObservable();
+        IObservable<Unit> OnCloseAsObservable(float defaultDuration);
 
         IObservable<Unit> OnStartAsObservable(object param);
 

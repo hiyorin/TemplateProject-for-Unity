@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityExtensions;
-using Zenject;
 using UniRx;
 using DG.Tweening;
 
@@ -14,25 +13,23 @@ namespace SocialGame.Dialog
 
         [SerializeField] private Button _okButton = null;
 
-        [Inject] private DialogSettings _settings = null;
-
         private void Start()
         {
             transform.localScale = Vector3.zero;
         }
 
         #region IDialog implementation
-        IObservable<Unit> IDialog.OnOpenAsObservable()
+        IObservable<Unit> IDialog.OnOpenAsObservable(float defaultDuration)
         {
             return transform
-                .DOScale(Vector3.one, _settings.DefaoutDuration)
+                .DOScale(Vector3.one, defaultDuration)
                 .OnCompleteAsObservable();
         }
 
-        IObservable<Unit> IDialog.OnCloseAsObservable()
+        IObservable<Unit> IDialog.OnCloseAsObservable(float defaultDuration)
         {
             return transform
-                .DOScale(Vector3.zero, _settings.DefaoutDuration)
+                .DOScale(Vector3.zero, defaultDuration)
                 .OnCompleteAsObservable();
         }
 
