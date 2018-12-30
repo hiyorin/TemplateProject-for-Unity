@@ -1,9 +1,7 @@
 ﻿using System;
-using SocialGame.Loading;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityExtensions;
-using Zenject;
 using UniRx;
 using DG.Tweening;
 
@@ -14,8 +12,6 @@ namespace SocialGame.Loading
         [SerializeField] private CanvasGroup _canvasGroup = null;
 
         [SerializeField] private Image _icon = null;
-
-        [Inject] private LoadingSettings _settings = null;
 
         private Tween _tween;
 
@@ -34,17 +30,17 @@ namespace SocialGame.Loading
         }
 
         #region ILoading implementation
-        IObservable<Unit> ILoading.OnShowAsObservable()
+        IObservable<Unit> ILoading.OnShowAsObservable(float defaultDuration)
         {
             return _canvasGroup
-                .DOFade(1.0f, _settings.DefaoutDuration)
+                .DOFade(1.0f, defaultDuration)
                 .OnCompleteAsObservable();
         }
 
-        IObservable<Unit> ILoading.OnHideAsObservable()
+        IObservable<Unit> ILoading.OnHideAsObservable(float defaultDuration)
         {
             return _canvasGroup
-                .DOFade(0.0f, _settings.DefaoutDuration)
+                .DOFade(0.0f, defaultDuration)
                 .OnCompleteAsObservable();
         }
         #endregion
