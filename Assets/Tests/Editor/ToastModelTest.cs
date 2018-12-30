@@ -12,12 +12,12 @@ public sealed class ToastModelTest : ZenjectUnitTestFixture
 {
     private class MockToast : MonoBehaviour, IToast
     {
-        public IObservable<Unit> OnOpenAsObservable(object param)
+        public IObservable<Unit> OnOpenAsObservable(object param, float defaultDuration)
         {
             return Observable.ReturnUnit();
         }
 
-        public IObservable<Unit> OnCloseAsObservable()
+        public IObservable<Unit> OnCloseAsObservable(float defaultDuration)
         {
             return Observable.ReturnUnit();
         }

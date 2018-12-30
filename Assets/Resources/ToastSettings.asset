@@ -13,6 +13,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settings:
     _prefabs: []
-    _maskColor: {r: 0, g: 0, b: 0, a: 0}
-    _defaoutDuration: 0.5
+    _maskColor: {r: 0, g: 0, b: 0, a: 0.75}
+    _defaultDuration: 0.2
     _showDuration: 2
