@@ -1,4 +1,4 @@
-# TempleteProject-for-Unity
+# TemplateProject-for-Unity
 
 # Requirement
 * [UniRx](https://github.com/neuecc/UniRx)(6.1.1 or higher)
