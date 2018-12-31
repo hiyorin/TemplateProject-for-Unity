@@ -15,7 +15,7 @@ namespace SocialGame.Internal
 
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
-        public readonly static string[] SystemSceneNames = {
+        public static readonly string[] SystemSceneNames = {
             "Transition",
             "Dialog",
             "Toast",

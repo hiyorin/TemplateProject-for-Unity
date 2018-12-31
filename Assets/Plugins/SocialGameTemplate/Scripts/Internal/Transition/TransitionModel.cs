@@ -12,6 +12,8 @@ namespace SocialGame.Internal.Transition
         [Inject] private ITransitionFactory _factory = null;
 
         [Inject] private ITransitionIntent _intent = null;
+
+        [Inject] private TransitionSettings _settings = null;
         
         private readonly Stack<ITransition> _transStack = new Stack<ITransition>();
 
@@ -39,14 +41,14 @@ namespace SocialGame.Internal.Transition
                 .Select(x => x.GetComponent<ITransition>())
                 .Where(x => x != null)
                 .Do(x => _transStack.Push(x))
-                .SelectMany(x => x.OnTransInAsObservable().First())
+                .SelectMany(x => x.OnTransInAsObservable(_settings.DefaultDuration).First())
                 .Subscribe(_onTransInComplete.OnNext)
                 .AddTo(_disposable);
 
             _intent.OnTransOutAsObservable()
                 .Where(_ => _transStack.Count > 0)
                 .Select(_ => _transStack.Pop())
-                .SelectMany(x => x.OnTransOutAsObservable().First())
+                .SelectMany(x => x.OnTransOutAsObservable(_settings.DefaultDuration).First())
                 .Subscribe(_onTransOutComplete.OnNext)
                 .AddTo(_disposable);
         }

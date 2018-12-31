@@ -27,6 +27,8 @@ namespace SocialGame.Internal.Dialog
 
         [Inject] private IDialogFactory _factory = null;
 
+        [Inject] private DialogSettings _settings = null;
+        
         private readonly Stack<Request> _stack = new Stack<Request>();
 
         private readonly ReactiveDictionary<DialogType, Context> _contexts = new ReactiveDictionary<DialogType, Context>();
@@ -78,7 +80,7 @@ namespace SocialGame.Internal.Dialog
                 .Where(x => x.Dialog != null)
                 .SelectMany(x => {
                     if (_stack.Count > 0)
-                        return _stack.Peek().Dialog.OnCloseAsObservable().First().Select(_ => x);
+                        return _stack.Peek().Dialog.OnCloseAsObservable(_settings.DefaultDuration).First().Select(_ => x);
                     else
                         return Observable.Return(x);
                 })
@@ -87,13 +89,13 @@ namespace SocialGame.Internal.Dialog
                     _isOpen.Value = true;
                 })
                 .SelectMany(x => x.Dialog.OnStartAsObservable(x.Param).First().Select(_ => x))
-                .SelectMany(x => x.Dialog.OnOpenAsObservable().First())
+                .SelectMany(x => x.Dialog.OnOpenAsObservable(_settings.DefaultDuration).First())
                 .Subscribe()
                 .AddTo(_disposable);
 
             var close = _onClose
                 .Where(_ => _stack.Count > 0)
-                .SelectMany(x => _stack.Pop().Dialog.OnCloseAsObservable()
+                .SelectMany(x => _stack.Pop().Dialog.OnCloseAsObservable(_settings.DefaultDuration)
                     .First()
                     .Select(_ => x))
                 .Publish()
@@ -115,7 +117,7 @@ namespace SocialGame.Internal.Dialog
                 .AddTo(_disposable);
 
             _intent.OnClearAsObservable()
-                .SelectMany(_ => _stack.Select(x => x.Dialog.OnCloseAsObservable()).WhenAll())
+                .SelectMany(_ => _stack.Select(x => x.Dialog.OnCloseAsObservable(_settings.DefaultDuration)).WhenAll())
                 .Subscribe(_ =>
                 {
                     _stack.Clear();

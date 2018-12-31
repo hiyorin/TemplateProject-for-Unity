@@ -28,13 +28,13 @@ namespace SocialGame.Internal.Dialog
 
             _model.OnOpenAsObservable()
                 .Do(_ => _mask.gameObject.SetActiveSafe(true))
-                .SelectMany(_ => _mask.DOFade(_settings.MaskColor.a, _settings.DefaoutDuration).OnCompleteAsObservable())
+                .SelectMany(_ => _mask.DOFade(_settings.MaskColor.a, _settings.DefaultDuration).OnCompleteAsObservable())
                 .Subscribe()
                 .AddTo(this);
 
             _model.OnCloseAsObservable()
                 .Where(x => x <= 0)
-                .SelectMany(_ => _mask.DOFade(0.0f, _settings.DefaoutDuration).OnCompleteAsObservable())
+                .SelectMany(_ => _mask.DOFade(0.0f, _settings.DefaultDuration).OnCompleteAsObservable())
                 .Subscribe(_ => _mask.gameObject.SetActive(false))
                 .AddTo(this);
         }

@@ -50,12 +50,6 @@ namespace SocialGame.Internal.Network
                 case HttpSettings.Format.JSON:
                     _formatContent = new JsonContent();
                     break;
-                case HttpSettings.Format.MessagePack:
-                    _formatContent = new MessagePackContent();
-                    break;
-                case HttpSettings.Format.LZ4MessagePack:
-                    _formatContent = new LZ4MessagePackContent();
-                    break;
                 case HttpSettings.Format.MsgPack:
                     _formatContent = new MsgPackContent();
                     break;

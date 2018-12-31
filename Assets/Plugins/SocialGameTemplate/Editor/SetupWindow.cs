@@ -97,9 +97,6 @@ namespace SocialGame.Internal.Editor
 
         private void SetupAssemblyDefinitionFiles()
         {
-            new AssemblyDefinitionBuilder("Plugins/MessagePack/MessagePack")
-                .EnableAllowUnsafeCode()
-                .Write();
             new AssemblyDefinitionBuilder("Plugins/UnityExtensions/UnityExtensions")
                 .AddReferences(
                     "UniRx",
@@ -111,7 +108,6 @@ namespace SocialGame.Internal.Editor
                     "Zenject",
                     "UniRx",
                     "UniRx.Async",
-                    "MessagePack",
                     "MemoryInfoPlugin",
                     "UnityExtensions");
 

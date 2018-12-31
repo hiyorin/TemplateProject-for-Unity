@@ -18,6 +18,8 @@ namespace SocialGame.Internal.Loading
 
         [Inject] private ILoadingFactory _factory = null;
 
+        [Inject] private LoadingSettings _settigns = null;
+
         private readonly ReactiveDictionary<LoadingType, Context> _contexts = new ReactiveDictionary<LoadingType, Context>();
 
         private readonly BoolReactiveProperty _isShow = new BoolReactiveProperty();
@@ -26,8 +28,7 @@ namespace SocialGame.Internal.Loading
 
         void IInitializable.Initialize()
         {
-            _intent
-                .OnShowAsObservable()
+            _intent.OnShowAsObservable()
                 .Where(_ => !_isShow.Value)
                 .Do(_ => _isShow.Value = true)
                 .Select(type => {
@@ -43,9 +44,9 @@ namespace SocialGame.Internal.Loading
                     }
                     return context.Loading;
                 })
-                .SelectMany(x => x.OnShowAsObservable().First().Select(_ => x))
+                .SelectMany(x => x.OnShowAsObservable(_settigns.DefaultDuration).First().Select(_ => x))
                 .SelectMany(x => _intent.OnHideAsObservable().First().Select(_ => x))
-                .SelectMany(x => x.OnHideAsObservable().First())
+                .SelectMany(x => x.OnHideAsObservable(_settigns.DefaultDuration).First())
                 .Do(_ => _isShow.Value = false)
                 .Subscribe()
                 .AddTo(_disposable);

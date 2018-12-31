@@ -1,6 +1,4 @@
-using MessagePack.Resolvers;
 using SocialGame.Scene;
-using SocialGame.Transition;
 using SocialGame.DebugMode;
 using SocialGame.Sound;
 using SocialGame.Internal.Data;
@@ -12,6 +10,7 @@ using SocialGame.Internal.Dialog;
 using SocialGame.Internal.Loading;
 using SocialGame.Internal.Network;
 using SocialGame.Internal.TapEffect;
+using SocialGame.Internal.Transition;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -30,23 +29,12 @@ namespace SocialGame.Internal
         [SerializeField] private EventSystem _eventSystem;
 
         [SerializeField] private ResolutionLocalStorage _resolutionStorage;
-
-        private void Awake()
-        {
-	        CompositeResolver.RegisterAndSetAsDefault(
-		        GeneratedResolver.Instance,
-		        MessagePack.Unity.UnityResolver.Instance,
-		        BuiltinResolver.Instance,
-		        AttributeFormatterResolver.Instance,
-		        PrimitiveObjectResolver.Instance
-	        );
-        }
         
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<ProjectModel>().AsSingle();
             Container.BindInstance<ISceneManager>(_sceneManager).AsSingle();
-            Container.BindInterfacesAndSelfTo<TransitionController>().AsSingle();
+            Container.BindInterfacesTo<TransitionController>().AsSingle();
             Container.BindInterfacesTo<DialogController>().AsSingle();
             Container.BindInterfacesTo<ToastController>().AsSingle();
             Container.BindInterfacesTo<TapEffectController>().AsSingle();

@@ -15,20 +15,21 @@ namespace SocialGame.Internal.Loading
 
         [Inject] private ILoadingModel _model = null;
 
+        [Inject] private LoadingSettings _settings = null;
+        
         private void Start()
         {
-            _model
-                .OnAddAsObservable()
+            _mask.color = _settings.MaskColor;
+            
+            _model.OnAddAsObservable()
                 .Subscribe(x => x.transform.SetParent(_container, false))
                 .AddTo(this);
 
-            _model
-                .OnShowAsObservable()
+            _model.OnShowAsObservable()
                 .Subscribe(_ => _mask.gameObject.SetActiveSafe(true))
                 .AddTo(this);
 
-            _model
-                .OnHideAsObservable()
+            _model.OnHideAsObservable()
                 .Subscribe(_ => _mask.gameObject.SetActiveSafe(false))
                 .AddTo(this);
         }

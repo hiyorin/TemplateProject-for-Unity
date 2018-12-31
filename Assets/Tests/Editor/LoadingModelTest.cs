@@ -12,9 +12,9 @@ public sealed class LoadingModelTest : ZenjectUnitTestFixture
 {
     private class MockLoading : MonoBehaviour, ILoading
     {
-        public IObservable<Unit> OnShowAsObservable() { return Observable.ReturnUnit(); }
+        public IObservable<Unit> OnShowAsObservable(float defaultDuration) { return Observable.ReturnUnit(); }
 
-        public IObservable<Unit> OnHideAsObservable() { return Observable.ReturnUnit(); }
+        public IObservable<Unit> OnHideAsObservable(float defaultDuration) { return Observable.ReturnUnit(); }
     }
 
     private readonly Subject<LoadingType> _onShow = new Subject<LoadingType>();

@@ -82,13 +82,13 @@ namespace SocialGame.Internal.Toast
 
             _current
                 .Where(x => x != null)
-                .SelectMany(x => x.Toast.OnOpenAsObservable(x.Param)
+                .SelectMany(x => x.Toast.OnOpenAsObservable(x.Param, _settings.DefaultDuration)
                     .First()
                     .Select(_ => x))
                 .SelectMany(x => Observable.Timer(TimeSpan.FromSeconds(_settings.ShowDuration))
                     .First()
                     .Select(_ => x))
-                .SelectMany(x => x.Toast.OnCloseAsObservable())
+                .SelectMany(x => x.Toast.OnCloseAsObservable(_settings.DefaultDuration))
                 .Subscribe(_ => _current.Value = null)
                 .AddTo(_disposable);
         }

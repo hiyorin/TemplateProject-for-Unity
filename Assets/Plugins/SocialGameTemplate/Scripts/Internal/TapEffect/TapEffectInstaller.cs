@@ -1,5 +1,4 @@
-﻿using System;
-using SocialGame.TapEffect;
+﻿using SocialGame.Internal.TapEffect.Builtin;
 using UnityEngine;
 using Zenject;
 

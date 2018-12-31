@@ -12,9 +12,9 @@ public sealed class TransitionModelTest : ZenjectUnitTestFixture
 {
     private class MockTransition : MonoBehaviour, ITransition
     {
-        public IObservable<Unit> OnTransInAsObservable() { return Observable.ReturnUnit(); }
+        public IObservable<Unit> OnTransInAsObservable(float defaultDuration) { return Observable.ReturnUnit(); }
 
-        public IObservable<Unit> OnTransOutAsObservable() { return Observable.ReturnUnit(); }
+        public IObservable<Unit> OnTransOutAsObservable(float defaultDuration) { return Observable.ReturnUnit(); }
     }
 
     private readonly Subject<TransMode> _in = new Subject<TransMode>();

@@ -1,10 +1,13 @@
 ﻿using System;
+using SocialGame.Internal;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace SocialGame
 {
     [RequireComponent(typeof(Canvas))]
+    [RequireComponent(typeof(CanvasScaler))]
     public sealed class CanvasSettings : MonoBehaviour
     {
         [Serializable]
@@ -25,12 +28,24 @@ namespace SocialGame
 
         [Inject] private Camera _uiCamera = null;
 
+        [Inject] private ResolutionSettings _resolutionSettings = null;
+        
         private void Start()
         {
             var canvas = GetComponent<Canvas>();
             canvas.worldCamera = _uiCamera;
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
             canvas.sortingOrder = (int)_layer + _order;
+
+            InitializeCanvasScaler();
+        }
+
+        private void InitializeCanvasScaler()
+        {
+            var canvsScaler = GetComponent<CanvasScaler>();
+            canvsScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            canvsScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            canvsScaler.referenceResolution = _resolutionSettings.CanvasSize;
         }
 
         #if UNITY_EDITOR
@@ -38,6 +53,9 @@ namespace SocialGame
         {
             var canvas = GetComponent<Canvas>();
             canvas.sortingOrder = (int)_layer;
+
+            _resolutionSettings = Resources.Load<ResolutionSettings>(ResolutionSettings.FileName);
+            InitializeCanvasScaler();
         }
         #endif
     }
