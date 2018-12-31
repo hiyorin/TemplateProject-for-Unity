@@ -7,16 +7,25 @@ namespace Sandbox.Loading
 {
     internal interface ILoadingExampleIntent
     {
-        IObservable<Unit> OnClickShowButtonAsObservable();
+        IObservable<Unit> OnClickShowSampleButtonAsObservable();
+
+        IObservable<Unit> OnClickShowSystemButtonAsObservable();
     }
     
     internal sealed class LoadingExampleIntent : MonoBehaviour, ILoadingExampleIntent
     {
-        [SerializeField] private Button _showButton = null;
+        [SerializeField] private Button _showSampleButton = null;
 
-        IObservable<Unit> ILoadingExampleIntent.OnClickShowButtonAsObservable()
+        [SerializeField] private Button _showSystemButton = null;
+
+        IObservable<Unit> ILoadingExampleIntent.OnClickShowSampleButtonAsObservable()
         {
-            return _showButton.OnClickAsObservable();
+            return _showSampleButton.OnClickAsObservable();
+        }
+
+        IObservable<Unit> ILoadingExampleIntent.OnClickShowSystemButtonAsObservable()
+        {
+            return _showSystemButton.OnClickAsObservable();
         }
     }
 }

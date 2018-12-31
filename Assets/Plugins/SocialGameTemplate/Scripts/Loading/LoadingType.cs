@@ -3,6 +3,7 @@ namespace SocialGame.Loading
 {
     public enum LoadingType
     {
-        Sample = -1,
+        Sample = -2,
+        System = -1,
     }
 }

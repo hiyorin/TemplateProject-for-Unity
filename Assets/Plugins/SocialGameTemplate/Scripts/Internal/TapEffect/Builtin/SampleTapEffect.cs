@@ -1,11 +1,12 @@
 ﻿using System;
+using SocialGame.TapEffect;
 using UnityEngine;
 using Zenject;
 using UniRx;
 
-namespace SocialGame.TapEffect
+namespace SocialGame.Internal.TapEffect.Builtin
 {
-    public sealed class SampleTapEffect : MonoBehaviour, ITapEffect
+    internal sealed class SampleTapEffect : MonoBehaviour, ITapEffect
     {
         [Inject] private Camera _uiCamera = null;
 
@@ -26,7 +27,7 @@ namespace SocialGame.TapEffect
         #region ITapEffect implementation
         void ITapEffect.OnMove(Vector3 position)
         {
-            Vector3 worldPosition = Vector3.zero;
+            Vector3 worldPosition;
             RectTransformUtility.ScreenPointToWorldPointInRectangle(_transform, position, _uiCamera, out worldPosition);
             _transform.position = worldPosition;
         }

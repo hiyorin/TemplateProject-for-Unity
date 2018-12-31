@@ -1,4 +1,4 @@
-﻿using SocialGame.Transition;
+﻿using SocialGame.Internal.Transition.Builtin;
 using UnityEngine;
 using Zenject;
 

@@ -1,5 +1,4 @@
-﻿using System;
-using SocialGame.Toast;
+﻿using SocialGame.Internal.Toast.Builtin;
 using UnityEngine;
 using Zenject;
 

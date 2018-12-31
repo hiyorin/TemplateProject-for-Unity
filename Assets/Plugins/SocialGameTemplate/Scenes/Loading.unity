@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sample: {fileID: 114414010664392436, guid: 98752eb4e87a5422e8549af17af680b8, type: 2}
+  _system: {fileID: 114960873140551038, guid: 6af486bdae830423f9f3d85521b327d9, type: 2}
 --- !u!114 &784798452
 MonoBehaviour:
   m_ObjectHideFlags: 0

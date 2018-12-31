@@ -22,8 +22,10 @@ namespace Sandbox.Loading
 
         void IInitializable.Initialize()
         {
-            _intent.OnClickShowButtonAsObservable()
-                .Do(_ => _controller.Show(LoadingType.Sample))
+            Observable.Merge(
+                    _intent.OnClickShowSampleButtonAsObservable().Select(_ => LoadingType.Sample),
+                    _intent.OnClickShowSystemButtonAsObservable().Select(_ => LoadingType.System))
+                .Do(x => _controller.Show(x))
                 .Do(_ => _message.Value = "Show")
                 .SelectMany(_ => Observable.Timer(TimeSpan.FromSeconds(2.0f)))
                 .Do(_ => _controller.Hide())

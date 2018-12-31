@@ -1,13 +1,14 @@
 ﻿using System;
+using SocialGame.Dialog;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityExtensions;
 using UniRx;
 using DG.Tweening;
 
-namespace SocialGame.Dialog
+namespace SocialGame.Internal.Dialog.Builtin
 {
-    public sealed class SampleDialog : MonoBehaviour, IDialog
+    internal sealed class SampleDialog : MonoBehaviour, IDialog
     {
         [SerializeField] private Text _message = null;
 

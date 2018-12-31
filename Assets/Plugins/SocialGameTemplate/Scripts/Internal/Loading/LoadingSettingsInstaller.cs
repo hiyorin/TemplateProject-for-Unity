@@ -37,7 +37,8 @@ namespace SocialGame.Internal.Loading
             builder.AppendLine("{");
             builder.AppendLine("    public enum LoadingType");
             builder.AppendLine("    {");
-            builder.AppendLine("        Sample = -1,");
+            builder.AppendLine("        Sample = -2,");
+            builder.AppendLine("        System = -1,");
             
             foreach (var prefab in _settings.Prefabs.Where(x => x != null))
             {

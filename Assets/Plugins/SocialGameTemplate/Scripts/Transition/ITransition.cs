@@ -5,8 +5,8 @@ namespace SocialGame.Transition
 {
     public interface ITransition
     {
-        IObservable<Unit> OnTransInAsObservable();
+        IObservable<Unit> OnTransInAsObservable(float defaultDuration);
 
-        IObservable<Unit> OnTransOutAsObservable();
+        IObservable<Unit> OnTransOutAsObservable(float defaultDuration);
     }
 }

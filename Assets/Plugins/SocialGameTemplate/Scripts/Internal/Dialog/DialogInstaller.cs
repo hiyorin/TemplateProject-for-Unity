@@ -1,4 +1,4 @@
-﻿using SocialGame.Dialog;
+﻿using SocialGame.Internal.Dialog.Builtin;
 using UnityEngine;
 using Zenject;
 

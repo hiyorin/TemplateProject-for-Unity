@@ -1,5 +1,4 @@
 using SocialGame.Scene;
-using SocialGame.Transition;
 using SocialGame.Sound;
 using SocialGame.DebugMode;
 using SocialGame.Internal.Data;
@@ -10,6 +9,7 @@ using SocialGame.Internal.Dialog;
 using SocialGame.Internal.Loading;
 using SocialGame.Internal.Network;
 using SocialGame.Internal.TapEffect;
+using SocialGame.Internal.Transition;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -33,7 +33,7 @@ namespace SocialGame.Internal
         {
             Container.BindInterfacesTo<ProjectModel>().AsSingle();
             Container.BindInstance<ISceneManager>(_sceneManager).AsSingle();
-            Container.BindInterfacesAndSelfTo<TransitionController>().AsSingle();
+            Container.BindInterfacesTo<TransitionController>().AsSingle();
             Container.BindInterfacesTo<DialogController>().AsSingle();
             Container.BindInterfacesTo<ToastController>().AsSingle();
             Container.BindInterfacesTo<TapEffectController>().AsSingle();

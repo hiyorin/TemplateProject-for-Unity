@@ -1,13 +1,14 @@
 ﻿using System;
+using SocialGame.Toast;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityExtensions;
 using UniRx;
 using DG.Tweening;
 
-namespace SocialGame.Toast
+namespace SocialGame.Internal.Toast.Builtin
 {
-    public sealed class SampleToast : MonoBehaviour, IToast
+    internal sealed class SampleToast : MonoBehaviour, IToast
     {
         [SerializeField] private Text _message = null;
 

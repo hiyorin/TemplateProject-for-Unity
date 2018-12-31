@@ -4,7 +4,7 @@ using UnityEngine;
 namespace SocialGame.Internal
 {
     [Serializable]
-    public sealed class ApplicationSettings
+    internal sealed class ApplicationSettings
     {
         [SerializeField][Range(24, 60)] private int _targetFrameRate = 60;
         
@@ -12,7 +12,7 @@ namespace SocialGame.Internal
     }
 
     [Serializable]
-    public sealed class DebugSettings
+    internal sealed class DebugSettings
     {
         [Header("General")]
         [SerializeField] private Color _textColor = Color.white;
@@ -60,8 +60,8 @@ namespace SocialGame.Internal
 
         [SerializeField] private DebugSettings _debug = null;
 
-        public DebugSettings Debug { get { return _debug; } }
+        internal DebugSettings Debug { get { return _debug; } }
 
-        public ApplicationSettings Application { get { return _application; } }
+        internal ApplicationSettings Application { get { return _application; } }
     }
 }

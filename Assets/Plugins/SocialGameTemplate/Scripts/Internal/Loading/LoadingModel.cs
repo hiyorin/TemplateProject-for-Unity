@@ -28,8 +28,7 @@ namespace SocialGame.Internal.Loading
 
         void IInitializable.Initialize()
         {
-            _intent
-                .OnShowAsObservable()
+            _intent.OnShowAsObservable()
                 .Where(_ => !_isShow.Value)
                 .Do(_ => _isShow.Value = true)
                 .Select(type => {

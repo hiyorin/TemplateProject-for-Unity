@@ -1,17 +1,18 @@
 ﻿using System;
+using SocialGame.Loading;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityExtensions;
 using UniRx;
 using DG.Tweening;
 
-namespace SocialGame.Loading
+namespace SocialGame.Internal.Loading.Builtin
 {
-    public sealed class SampleLoading : MonoBehaviour, ILoading
+    internal sealed class SampleLoading : MonoBehaviour, ILoading
     {
         [SerializeField] private CanvasGroup _canvasGroup = null;
 
-        [SerializeField] private Image _icon = null;
+        [SerializeField] private Graphic _icon = null;
 
         private Tween _tween;
 
@@ -25,8 +26,11 @@ namespace SocialGame.Loading
 
         private void OnDestroy()
         {
-            _tween.Kill();
-            _tween = null;
+            if (_tween != null)
+            {
+                _tween.Kill();
+                _tween = null;
+            }
         }
 
         #region ILoading implementation

@@ -1,31 +1,29 @@
 ﻿using System;
+using SocialGame.Transition;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityExtensions;
-using Zenject;
 using UniRx;
 using DG.Tweening;
 
-namespace SocialGame.Transition
+namespace SocialGame.Internal.Transition.Builtin
 {
-    public sealed class BlackFadeTransition : MonoBehaviour, ITransition
+    internal sealed class BlackFadeTransition : MonoBehaviour, ITransition
     {
         [SerializeField] private Graphic _background = null;
 
-        [Inject] private TransitionSettings _settings = null;
-
         #region ITransition implementation
-        IObservable<Unit> ITransition.OnTransInAsObservable()
+        IObservable<Unit> ITransition.OnTransInAsObservable(float defaultDuration)
         {
             return _background
-                .DOFade(1.0f, _settings.DefaultDuration)
+                .DOFade(1.0f, defaultDuration)
                 .OnCompleteAsObservable();
         }
 
-        IObservable<Unit> ITransition.OnTransOutAsObservable()
+        IObservable<Unit> ITransition.OnTransOutAsObservable(float defaultDuration)
         {
             return _background
-                .DOFade(0.0f, _settings.DefaultDuration)
+                .DOFade(0.0f, defaultDuration)
                 .OnCompleteAsObservable();
         }
         #endregion

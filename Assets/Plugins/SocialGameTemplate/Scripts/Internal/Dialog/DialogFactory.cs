@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SocialGame.Dialog;
+using SocialGame.Internal.Dialog.Builtin;
 using UnityEngine;
 using UnityExtensions;
 using Zenject;
