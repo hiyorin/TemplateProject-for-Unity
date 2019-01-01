@@ -7,7 +7,7 @@ using UniRx;
 
 namespace SocialGame.Internal.Sound.ADX2
 {
-    public static class ADX2Utility
+    internal static class ADX2Utility
     {
         public static IObservable<CriAtomCueSheet> AddCueSheet(CriAtomCueSheet cueSheet)
         {

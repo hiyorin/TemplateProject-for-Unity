@@ -12,6 +12,8 @@ namespace SocialGame.Internal.Sound.ADX2
     {
         [Inject] private IVoiceIntent _intent = null;
         
+        [Inject] private ISoundVolumeIntent _volumeIntent = null;
+
         [Inject] private ADX2VoiceSettings _settings = null;
         
         private readonly BoolReactiveProperty _initialized = new BoolReactiveProperty();
@@ -66,6 +68,23 @@ namespace SocialGame.Internal.Sound.ADX2
 
             _intent.OnStopAsObservable()
                 .Subscribe(_ => _source.Value.Stop())
+                .AddTo(_disposable);
+            
+            // volume
+            _volumeIntent.OnMasterVolumeAsObservable()
+                .SelectMany(x => _initialized
+                    .Where(y => y)
+                    .First()
+                    .Select(_ => x))
+                .Subscribe(x => _source.Value.volume = x)
+                .AddTo(_disposable);
+            
+            _volumeIntent.OnVoiceVolumeAsObservable()
+                .SelectMany(x => _initialized
+                    .Where(y => y)
+                    .First()
+                    .Select(_ => x))
+                .Subscribe(x => CriAtom.SetCategoryVolume(_settings.CategoryVolumeName, x))
                 .AddTo(_disposable);
         }
 

@@ -14,7 +14,7 @@ namespace SocialGame.Internal.Sound
     {
         [SerializeField] internal Type Type = Type.Unity;
         
-        [SerializeField] internal GeneralSettings General = null;
+        [SerializeField] internal SoundGeneralSettings General = null;
 
         [SerializeField] internal Unity.UnityMasterSettings UnityMaster = null;
         

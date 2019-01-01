@@ -11,6 +11,8 @@ namespace SocialGame.Internal.Sound.ADX2
     internal sealed class ADX2BGMModel : IInitializable, IDisposable, ISoundModel
     {
         [Inject] private IBGMIntent _intent = null;
+
+        [Inject] private ISoundVolumeIntent _volumeIntent = null;
         
         [Inject] private ADX2BGMSettings _settings = null;
         
@@ -71,6 +73,23 @@ namespace SocialGame.Internal.Sound.ADX2
 
             _intent.OnStopAsObservable()
                 .Subscribe(_ => _source.Value.Stop())
+                .AddTo(_disposable);
+
+            // volume
+            _volumeIntent.OnMasterVolumeAsObservable()
+                .SelectMany(x => _initialized
+                    .Where(y => y)
+                    .First()
+                    .Select(_ => x))
+                .Subscribe(x => _source.Value.volume = x)
+                .AddTo(_disposable);
+            
+            _volumeIntent.OnBGMVolumeAsObservable()
+                .SelectMany(x => _initialized
+                    .Where(y => y)
+                    .First()
+                    .Select(_ => x))
+                .Subscribe(x => CriAtom.SetCategoryVolume(_settings.CategoryVolumeName, x))
                 .AddTo(_disposable);
         }
 

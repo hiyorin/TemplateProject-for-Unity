@@ -17,8 +17,12 @@ namespace SocialGame.Internal.Sound.ADX2
     internal sealed class ADX2BGMSettings
     {
 #if SGT_ADX2
+        [SerializeField] private string _categoryVolumeName = "BGM";
+        
         [SerializeField] private CriAtomCueSheet _builtInCueSheet;
 
+        public string CategoryVolumeName => CategoryVolumeName;
+        
         public CriAtomCueSheet BuiltInCueSheet => _builtInCueSheet;
 #endif
     }
@@ -27,8 +31,12 @@ namespace SocialGame.Internal.Sound.ADX2
     internal sealed class ADX2SESettings
     {
 #if SGT_ADX2
+        [SerializeField] private string _categoryVolumeName = "SE";
+        
         [SerializeField] private CriAtomCueSheet _builtInCueSheet;
 
+        public string CategoryVolumeName => CategoryVolumeName;
+        
         public CriAtomCueSheet BuiltInCueSheet => _builtInCueSheet;
 #endif
     }
@@ -37,8 +45,12 @@ namespace SocialGame.Internal.Sound.ADX2
     internal sealed class ADX2VoiceSettings
     {
 #if SGT_ADX2
+        [SerializeField] private string _categoryVolumeName = "Voice";
+        
         [SerializeField] private CriAtomCueSheet _builtInCueSheet;
 
+        public string CategoryVolumeName => CategoryVolumeName;
+        
         public CriAtomCueSheet BuiltInCueSheet => _builtInCueSheet;
 #endif
     }

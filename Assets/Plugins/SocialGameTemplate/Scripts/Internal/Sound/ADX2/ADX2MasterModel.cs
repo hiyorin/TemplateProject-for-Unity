@@ -6,7 +6,7 @@ using UnityObject = UnityEngine.Object;
 
 namespace SocialGame.Internal.Sound.ADX2
 {
-    public sealed class ADX2MasterModel : IInitializable, IDisposable
+    internal sealed class ADX2MasterModel : IInitializable, IDisposable
     {
         [Inject] private ADX2MasterSettings _settings = null;
         

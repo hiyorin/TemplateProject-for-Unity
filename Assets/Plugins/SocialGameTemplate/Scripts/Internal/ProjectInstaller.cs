@@ -1,6 +1,5 @@
 using SocialGame.Scene;
 using SocialGame.DebugMode;
-using SocialGame.Sound;
 using SocialGame.Internal.Data;
 using SocialGame.Internal.Data.DataStore;
 using SocialGame.Internal.Scene;
@@ -40,7 +39,7 @@ namespace SocialGame.Internal
             Container.BindInterfacesTo<TapEffectController>().AsSingle();
             Container.BindInterfacesTo<LoadingController>().AsSingle();
             Container.BindInterfacesTo<SoundController>().AsSingle();
-            Container.BindInterfacesAndSelfTo<SoundVolumeController>().AsSingle();
+            Container.BindInterfacesTo<SoundVolumeController>().AsSingle();
             Container.BindInterfacesAndSelfTo<DebugController>().AsSingle();
             Container.BindInstance(_uiCamera).AsSingle();
             Container.BindInstance(_eventSystem).AsSingle();

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace SocialGame.Internal.Sound
 {
     [Serializable]
-    internal sealed class GeneralSettings
+    internal sealed class SoundGeneralSettings
     {
         [SerializeField] [Range(0.0f, 1.0f)] private float _defaultMasterVolume = 1.0f;
         
