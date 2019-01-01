@@ -88,7 +88,7 @@ namespace SocialGame.Internal.Sound.Editor
                 Debug.unityLogger.Log(GetType().Name, "auto-generated Sound");
             }
 
-            if (GUILayout.Button("Remove Save File"))
+            if (GUILayout.Button("Delete Save File"))
             {
                 SoundVolumeLocalStorage.DeleteFile<SoundVolumeLocalStorage, SoundVolume>();
             }
