@@ -14,7 +14,13 @@ namespace SocialGame.Internal.Sound.ADX2
         
         void IInitializable.Initialize()
         {
-            UnityObject.Instantiate(_settings.InitializerPrefab);
+            var initializer = UnityObject.Instantiate(_settings.InitializerPrefab);
+            if (initializer.gameObject.GetComponent<CriAtom>() == null)
+            {
+                var atom = initializer.gameObject.AddComponent<CriAtom>();
+                atom.dontDestroyOnLoad = initializer.dontDestroyOnLoad;
+                atom.acfFile = initializer.atomConfig.acfFileName;
+            }
         }
 
         void IDisposable.Dispose()

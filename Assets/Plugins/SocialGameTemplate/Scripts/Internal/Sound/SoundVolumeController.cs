@@ -9,6 +9,8 @@ namespace SocialGame.Internal.Sound
 {
     internal sealed class SoundVolumeController : IInitializable, IDisposable, ISoundVolumeController, ISoundVolumeIntent
     {
+        [Inject] private SoundGeneralSettings _settings = null;
+        
         [Inject] private SoundVolumeLocalStorage _localStorage = null;
 
         private readonly FloatReactiveProperty _master = new FloatReactiveProperty();
@@ -23,7 +25,7 @@ namespace SocialGame.Internal.Sound
         
         void IInitializable.Initialize()
         {
-            var settings = _localStorage.Model;
+            var settings = _localStorage.Model; 
             _master.Value = settings.Master;
             _bgm.Value = settings.BGM;
             _se.Value = settings.SE;

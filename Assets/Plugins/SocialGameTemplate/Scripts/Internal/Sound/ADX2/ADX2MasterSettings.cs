@@ -21,7 +21,7 @@ namespace SocialGame.Internal.Sound.ADX2
         
         [SerializeField] private CriAtomCueSheet _builtInCueSheet;
 
-        public string CategoryVolumeName => CategoryVolumeName;
+        public string CategoryVolumeName => _categoryVolumeName;
         
         public CriAtomCueSheet BuiltInCueSheet => _builtInCueSheet;
 #endif
@@ -35,7 +35,7 @@ namespace SocialGame.Internal.Sound.ADX2
         
         [SerializeField] private CriAtomCueSheet _builtInCueSheet;
 
-        public string CategoryVolumeName => CategoryVolumeName;
+        public string CategoryVolumeName => _categoryVolumeName;
         
         public CriAtomCueSheet BuiltInCueSheet => _builtInCueSheet;
 #endif
@@ -49,7 +49,7 @@ namespace SocialGame.Internal.Sound.ADX2
         
         [SerializeField] private CriAtomCueSheet _builtInCueSheet;
 
-        public string CategoryVolumeName => CategoryVolumeName;
+        public string CategoryVolumeName => _categoryVolumeName;
         
         public CriAtomCueSheet BuiltInCueSheet => _builtInCueSheet;
 #endif

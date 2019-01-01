@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd86564234ee45628b71a202178e0ec, type: 3}
   m_Name: SoundSettings
   m_EditorClassIdentifier: 
-  Type: 1
+  Engine: 1
   General:
     _defaultMasterVolume: 1
     _defaultBGMVolume: 1
@@ -40,16 +40,19 @@ MonoBehaviour:
     _initializerPrefab: {fileID: 114159226371663236, guid: fa4a3c879c91a44389c8b55834dc1427,
       type: 2}
   Adx2Bgm:
+    _categoryVolumeName: BGM
     _builtInCueSheet:
       name: 
       acbFile: 
       awbFile: 
   Adx2Se:
+    _categoryVolumeName: SE
     _builtInCueSheet:
       name: 
       acbFile: 
       awbFile: 
   Adx2Voice:
+    _categoryVolumeName: Voice
     _builtInCueSheet:
       name: 
       acbFile: 

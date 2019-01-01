@@ -2,6 +2,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
+using SocialGame.Data.Entity;
+using SocialGame.Internal.Data.DataStore;
 using SocialGame.Sound;
 using UnityEditor;
 using UnityEditor.VersionControl;
@@ -23,7 +25,7 @@ namespace SocialGame.Internal.Sound.Editor
         public override void OnInspectorGUI()
         {
 #if SGT_ADX2
-                _owner.Type = (Type)EditorGUILayout.EnumPopup(typeof(Type).Name, _owner.Type);
+                _owner.Engine = (SoundEngine)EditorGUILayout.EnumPopup(typeof(SoundEngine).Name, _owner.Engine);
 #else
                 _owner.Type = Type.Unity;
 #endif     
@@ -31,10 +33,10 @@ namespace SocialGame.Internal.Sound.Editor
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_owner.General)), true);
 
-            string masterFieldName = _owner.Type == Type.Unity ? nameof(_owner.UnityMaster) : nameof(_owner.Adx2Master);
-            string bgmFieldName = _owner.Type == Type.Unity ? nameof(_owner.UnityBgm) : nameof(_owner.Adx2Bgm);
-            string seFieldName = _owner.Type == Type.Unity ? nameof(_owner.UnitySe) : nameof(_owner.Adx2Se);
-            string voiceFieldName = _owner.Type == Type.Unity ? nameof(_owner.UnityVoice) : nameof(_owner.Adx2Voice);
+            string masterFieldName = _owner.Engine == SoundEngine.Unity ? nameof(_owner.UnityMaster) : nameof(_owner.Adx2Master);
+            string bgmFieldName = _owner.Engine == SoundEngine.Unity ? nameof(_owner.UnityBgm) : nameof(_owner.Adx2Bgm);
+            string seFieldName = _owner.Engine == SoundEngine.Unity ? nameof(_owner.UnitySe) : nameof(_owner.Adx2Se);
+            string voiceFieldName = _owner.Engine == SoundEngine.Unity ? nameof(_owner.UnityVoice) : nameof(_owner.Adx2Voice);
                 
             EditorGUILayout.PropertyField(serializedObject.FindProperty(masterFieldName), new GUIContent("Master"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty(bgmFieldName), new GUIContent("BGM"), true);
@@ -54,14 +56,14 @@ namespace SocialGame.Internal.Sound.Editor
                 IEnumerable<string> bgmNames = null;
                 IEnumerable<string> seNames = null;
                 IEnumerable<string> voiceNames = null;
-                switch (_owner.Type)
+                switch (_owner.Engine)
                 {
-                    case Type.Unity:
+                    case SoundEngine.Unity:
                         bgmNames = _owner.UnityBgm.Clips.Where(x => x != null).Select(x => x.name);
                         seNames = _owner.UnitySe.Clips.Where(x => x != null).Select(x => x.name);
                         voiceNames = _owner.UnityVoice.Clips.Where(x => x != null).Select(x => x.name);
                         break;
-                    case Type.ADX2:
+                    case SoundEngine.ADX2:
 #if SGT_ADX2
                         ADX2.ADX2Utility.Initialize();
                         bgmNames = ADX2.ADX2Utility.GetCueInfoList(_owner.Adx2Bgm.BuiltInCueSheet)?.Select(x => x.name);
@@ -71,7 +73,7 @@ namespace SocialGame.Internal.Sound.Editor
 #endif
                         break;
                     default:
-                        Debug.unityLogger.LogError(GetType().Name, $"Not supported {_owner.Type}");
+                        Debug.unityLogger.LogError(GetType().Name, $"Not supported {_owner.Engine}");
                         break;
                 }
             
@@ -84,6 +86,11 @@ namespace SocialGame.Internal.Sound.Editor
                 AssetDatabase.Refresh(ImportAssetOptions.ImportRecursive);
 
                 Debug.unityLogger.Log(GetType().Name, "auto-generated Sound");
+            }
+
+            if (GUILayout.Button("Remove Save File"))
+            {
+                SoundVolumeLocalStorage.DeleteFile<SoundVolumeLocalStorage, SoundVolume>();
             }
         }
         

@@ -1,7 +1,9 @@
 #if SGT_ADX2
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
+using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 
@@ -9,6 +11,22 @@ namespace SocialGame.Internal.Sound.ADX2
 {
     internal static class ADX2Utility
     {
+        public static IObservable<byte[]> LoadAcfFile(string fileName)
+        {
+            string filePath = string.Format("{0}/{1}", Application.streamingAssetsPath, fileName);
+            IObservable<byte[]> result = null;
+            
+#if UNITY_ANDROID && !UNITY_EDITOR
+            var www = new WWW(filePath);
+            return www.ToObservable().Select(_ => www.bytes);
+#else
+            result = Observable
+                .Start(() => File.ReadAllBytes(filePath))
+                .ObserveOnMainThread();
+#endif
+            return result;
+        }
+        
         public static IObservable<CriAtomCueSheet> AddCueSheet(CriAtomCueSheet cueSheet)
         {
             if (cueSheet == null)
@@ -35,19 +53,10 @@ namespace SocialGame.Internal.Sound.ADX2
             return true;
         }
 
-        public static IObservable<byte[]> LoadAcfFile(string fileName)
+        public static IEnumerable<string> GetCueNameList(string cueSheetName)
         {
-            string filePath = string.Format("{0}/{1}", Application.streamingAssetsPath, fileName);
-            IObservable<byte[]> result = null;
-            
-#if UNITY_ANDROID && !UNITY_EDITOR
-            var www = new WWW(filePath);
-            return www.ToObservable().Select(_ => www.bytes);
-#else
-            result = Observable
-                .Start(() => File.ReadAllBytes(filePath))
-                .ObserveOnMainThread();
-#endif
+            var acb = CriAtom.GetAcb(cueSheetName);
+            var result = acb.GetCueInfoList().Select(x => x.name);            
             return result;
         }
         
@@ -71,6 +80,9 @@ namespace SocialGame.Internal.Sound.ADX2
                 atomConfig.categoriesPerPlayback,
                 atomConfig.maxBuses,
                 false);
+            CriAtomPlugin.SetConfigAdditionalParameters_PC(
+                atomConfig.pcBufferingTime
+            );
             CriAtomPlugin.InitializeLibrary();
         }
 
@@ -84,12 +96,9 @@ namespace SocialGame.Internal.Sound.ADX2
             if (string.IsNullOrEmpty(cueSheet.name))
                 return null;
 
-            if (CriFsPlugin.isInitialized || CriAtomPlugin.isInitialized)
-                return null;
-            
             CriAtomEx.CueInfo[] result = null;
             
-            while (!CriAtomPlugin.isInitialized)
+            while (!CriFsPlugin.isInitialized || !CriAtomPlugin.isInitialized)
             {
                 Debug.Log("Sleep");
                 Thread.Sleep(1000);
@@ -101,7 +110,10 @@ namespace SocialGame.Internal.Sound.ADX2
                     Path.Combine(Application.streamingAssetsPath, cueSheet.acbFile),
                     Path.Combine(Application.streamingAssetsPath, cueSheet.awbFile));
                 if (acb != null)
+                {
                     result = acb.GetCueInfoList();
+                    acb.Dispose();
+                }
             }
             catch (Exception e)
             {

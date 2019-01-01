@@ -32,10 +32,15 @@ namespace SocialGame.Internal.Sound.ADX2
                 .SelectMany(_ => ADX2Utility.AddCueSheet(_settings.BuiltInCueSheet)
                     .First()
                     .Where(x => x != null))
-                .Subscribe(_ =>
+                .Subscribe(x =>
                 {
+                    // add cue list
+                    var cueNameList = ADX2Utility.GetCueNameList(x.name);
+                    foreach (var cueName in cueNameList)
+                        _cueSheetDictionary.Add(cueName, x.name);
+                    
+                    // create sound source
                     var source = new GameObject("SE").AddComponent<CriAtomSource>();
-
                     _source.Value = source;
                 })
                 .AddTo(_disposable);
@@ -75,20 +80,13 @@ namespace SocialGame.Internal.Sound.ADX2
                     .Where(y => y)
                     .First()
                     .Select(_ => x))
+                .Do(_ => Debug.Log(CriAtom.GetCategoryVolume(_settings.CategoryVolumeName)))
                 .Subscribe(x => CriAtom.SetCategoryVolume(_settings.CategoryVolumeName, x))
                 .AddTo(_disposable);
         }
 
         void IDisposable.Dispose()
         {
-            ADX2Utility.RemoveCueSheet(_settings.BuiltInCueSheet);
-            
-            if (_source.Value != null)
-            {
-                UnityObject.Destroy(_source.Value.gameObject);
-                _source.Value = null;
-            }
-            
             _disposable.Dispose();
         }
         

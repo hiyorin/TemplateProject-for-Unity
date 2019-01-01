@@ -3,7 +3,7 @@ using Zenject;
 
 namespace SocialGame.Internal.Sound
 {
-    internal enum Type
+    internal enum SoundEngine
     {
         Unity,
         ADX2,
@@ -12,7 +12,7 @@ namespace SocialGame.Internal.Sound
     [CreateAssetMenu(fileName = "SoundSettings", menuName = "Installers/SoundSettings")]
     public sealed class SoundSettingsInstaller : ScriptableObjectInstaller<SoundSettingsInstaller>
     {
-        [SerializeField] internal Type Type = Type.Unity;
+        [SerializeField] internal SoundEngine Engine = SoundEngine.Unity;
         
         [SerializeField] internal SoundGeneralSettings General = null;
 
@@ -34,24 +34,25 @@ namespace SocialGame.Internal.Sound
         
         public override void InstallBindings()
         {
+            Container.BindInstance(Engine).AsSingle();
             Container.BindInstance(General).AsSingle();
             
-            switch (Type)
+            switch (Engine)
             {
-                case Type.Unity:
+                case SoundEngine.Unity:
                     Container.BindInstance(UnityMaster).AsSingle();
                     Container.BindInstance(UnityBgm).AsSingle();
                     Container.BindInstance(UnitySe).AsSingle();
                     Container.BindInstance(UnityVoice).AsSingle();
                     break;
-                case Type.ADX2:
+                case SoundEngine.ADX2:
                     Container.BindInstance(Adx2Master).AsSingle();
                     Container.BindInstance(Adx2Bgm).AsSingle();
                     Container.BindInstance(Adx2Se).AsSingle();
                     Container.BindInstance(Adx2Voice).AsSingle();
                     break;
                 default:
-                    Debug.unityLogger.LogError(GetType().Name, $"Not supported {Type}");
+                    Debug.unityLogger.LogError(GetType().Name, $"Not supported {Engine}");
                     break;
             }
         }

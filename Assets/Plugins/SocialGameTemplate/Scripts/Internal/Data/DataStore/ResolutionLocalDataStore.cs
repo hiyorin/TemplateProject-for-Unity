@@ -8,7 +8,7 @@ namespace SocialGame.Internal.Data.DataStore
 {
     internal sealed class ResolutionLocalDataStore : IResolutionDataStore
     {
-        [Inject] private ResolutionLocalStorage _storage;
+        [Inject] private ResolutionLocalStorage _storage = null;
     
         #region IResolutionDataStore implementation
         IObservable<Resolution> IResolutionDataStore.Get()
