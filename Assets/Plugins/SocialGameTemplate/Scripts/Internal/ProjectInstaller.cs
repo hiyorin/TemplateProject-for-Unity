@@ -1,9 +1,7 @@
 using SocialGame.Scene;
-using SocialGame.Sound;
 using SocialGame.DebugMode;
-using SocialGame.Internal.Data;
-using SocialGame.Internal.Data.DataStore;
 using SocialGame.Internal.Scene;
+using SocialGame.Internal.Sound;
 using SocialGame.Internal.Toast;
 using SocialGame.Internal.Dialog;
 using SocialGame.Internal.Loading;
@@ -27,8 +25,6 @@ namespace SocialGame.Internal
 
         [SerializeField] private EventSystem _eventSystem;
 
-        [SerializeField] private ResolutionLocalStorage _resolutionStorage;
-        
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<ProjectModel>().AsSingle();
@@ -38,16 +34,10 @@ namespace SocialGame.Internal
             Container.BindInterfacesTo<ToastController>().AsSingle();
             Container.BindInterfacesTo<TapEffectController>().AsSingle();
             Container.BindInterfacesTo<LoadingController>().AsSingle();
-            Container.BindInterfacesAndSelfTo<SoundController>().AsSingle();
-            Container.BindInterfacesAndSelfTo<SoundVolumeController>().AsSingle();
+            Container.BindInterfacesTo<SoundController>().AsSingle();
             Container.BindInterfacesAndSelfTo<DebugController>().AsSingle();
             Container.BindInstance(_uiCamera).AsSingle();
             Container.BindInstance(_eventSystem).AsSingle();
-            
-            // data
-            Container.BindInstance(_resolutionStorage).AsSingle();
-            Container.BindInterfacesTo<ResolutionLocalDataStore>().AsSingle();
-            Container.BindInterfacesTo<ResolutionController>().AsSingle();
 
             var resolutionSettings = Resources.Load<ResolutionSettings>(ResolutionSettings.FileName);
             Container.BindInstance(resolutionSettings).AsSingle();

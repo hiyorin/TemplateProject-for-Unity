@@ -7,10 +7,12 @@ using UnityEngine;
 using UnityExtensions.Editor;
 using Zenject;
 
-namespace SocialGame.Internal
+namespace SocialGame.Internal.Editor
 {
     internal sealed class SetupWindow : ScriptableWizard
     {
+        private const string ADX2_Symbol = "SGT_ADX2";
+
         [MenuItem("Window/Setup SocialGameTemplate")]
         private static void Open()
         {
@@ -55,6 +57,12 @@ namespace SocialGame.Internal
             SetupUnitTest();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+            
+            
+            if (Directory.Exists(Path.Combine(Application.dataPath, "Plugins/CriWare")))
+                MenuEditor.AddSymbols(ADX2_Symbol);
+            else
+                MenuEditor.RemoveSymbols(ADX2_Symbol);
         }
 
         private void SetupExtensions()
@@ -94,14 +102,24 @@ namespace SocialGame.Internal
                     "UniRx",
                     "UniRx.Async")
                 .Write();
-            new AssemblyDefinitionBuilder("Plugins/SocialGameTemplate/Scripts/SocialGameTemplate")
+
+            var builder = new AssemblyDefinitionBuilder("Plugins/SocialGameTemplate/Scripts/SocialGameTemplate")
                 .AddReferences(
                     "Zenject",
                     "UniRx",
                     "UniRx.Async",
                     "MemoryInfoPlugin",
-                    "UnityExtensions")
-                .Write();
+                    "UnityExtensions");
+
+            if (Directory.Exists(Path.Combine(Application.dataPath, "Plugins/CriWare")))
+            {
+                new AssemblyDefinitionBuilder("Plugins/CriWare/CriWare")
+                    .Write();
+
+                builder.AddReferences("CriWare");
+            }
+
+            builder.Write();
         }
 
         private void SetupUnitTest()

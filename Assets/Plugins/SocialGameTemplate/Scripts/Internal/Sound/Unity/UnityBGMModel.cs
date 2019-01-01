@@ -6,27 +6,15 @@ using UnityExtensions;
 using Zenject;
 using UniRx;
 
-namespace SocialGame.Internal.Sound
+namespace SocialGame.Internal.Sound.Unity
 {
-    internal interface IBGMIntent
-    {
-        IObservable<BGM> OnPlayAsObservable();
-
-        IObservable<Unit> OnStopAsObservable();
-    }
-
-    internal interface IBGMModel
-    {
-        IObservable<AudioSource> OnAddAudioSourceAsObservable();
-    }
-
-    internal sealed class BGMModel : IInitializable, IDisposable, IBGMModel
+    internal sealed class UnityBGMModel : IInitializable, IDisposable, ISoundModel
     {
         [Inject] private IBGMIntent _intent = null;
 
         [Inject] private ISoundVolumeIntent _volumeIntent = null;
 
-        [Inject] private BGMSettings _settings = null;
+        [Inject] private UnityBGMSettings _settings = null;
 
         private ReactiveCollection<AudioSource> _audioSources = new ReactiveCollection<AudioSource>();
 
@@ -37,8 +25,7 @@ namespace SocialGame.Internal.Sound
             if (_settings.Group == null)
                 return;
             
-            _intent
-                .OnPlayAsObservable()
+            _intent.OnPlayAsObservable()
                 .SelectMany(bgm => {
                     var afterSource = _audioSources.FirstOrDefault(x => !x.enabled);
                     if (afterSource == null)
@@ -61,9 +48,12 @@ namespace SocialGame.Internal.Sound
                 })
                 .Subscribe()
                 .AddTo(_disposable);
+
+            _intent.OnPlayForNameAsObservable()
+                .Subscribe(_ => Debug.unityLogger.LogWarning(GetType().Name, "Not supported"))
+                .AddTo(_disposable);
             
-            _intent
-                .OnStopAsObservable()
+            _intent.OnStopAsObservable()
                 .SelectMany(_ => _audioSources
                     .Select(x => x.FadeOutAsCoroutine(_settings.FadeOutDuration).ToObservable())
                     .WhenAll()
@@ -76,15 +66,14 @@ namespace SocialGame.Internal.Sound
                 })
                 .AddTo(_disposable);
             
-            _volumeIntent
-                .OnBGMVolumeAsObservable()
+            _volumeIntent.OnBGMVolumeAsObservable()
                 .Select(x => Mathf.Lerp(-80.0F, 0.0F, Mathf.Clamp01(x)))
                 .Subscribe(x => _settings.Group.audioMixer.SetFloat(_settings.VolumeExposedParameter, x))
                 .AddTo(_disposable);
 
             for (var i = 0; i < 2; i++)
             {
-                var audioSource = new GameObject(i.ToString("000")).AddComponent<AudioSource>();
+                var audioSource = new GameObject($"BGM_{i:000}").AddComponent<AudioSource>();
                 audioSource.outputAudioMixerGroup = _settings.Group;
                 audioSource.enabled = false;
                 _audioSources.Add(audioSource);
@@ -96,12 +85,17 @@ namespace SocialGame.Internal.Sound
             _disposable.Dispose();
         }
 
-        #region IBGMModel implementation
-        IObservable<AudioSource> IBGMModel.OnAddAudioSourceAsObservable()
+        #region ISoundModel implementation
+        IObservable<Unit> ISoundModel.OnInitializeAsObservable()
+        {
+            return Observable.ReturnUnit();
+        }
+        
+        IObservable<Transform> ISoundModel.OnAddObjectAsObservable()
         {
             return _audioSources
                 .ObserveAdd()
-                .Select(x => x.Value);
+                .Select(x => x.Value.transform);
         }
         #endregion
     }

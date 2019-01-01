@@ -128,6 +128,12 @@ namespace SocialGame.Data
         }
 
         #if UNITY_EDITOR
+        public static void DeleteFile<U, V>() where U:LocalStorageBase<V>, new()
+        {
+            var filename = new U().FileName;
+            FileUtility.Delete(filename);
+        }
+        
         protected abstract class CustomInspectorBase<U, V> : Editor where U:LocalStorageBase<V>
         {
             private U _owner;

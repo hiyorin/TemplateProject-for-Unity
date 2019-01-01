@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SocialGame.Internal
+namespace SocialGame.Internal.Editor
 {
     public sealed class AssemblyDefinitionBuilder
     {
@@ -16,6 +16,16 @@ namespace SocialGame.Internal
             public List<string> includePlatforms;
             public List<string> excludePlatforms;
             public bool allowUnsafeCode;
+
+            public void Copy(AssemblyDefinition value)
+            {
+                name = value.name;
+                references = value.references;
+                optionalUnityReferences = value.optionalUnityReferences;
+                includePlatforms = value.includePlatforms;
+                excludePlatforms = value.excludePlatforms;
+                allowUnsafeCode = value.allowUnsafeCode;
+            }
         }
 
         private readonly string _filePath;
@@ -71,6 +81,13 @@ namespace SocialGame.Internal
             return this;
         }
 
+        public AssemblyDefinitionBuilder Read()
+        {
+            var json = File.ReadAllText(_filePath);
+            _asmdef.Copy(JsonUtility.FromJson<AssemblyDefinition>(json));
+            return this;
+        }
+        
         public AssemblyDefinitionBuilder Write()
         {
             var json = JsonUtility.ToJson(_asmdef, true);

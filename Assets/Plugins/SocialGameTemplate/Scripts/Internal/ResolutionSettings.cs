@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SocialGame.Internal.Data.DataStore;
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -63,6 +64,8 @@ namespace SocialGame.Internal
                 ScreenResolutionGUI();
                 EditorGUILayout.Space();
                 CanvasResolutionGUI();
+                EditorGUILayout.Space();
+                DeleteSaveFile();
                 EditorUtility.SetDirty(_owner);
             }
 
@@ -101,6 +104,15 @@ namespace SocialGame.Internal
                 _owner._canvasSize = EditorGUILayout.Vector2IntField("Size", _owner._canvasSize);
 
                 EditorGUI.indentLevel--;
+            }
+            
+            private void DeleteSaveFile()
+            {
+                if (GUILayout.Button("Delete Save File"))
+                {
+                    ResolutionLocalStorage
+                        .DeleteFile<ResolutionLocalStorage, SocialGame.Internal.Data.Entity.Resolution>();
+                }
             }
         }
         #endif

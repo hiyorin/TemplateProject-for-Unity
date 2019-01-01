@@ -1,31 +1,19 @@
 ﻿using System;
 using System.Linq;
-using SocialGame.Sound;
 using UnityEngine;
 using UnityExtensions;
 using Zenject;
 using UniRx;
 
-namespace SocialGame.Internal.Sound
+namespace SocialGame.Internal.Sound.Unity
 {
-    internal interface IVoiceIntent
-    {
-        IObservable<Voice> OnPlayAsObservable();
-        IObservable<Unit> OnStopAsObservable();
-    }
-
-    internal interface IVoiceModel
-    {
-        IObservable<AudioSource> OnAddAudioSourceAsObservable();
-    }
-
-    public sealed class VoiceModel : IInitializable, IDisposable, IVoiceModel
+    internal sealed class UnityVoiceModel : IInitializable, IDisposable, ISoundModel
     {
         [Inject] private IVoiceIntent _intent = null;
 
         [Inject] private ISoundVolumeIntent _volumeIntent = null;
 
-        [Inject] private VoiceSettings _settings = null;
+        [Inject] private UnityVoiceSettings _settings = null;
 
         private ReactiveCollection<AudioSource> _audioSources = new ReactiveCollection<AudioSource>();
 
@@ -37,8 +25,7 @@ namespace SocialGame.Internal.Sound
                 return;
             
             var playIndex = 0;
-            _intent
-                .OnPlayAsObservable()
+            _intent.OnPlayAsObservable()
                 .Subscribe(voice => {
                     var audioSource =_audioSources[playIndex];
                     var clip = _settings.Clips.ElementAt((int)voice);
@@ -47,20 +34,22 @@ namespace SocialGame.Internal.Sound
                 })
                 .AddTo(_disposable);
 
-            _intent
-                .OnStopAsObservable()
+            _intent.OnPlayForNameAsObservable()
+                .Subscribe(_ => Debug.unityLogger.LogWarning(GetType().Name, "not supported"))
+                .AddTo(_disposable);
+            
+            _intent.OnStopAsObservable()
                 .Subscribe(_ => _audioSources.ForEach(x => x.Stop()))
                 .AddTo(_disposable);
 
-            _volumeIntent
-                .OnVoiceVolumeAsObservable()
+            _volumeIntent.OnVoiceVolumeAsObservable()
                 .Select(x => Mathf.Lerp(-80.0F, 0.0F, Mathf.Clamp01(x)))
                 .Subscribe(x => _settings.Group.audioMixer.SetFloat(_settings.VolumeExposedParameter, x))
                 .AddTo(_disposable);
 
             for (var i = 0; i < _settings.MaxPlayCount; i++)
             {
-                var audioSource = new GameObject(i.ToString("000")).AddComponent<AudioSource>();
+                var audioSource = new GameObject($"Voice_{i:000}").AddComponent<AudioSource>();
                 audioSource.outputAudioMixerGroup = _settings.Group;
                 _audioSources.Add(audioSource);
             }
@@ -72,11 +61,16 @@ namespace SocialGame.Internal.Sound
         }
 
         #region IVoiceModel implementation
-        IObservable<AudioSource> IVoiceModel.OnAddAudioSourceAsObservable()
+        IObservable<Unit> ISoundModel.OnInitializeAsObservable()
+        {
+            return Observable.ReturnUnit();
+        }
+        
+        IObservable<Transform> ISoundModel.OnAddObjectAsObservable()
         {
             return _audioSources
                 .ObserveAdd()
-                .Select(x => x.Value);
+                .Select(x => x.Value.transform);
         }
         #endregion
     }

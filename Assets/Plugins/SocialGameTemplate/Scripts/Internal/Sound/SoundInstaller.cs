@@ -2,14 +2,16 @@
 
 namespace SocialGame.Internal.Sound
 {
-    public sealed class SoundInstaller : MonoInstaller
+    internal sealed class SoundInstaller : MonoInstaller
     {
+        [Inject] private SoundEngine _soundEngine;
+        
         public override void InstallBindings()
         {
-            Container.BindInterfacesTo<SoundModel>().AsSingle();
-            Container.BindInterfacesTo<BGMModel>().AsSingle();
-            Container.BindInterfacesTo<SEModel>().AsSingle();
-            Container.BindInterfacesTo<VoiceModel>().AsSingle();
+            if (_soundEngine == SoundEngine.Unity)
+                Container.Install<Unity.UnitySoundInstaller>();
+            else
+                Container.Install<ADX2.ADX2SoundInstaller>();
         }
     }
 }

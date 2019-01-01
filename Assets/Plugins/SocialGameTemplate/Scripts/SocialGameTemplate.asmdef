@@ -5,7 +5,8 @@
         "UniRx",
         "UniRx.Async",
         "MemoryInfoPlugin",
-        "UnityExtensions"
+        "UnityExtensions",
+        "CriWare"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

@@ -42,17 +42,19 @@ sysinfo.txt
 *.unitypackage
 
 # Submodule
-/Assets/Haste/*
-/Assets/Haste.meta
-/Assets/Plugins/UniRx/*
-/Assets/Plugins/UniRx.meta
-/Assets/Plugins/Zenject/*
-/Assets/Plugins/Zenject.meta
-/Assets/Plugins/UnityExtensions/*
-/Assets/Plugins/UnityExtensions.meta
-/Assets/Plugins/MemoryInfoPlugin/*
-/Assets/Plugins/MemoryInfoPlugin.meta
-/Assets/Demigiant/*
-/Assets/Demigiant.meta
-/Assets/Resources/DOTweenSettings.asset
-/Assets/Resources/DOTweenSettings.asset.meta
+/Assets/Sandbox*
+/Assets/Haste*
+/Assets/Plugins/UniRx*
+/Assets/Plugins/MessagePack*
+/Assets/Plugins/Zenject*
+/Assets/Plugins/UnityExtensions*
+/Assets/Plugins/MemoryInfoPlugin*
+/Assets/Demigiant*
+/Assets/Resources/DOTweenSettings.asset*
+/Assets/Gizmos/CriWare*
+/Assets/Editor/CriWare*
+/Assets/Plugins/CriWare*
+/Assets/Plugins/cri_ware_unity.bundle*
+/Assets/Plugins/Android*
+/Assets/Plugins/iOS*
+/Assets/Plugins/x86*

@@ -53,6 +53,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4812127413910096}
   - component: {fileID: 114109143656007832}
+  - component: {fileID: 114117247369179848}
   m_Layer: 0
   m_Name: Data
   m_TagString: Untagged
@@ -152,6 +153,7 @@ GameObject:
   - component: {fileID: 4001213004303640}
   - component: {fileID: 114507575203586626}
   - component: {fileID: 114020270446194746}
+  - component: {fileID: 114083592073635156}
   m_Layer: 0
   m_Name: ProjectContext
   m_TagString: Untagged
@@ -331,7 +333,19 @@ MonoBehaviour:
   _sceneManager: {fileID: 114546800403164926}
   _uiCamera: {fileID: 20465132360735308}
   _eventSystem: {fileID: 114763034904787464}
+--- !u!114 &114083592073635156
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1611323071596390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 178b23cc15f54b359eb30c3bc920092d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _resolutionStorage: {fileID: 114109143656007832}
+  _soundVolumeStorage: {fileID: 114117247369179848}
 --- !u!114 &114109143656007832
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -345,6 +359,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _model:
     Quality: 0
+--- !u!114 &114117247369179848
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1292897450832646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d68e246b82bc40a8b93cde6708a66251, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _model:
+    Master: 0
+    BGM: 0
+    SE: 0
+    Voice: 0
 --- !u!114 &114221964586915804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -380,8 +410,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _installers:
   - {fileID: 114020270446194746}
+  - {fileID: 114083592073635156}
   _installerPrefabs: []
-  _scriptableObjectInstallers: []
+  _scriptableObjectInstallers:
+  - {fileID: 11400000, guid: 2f635c3902abf442aa471138650de2c8, type: 2}
   _parentNewObjectsUnderContext: 1
   _editorReflectionBakingCoverageMode: 0
   _buildsReflectionBakingCoverageMode: 0
