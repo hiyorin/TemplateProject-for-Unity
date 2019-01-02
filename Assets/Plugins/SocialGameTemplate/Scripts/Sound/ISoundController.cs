@@ -11,6 +11,8 @@ namespace SocialGame.Sound
 
         void PlayBGM(string name);
 
+        void PauseBGM(bool pause);
+
         void StopBGM();
 
         void PlaySE(SE value);

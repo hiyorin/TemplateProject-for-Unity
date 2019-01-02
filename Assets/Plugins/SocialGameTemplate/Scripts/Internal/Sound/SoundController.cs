@@ -2,6 +2,7 @@
 using System.Linq;
 using SocialGame.Sound;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
 namespace SocialGame.Internal.Sound
@@ -11,6 +12,8 @@ namespace SocialGame.Internal.Sound
         IObservable<BGM> OnPlayAsObservable();
 
         IObservable<string> OnPlayForNameAsObservable();
+
+        IObservable<bool> OnPauseAsObservable();
 
         IObservable<Unit> OnStopAsObservable();
     }
@@ -34,13 +37,15 @@ namespace SocialGame.Internal.Sound
     internal sealed class SoundController : IInitializable, IDisposable, ISoundController, IBGMIntent, ISEIntent, IVoiceIntent
     {
         [Inject] private ISoundModel[] _models = null;
-        
-        private readonly BoolReactiveProperty _initialized = new BoolReactiveProperty();
 
+        private readonly BoolReactiveProperty _initialized = new BoolReactiveProperty();
+        
         private readonly Subject<BGM> _onPlayBGM = new Subject<BGM>();
         
         private readonly Subject<string> _onPlayBGMForName = new Subject<string>();
 
+        private readonly Subject<bool> _onPauseBGM = new Subject<bool>();
+        
         private readonly Subject<Unit> _onStopBGM = new Subject<Unit>();
 
         private readonly Subject<SE> _onPlaySE = new Subject<SE>();
@@ -58,8 +63,9 @@ namespace SocialGame.Internal.Sound
         void IInitializable.Initialize()
         {
             _models
-                .Select(x => x.OnInitializeAsObservable())
+                .Select(x => x.OnInitializedAsObservable().First())
                 .WhenAll()
+                .First()
                 .Subscribe(_ => _initialized.Value = true)
                 .AddTo(_disposable);
         }
@@ -85,6 +91,11 @@ namespace SocialGame.Internal.Sound
         void ISoundController.PlayBGM(string name)
         {
             _onPlayBGMForName.OnNext(name);
+        }
+
+        void ISoundController.PauseBGM(bool pause)
+        {
+            _onPauseBGM.OnNext(pause);
         }
         
         void ISoundController.StopBGM()
@@ -127,6 +138,11 @@ namespace SocialGame.Internal.Sound
         IObservable<string> IBGMIntent.OnPlayForNameAsObservable()
         {
             return _onPlayBGMForName;
+        }
+
+        IObservable<bool> IBGMIntent.OnPauseAsObservable()
+        {
+            return _onPauseBGM;
         }
 
         IObservable<Unit> IBGMIntent.OnStopAsObservable()

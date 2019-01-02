@@ -61,7 +61,7 @@ namespace SocialGame.Internal.Sound.Unity
         }
 
         #region IVoiceModel implementation
-        IObservable<Unit> ISoundModel.OnInitializeAsObservable()
+        IObservable<Unit> ISoundModel.OnInitializedAsObservable()
         {
             return Observable.ReturnUnit();
         }

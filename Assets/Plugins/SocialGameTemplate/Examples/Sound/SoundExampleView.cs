@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,15 +10,31 @@ namespace SocialGame.Examples.Sound
     {
         [SerializeField] private Dropdown _bgmDropdown = null;
 
+        [SerializeField] private Dropdown _seDropdown = null;
+        
+        [SerializeField] private Dropdown _voiceDropdown = null;
+        
         [Inject] private ISoundExampleModel _model = null;
+
+        private void Awake()
+        {
+            _bgmDropdown.ClearOptions();
+            _seDropdown.ClearOptions();
+            _voiceDropdown.ClearOptions();
+        }
         
         private void Start()
         {
-            _bgmDropdown.ClearOptions();
-            
             _model.OnAddBgmAsObservable()
-                .Select(x => new List<string>(x))
-                .Subscribe(x => _bgmDropdown.AddOptions(x))
+                .Subscribe(x => _bgmDropdown.AddOptions(x.ToList()))
+                .AddTo(this);
+
+            _model.OnAddSeAsObservable()
+                .Subscribe(x => _seDropdown.AddOptions(x.ToList()))
+                .AddTo(this);
+
+            _model.OnAddVoiceAsObservable()
+                .Subscribe(x => _voiceDropdown.AddOptions(x.ToList()))
                 .AddTo(this);
         }
     }

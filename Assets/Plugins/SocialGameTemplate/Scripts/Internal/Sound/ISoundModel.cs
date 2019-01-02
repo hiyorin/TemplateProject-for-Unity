@@ -6,7 +6,7 @@ namespace SocialGame.Internal.Sound
 {
     public interface ISoundModel
     {
-        IObservable<Unit> OnInitializeAsObservable();
+        IObservable<Unit> OnInitializedAsObservable();
         
         IObservable<Transform> OnAddObjectAsObservable();
     }

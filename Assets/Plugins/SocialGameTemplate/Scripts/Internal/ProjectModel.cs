@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using SocialGame.Sound;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -7,8 +8,10 @@ using UniRx;
 
 namespace SocialGame.Internal
 {
-    public sealed class ProjectModel : IInitializable, IDisposable
+    public sealed class ProjectModel : IInitializable, IDisposable, IProject
     {
+        [Inject] private ISoundController _soundController = null;
+        
         [Inject] private ApplicationSettings _settings = null;
 
         private readonly BoolReactiveProperty _initialized = new BoolReactiveProperty();
@@ -21,7 +24,6 @@ namespace SocialGame.Internal
             "Toast",
             "TapEffect",
             "Loading",
-            "Sound",
         };
 
         public const string RootPath = "Plugins/SocialGameTemplate";
@@ -31,6 +33,10 @@ namespace SocialGame.Internal
             SystemSceneNames
                 .Select(x => SceneManager.LoadSceneAsync(x, LoadSceneMode.Additive).AsObservable().AsUnitObservable())
                 .WhenAll()
+                // wait, initialize scene context
+                .SelectMany(_ => Observable.NextFrame())
+                // wait, initialize module
+                .SelectMany(_ => _soundController.OnInitializedAsObservable())
                 .Subscribe(_ => _initialized.Value = true)
                 .AddTo(_disposable);
 
@@ -42,11 +48,13 @@ namespace SocialGame.Internal
             _disposable.Dispose();
         }
 
-        public IObservable<Unit> OnInitializedAsObservable()
+        #region IProject implementation
+        IObservable<Unit> IProject.OnInitializedAsObservable()
         {
             return _initialized
                 .Where(x => x)
                 .AsUnitObservable();
         }
+        #endregion
     }
 }

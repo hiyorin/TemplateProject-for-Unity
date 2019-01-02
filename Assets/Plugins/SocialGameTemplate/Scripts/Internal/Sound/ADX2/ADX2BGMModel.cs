@@ -16,8 +16,12 @@ namespace SocialGame.Internal.Sound.ADX2
         
         [Inject] private ADX2BGMSettings _settings = null;
         
-        private readonly BoolReactiveProperty _initialized = new BoolReactiveProperty();
+        private readonly BoolReactiveProperty _initialized = new BoolReactiveProperty(false);
 
+        private readonly FloatReactiveProperty _masterVolume = new FloatReactiveProperty(1.0f);
+        
+        private readonly FloatReactiveProperty _volume = new FloatReactiveProperty(1.0f);
+        
         private readonly ReactiveProperty<CriAtomSource> _source = new ReactiveProperty<CriAtomSource>();
         
         private readonly Dictionary<string, string> _cueSheetDictionary = new Dictionary<string, string>();
@@ -31,32 +35,32 @@ namespace SocialGame.Internal.Sound.ADX2
                 .Where(_ => CriWareInitializer.IsInitialized())
                 .First()
                 .SelectMany(_ => ADX2Utility.AddCueSheet(_settings.BuiltInCueSheet)
-                    .First()
-                    .Where(x => x != null))
-                .Subscribe(x =>
+                    .First())
+                .Subscribe(cueSheet =>
                 {
-                    // add cue list
-                    var cueNameList = ADX2Utility.GetCueNameList(x.name);
-                    foreach (var cueName in cueNameList)
-                        _cueSheetDictionary.Add(cueName, x.name);
+                    if (cueSheet != null)
+                    {
+                        // add cue list
+                        var cueNameList = ADX2Utility.GetCueNameList(cueSheet.name);
+                        foreach (var cueName in cueNameList)
+                            _cueSheetDictionary.Add(cueName, cueSheet.name);
 
-                    // create sound source
-                    var source = new GameObject("BGM").AddComponent<CriAtomSource>();
-                    source.use3dPositioning = false;
-                    source.loop = true;
-                    source.player.AttachFader();
+                        // create sound source
+                        var source = new GameObject("BGM").AddComponent<CriAtomSource>();
+                        source.use3dPositioning = false;
+                        source.loop = true;
+                        source.player.AttachFader();
+                        _source.Value = source;
+                    }
 
-                    _source.Value = source;
+                    _initialized.Value = true;
                 })
                 .AddTo(_disposable);
-
+            
             Observable.Merge(
                     _intent.OnPlayAsObservable().Select(x => x.ToString()),
                     _intent.OnPlayForNameAsObservable())
-                .SelectMany(x => _initialized
-                    .Where(y => y)
-                    .First()
-                    .Select(_ => x))
+                .Where(_ => _initialized.Value)
                 .Subscribe(x =>
                 {
                     string cueSheet;
@@ -67,29 +71,45 @@ namespace SocialGame.Internal.Sound.ADX2
                     }
 
                     _source.Value.cueSheet = cueSheet;
-                    _source.Value.Play(x.ToString());
+                    _source.Value.Pause(false);
+                    _source.Value.Play(x);
                 })
                 .AddTo(_disposable);
 
+            _intent.OnPauseAsObservable()
+                .Where(_ => _source.Value != null)
+                .Subscribe(x => _source.Value.Pause(x))
+                .AddTo(_disposable);
+            
             _intent.OnStopAsObservable()
+                .Where(_ => _source.Value != null)
                 .Subscribe(_ => _source.Value.Stop())
                 .AddTo(_disposable);
-
+            
             // volume
             _volumeIntent.OnMasterVolumeAsObservable()
-                .SelectMany(x => _initialized
-                    .Where(y => y)
-                    .First()
-                    .Select(_ => x))
+                .Subscribe(x => _masterVolume.Value = x)
+                .AddTo(_disposable);
+            
+            _volumeIntent.OnVoiceVolumeAsObservable()
+                .Subscribe(x => _volume.Value = x)
+                .AddTo(_disposable);
+
+            var initialize = _initialized
+                .Where(x => x)
+                .First()
+                .Publish()
+                .RefCount();
+            
+            
+            initialize
+                .Where(_ => _source.Value != null)
+                .SelectMany(_ => _masterVolume)
                 .Subscribe(x => _source.Value.volume = x)
                 .AddTo(_disposable);
             
-            _volumeIntent.OnBGMVolumeAsObservable()
-                .SelectMany(x => _initialized
-                    .Where(y => y)
-                    .First()
-                    .Select(_ => x))
-                .Do(_ => Debug.Log(CriAtom.GetCategoryVolume(_settings.CategoryVolumeName)))
+            initialize
+                .SelectMany(_ => _volume)
                 .Subscribe(x => CriAtom.SetCategoryVolume(_settings.CategoryVolumeName, x))
                 .AddTo(_disposable);
         }
@@ -100,7 +120,7 @@ namespace SocialGame.Internal.Sound.ADX2
         }
         
         #region ISoundModel implementation
-        IObservable<Unit> ISoundModel.OnInitializeAsObservable()
+        IObservable<Unit> ISoundModel.OnInitializedAsObservable()
         {
             return _initialized
                 .Where(x => x)
