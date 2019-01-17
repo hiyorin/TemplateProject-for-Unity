@@ -8,6 +8,8 @@ namespace SocialGame.Examples.Sound
 {
     internal interface ISoundExampleIntent
     {
+        IObservable<float> OnVolumeAsObservable();
+        
         IObservable<string> OnSelectAsObservable();
 
         IObservable<Unit> OnClickPlayButtonAsObservable();
@@ -19,6 +21,8 @@ namespace SocialGame.Examples.Sound
     
     internal sealed class SoundExampleIntent : MonoBehaviour, ISoundExampleIntent
     {
+        [SerializeField] private Slider _volumeSlider = null;
+        
         [SerializeField] private Dropdown _dropdown = null;
 
         [SerializeField] private Button _playButton = null;
@@ -27,6 +31,11 @@ namespace SocialGame.Examples.Sound
 
         [SerializeField] private Button _stopButton = null;
 
+        IObservable<float> ISoundExampleIntent.OnVolumeAsObservable()
+        {
+            return _volumeSlider.OnValueChangedAsObservable();
+        }
+        
         IObservable<string> ISoundExampleIntent.OnSelectAsObservable()
         {
             return _dropdown.OnValueChangedAsObservable()

@@ -6,8 +6,10 @@ namespace SocialGame.Sound
 {
     public interface ISoundVolumeController
     {
-        IObservable<SoundVolume> Get();
+        SoundVolume Get();
 
-        IObservable<Unit> Put(SoundVolume value);
+        void Put(SoundVolume value);
+
+        IObservable<Unit> Save();
     }
 }

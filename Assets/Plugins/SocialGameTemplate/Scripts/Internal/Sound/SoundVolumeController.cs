@@ -22,7 +22,7 @@ namespace SocialGame.Internal.Sound
         private readonly FloatReactiveProperty _voice = new FloatReactiveProperty();
         
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
-        
+
         void IInitializable.Initialize()
         {
             var settings = _localStorage.Model; 
@@ -54,19 +54,24 @@ namespace SocialGame.Internal.Sound
         }
 
         #region ISoundVolumeController implementation
-        IObservable<SoundVolume> ISoundVolumeController.Get()
+        SoundVolume ISoundVolumeController.Get()
         {
-            return Observable.Return(_localStorage.Model.Clone() as SoundVolume);
+            return _localStorage.Model.Clone() as SoundVolume;
         }
 
-        IObservable<Unit> ISoundVolumeController.Put(SoundVolume value)
+        void ISoundVolumeController.Put(SoundVolume value)
         {
             if (value == null)
                 throw new ArgumentException();
+            
             _master.Value = value.Master;
             _bgm.Value = value.BGM;
             _se.Value = value.SE;
             _voice.Value = value.Voice;
+        }
+
+        IObservable<Unit> ISoundVolumeController.Save()
+        {
             return _localStorage.SaveAsync();
         }
         #endregion

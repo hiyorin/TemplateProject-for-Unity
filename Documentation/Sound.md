@@ -6,10 +6,13 @@ Supports AudioSource and [ADX2](https://game.criware.jp/products/adx2-smartphone
 ## SoundSettings
 Resources/SoundSettings.asset
 
+### General
+
 ### Unity (AudioSource)
 
 ### ADX2 (CRIWare)
 
+### Generate Enum
 
 
 ## Usage
@@ -45,16 +48,19 @@ private void Example() {
 ```cs
 [Inject] private ISoundVolumeController _soundVolumeController;
 private void Example() {
-  _soundVolumeController.Get()
-    .Subscribe(x => Debug.Log(x))
-    .AddTo(this);
+  // Get
+  Debug.Log(_soundVolumeController.Get());
 
+  // Set
   _soundVolumeController.Put(new SoundVolume() {
       Master  = 1.0f,
       BGM     = 0.8f,
       SE      = 0.6f,
       Voice   = 0.4f,
-    })
+    });
+
+  // Save
+  _soundVolumeController.Save()
     .Subscribe()
     .AddTo(this);
 }

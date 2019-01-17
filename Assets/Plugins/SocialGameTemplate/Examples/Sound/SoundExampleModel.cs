@@ -1,4 +1,5 @@
 using System;
+using SocialGame.Data.Entity;
 using SocialGame.Sound;
 using Zenject;
 using UniRx;
@@ -12,6 +13,12 @@ namespace SocialGame.Examples.Sound
         IObservable<string[]> OnAddSeAsObservable();
         
         IObservable<string[]> OnAddVoiceAsObservable();
+
+        IObservable<float> OnChangeBgmVolumeAsObservable();
+        
+        IObservable<float> OnChangeSeVolumeAsObservable();
+        
+        IObservable<float> OnChangeVoiceVolumeAsObservable();
     }
     
     internal sealed class SoundExampleModel : IInitializable, IDisposable, ISoundExampleModel
@@ -24,7 +31,15 @@ namespace SocialGame.Examples.Sound
 
         [Inject] private ISoundController _controller = null;
 
+        [Inject] private ISoundVolumeController _volumeController;
+        
         [Inject] private IProject _project = null;
+        
+        private readonly FloatReactiveProperty _bgmVolume = new FloatReactiveProperty();
+        
+        private readonly FloatReactiveProperty _seVolume = new FloatReactiveProperty();
+        
+        private readonly FloatReactiveProperty _voiceVolume = new FloatReactiveProperty();
         
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
         
@@ -93,6 +108,25 @@ namespace SocialGame.Examples.Sound
             _voiceIntent.OnClickStopButtonAsObservable()
                 .Subscribe(_ => _controller.StopVoice())
                 .AddTo(_disposable);
+            
+            // volume
+            var volume = _volumeController.Get();
+            _bgmVolume.Value = volume.BGM;
+            _seVolume.Value = volume.SE;
+            _voiceVolume.Value = volume.Voice;
+            
+            Observable.Merge(
+                    _bgmIntent.OnVolumeAsObservable().Skip(1).Do(x => _bgmVolume.Value = x),
+                    _seIntent.OnVolumeAsObservable().Skip(1).Do(x => _seVolume.Value = x),
+                    _voiceIntent.OnVolumeAsObservable().Skip(1).Do(x => _voiceVolume.Value = x))
+                .Subscribe(x => _volumeController.Put(new SoundVolume()
+                {
+                    Master = 1.0f,
+                    BGM = _bgmVolume.Value,
+                    SE = _seVolume.Value,
+                    Voice = _voiceVolume.Value,
+                }))
+                .AddTo(_disposable);
         }
 
         void IDisposable.Dispose()
@@ -113,6 +147,21 @@ namespace SocialGame.Examples.Sound
         IObservable<string[]> ISoundExampleModel.OnAddVoiceAsObservable()
         {
             return Observable.Return(Enum.GetNames(typeof(Voice)));
+        }
+
+        IObservable<float> ISoundExampleModel.OnChangeBgmVolumeAsObservable()
+        {
+            return _bgmVolume;
+        }
+
+        IObservable<float> ISoundExampleModel.OnChangeSeVolumeAsObservable()
+        {
+            return _seVolume;
+        }
+
+        IObservable<float> ISoundExampleModel.OnChangeVoiceVolumeAsObservable()
+        {
+            return _voiceVolume;
         }
     }
 }
