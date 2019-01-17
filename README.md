@@ -50,3 +50,4 @@ using SocialGame;
 ## TapEffect
 
 ## Sound
+See <a href="Documentation/Sound.md">here</a>.

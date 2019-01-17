@@ -17,5 +17,10 @@ namespace SocialGame.Data.Entity
         {
             return MemberwiseClone();
         }
+
+        public override string ToString()
+        {
+            return $"Master : {Master}\nBGM : {BGM}\nSE : {SE}\nVoice : {Voice}";
+        }
     }
 }
