@@ -1,6 +1,6 @@
 # Sound
 Sound Module.  
-Supports AudioSource and ADX2
+Supports AudioSource and [ADX2](https://game.criware.jp/products/adx2-smartphone/) or [ADX2LE](https://www.adx2le.com/)
 
 
 ## SoundSettings
