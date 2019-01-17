@@ -8,11 +8,11 @@
 * [MemoryInfoPlugin-for-Unity](https://github.com/hiyorin/MemoryInfoPlugin-for-Unity)
 
 # Install
-SocialGameTemplete.unitypackage
+SocialGameTemplate.unitypackage
 
 # Setup
   1. Open SetupWindow  
-    Menu/Window/Setup SocialGameTemplete
+    Menu/Window/Setup SocialGameTemplate
   1. Create!
 
 # Usage
@@ -48,3 +48,5 @@ using SocialGame;
 ## Transition
 
 ## TapEffect
+
+## Sound
