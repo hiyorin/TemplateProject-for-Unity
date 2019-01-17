@@ -5,6 +5,7 @@ using SocialGame.Internal.Dialog;
 using UnityEngine;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 using Moq;
 
 [TestFixture]
@@ -16,13 +17,13 @@ public sealed class DialogModelTest : ZenjectUnitTestFixture
 
         public readonly Subject<Unit> Prev = new Subject<Unit>();
 
-        public IObservable<Unit> OnOpenAsObservable(float defaultDuration) { return Observable.ReturnUnit(); }
+        public async UniTask OnOpen(float defaultDuration) {}
+        
+        public async UniTask OnClose(float defaultDuration) {}
 
-        public IObservable<Unit> OnCloseAsObservable(float defaultDuration) { return Observable.ReturnUnit(); }
+        public async UniTask OnStart(object param) {}
 
-        public IObservable<Unit> OnStartAsObservable(object param) { return Observable.ReturnUnit(); }
-
-        public IObservable<Unit> OnResumeAsObservable(object param) { return Observable.ReturnUnit(); }
+        public async UniTask OnResume(object param) {}
 
         public IObservable<RequestDialog> OnNextAsObservable() { return Next.Select(_ => new RequestDialog(DialogType.Sample, null)); }
 

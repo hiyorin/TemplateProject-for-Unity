@@ -15,9 +15,9 @@ namespace SocialGame.Internal.Network
 {
     internal sealed class HttpConnection : IInitializable, IDisposable, IHttpConnection
     {
-        [Inject] private GeneralSettings _generalSettings;
+        [Inject] private GeneralSettings _generalSettings = null;
         
-        [Inject] private HttpSettings _settings;
+        [Inject] private HttpSettings _settings = null;
 
         private string _domain;
 

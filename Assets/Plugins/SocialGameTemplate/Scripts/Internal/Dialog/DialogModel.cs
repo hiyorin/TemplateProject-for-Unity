@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityExtensions;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 
 namespace SocialGame.Internal.Dialog
 {
@@ -77,53 +78,15 @@ namespace SocialGame.Internal.Dialog
                         Param = request.Param,
                     };
                 })
-                .Where(x => x.Dialog != null)
-                .SelectMany(x => {
-                    if (_stack.Count > 0)
-                        return _stack.Peek().Dialog.OnCloseAsObservable(_settings.DefaultDuration).First().Select(_ => x);
-                    else
-                        return Observable.Return(x);
-                })
-                .Do(x => {
-                    _stack.Push(x);
-                    _isOpen.Value = true;
-                })
-                .SelectMany(x => x.Dialog.OnStartAsObservable(x.Param).First().Select(_ => x))
-                .SelectMany(x => x.Dialog.OnOpenAsObservable(_settings.DefaultDuration).First())
-                .Subscribe()
+                .Subscribe(x => Open(x).GetAwaiter())
                 .AddTo(_disposable);
 
-            var close = _onClose
-                .Where(_ => _stack.Count > 0)
-                .SelectMany(x => _stack.Pop().Dialog.OnCloseAsObservable(_settings.DefaultDuration)
-                    .First()
-                    .Select(_ => x))
-                .Publish()
-                .RefCount();
-
-            close
-                .Where(_ => _stack.Count <= 0)
-                .Subscribe(x => {
-                    _isOpen.Value = false;
-                    _intent.Close(x);
-                })
+            _onClose
+                .Subscribe(x => Close(x).GetAwaiter())
                 .AddTo(_disposable);
-
-            close
-                .Where(_ => _stack.Count > 0)
-                .Select(_ => _stack.Peek())
-                .SelectMany(x => x.Dialog.OnResumeAsObservable(x.Param).First())
-                .Subscribe()
-                .AddTo(_disposable);
-
+            
             _intent.OnClearAsObservable()
-                .SelectMany(_ => _stack.Select(x => x.Dialog.OnCloseAsObservable(_settings.DefaultDuration)).WhenAll())
-                .Subscribe(_ =>
-                {
-                    _stack.Clear();
-                    _isOpen.Value = false;
-                    _intent.Close(null);
-                })
+                .Subscribe(_ => CloseAll().GetAwaiter())
                 .AddTo(_disposable);
         }
 
@@ -134,6 +97,49 @@ namespace SocialGame.Internal.Dialog
             _contexts.Clear();
         }
 
+        private async UniTask Open(Request request)
+        {
+            if (request.Dialog == null)
+                return;
+
+            if (_stack.Count > 0)
+                await _stack.Peek().Dialog.OnClose(_settings.DefaultDuration);
+
+            _stack.Push(request);
+            _isOpen.Value = true;
+            
+            await request.Dialog.OnStart(request.Param);
+            await request.Dialog.OnOpen(_settings.DefaultDuration);
+        }
+        
+        private async UniTask Close(object param)
+        {
+            if (_stack.Count <= 0)
+                return;
+            
+            await _stack.Pop().Dialog.OnClose(_settings.DefaultDuration);
+            
+            if (_stack.Count > 0)
+            {
+                await _stack.Peek().Dialog.OnResume(param);
+            }
+            else if (_stack.Count <= 0)
+            {
+                // all close
+                _isOpen.Value = false;
+                _intent.Close(param);
+            }
+        }
+
+        private async UniTask CloseAll()
+        {
+            await UniTask.WhenAll(_stack.Select(x => x.Dialog.OnClose(_settings.DefaultDuration)));
+            
+            _stack.Clear();
+            _isOpen.Value = false;
+            _intent.Close(null);
+        }
+        
         #region IDialogModel implementation
         IObservable<GameObject> IDialogModel.OnAddAsObservable()
         {

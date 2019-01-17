@@ -8,9 +8,9 @@ namespace SocialGame.Internal.Network
     {
         public const string FileName = "NetworkSettings";
         
-        [SerializeField] private GeneralSettings _general;
+        [SerializeField] private GeneralSettings _general = null;
 
-        [SerializeField] private HttpSettings _http;
+        [SerializeField] private HttpSettings _http = null;
 
         internal GeneralSettings General => _general;
 

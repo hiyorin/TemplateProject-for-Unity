@@ -9,9 +9,9 @@ namespace SocialGame.Internal.Data
 {
     internal sealed class ResolutionController : IInitializable, IResolutionController
     {
-        [Inject] private IResolutionDataStore _datastore;
+        [Inject] private IResolutionDataStore _datastore = null;
 
-        [Inject] private ResolutionSettings _settings;
+        [Inject] private ResolutionSettings _settings = null;
 
         private Vector2Int _defaultSize;
         

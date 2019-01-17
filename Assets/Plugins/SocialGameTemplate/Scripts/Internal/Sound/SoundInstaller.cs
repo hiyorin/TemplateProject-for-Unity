@@ -4,7 +4,7 @@ namespace SocialGame.Internal.Sound
 {
     internal sealed class SoundInstaller : MonoInstaller
     {
-        [Inject] private SoundEngine _soundEngine;
+        [Inject] private SoundEngine _soundEngine = SoundEngine.Unity;
         
         public override void InstallBindings()
         {

@@ -12,7 +12,7 @@ namespace Sandbox.Network
     
     public sealed class ExampleCloudDataStore : IExampleDataStore
     {
-        [Inject] private IHttpConnection _connection;
+        [Inject] private IHttpConnection _connection = null;
 
         public IObservable<ExampleEntity> Example(string id)
         {

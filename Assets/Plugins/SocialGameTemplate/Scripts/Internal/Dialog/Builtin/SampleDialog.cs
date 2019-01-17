@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityExtensions;
 using UniRx;
+using UniRx.Async;
 using DG.Tweening;
 
 namespace SocialGame.Internal.Dialog.Builtin
@@ -20,29 +21,29 @@ namespace SocialGame.Internal.Dialog.Builtin
         }
 
         #region IDialog implementation
-        IObservable<Unit> IDialog.OnOpenAsObservable(float defaultDuration)
+        async UniTask IDialog.OnOpen(float defaultDuration)
         {
-            return transform
+            await transform
                 .DOScale(Vector3.one, defaultDuration)
-                .OnCompleteAsObservable();
+                .OnCompleteAsObservable()
+                .First();
         }
-
-        IObservable<Unit> IDialog.OnCloseAsObservable(float defaultDuration)
+        
+        async UniTask IDialog.OnClose(float defaultDuration)
         {
-            return transform
+            await transform
                 .DOScale(Vector3.zero, defaultDuration)
-                .OnCompleteAsObservable();
+                .OnCompleteAsUniTask();
         }
 
-        IObservable<Unit> IDialog.OnStartAsObservable(object param)
+        async UniTask IDialog.OnStart(object param)
         {
             _message.text = param as string;
-            return Observable.ReturnUnit();
         }
 
-        IObservable<Unit> IDialog.OnResumeAsObservable(object param)
+        async UniTask IDialog.OnResume(object param)
         {
-            return Observable.ReturnUnit();
+            
         }
 
         IObservable<RequestDialog> IDialog.OnNextAsObservable()

@@ -9,7 +9,7 @@ namespace Sandbox.Loading
     {
         [SerializeField] private Text _message = null;
         
-        [Inject] private ILoadingExampleModel _model;
+        [Inject] private ILoadingExampleModel _model = null;
 
         private void Start()
         {

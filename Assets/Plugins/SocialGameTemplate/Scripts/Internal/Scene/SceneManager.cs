@@ -28,9 +28,9 @@ namespace SocialGame.Internal.Scene
 
         private static bool IsLoading;
 
-        [Inject] private ITransitionController _transController;
+        [Inject] private ITransitionController _transController = null;
 
-        [Inject] private EventSystem _eventSystem;
+        [Inject] private EventSystem _eventSystem = null;
 
         private LoadContext _loadContext;
 

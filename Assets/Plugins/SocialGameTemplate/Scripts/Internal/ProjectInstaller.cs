@@ -19,11 +19,11 @@ namespace SocialGame.Internal
 {
     internal sealed class ProjectInstaller : MonoInstaller
     {
-        [SerializeField] private SceneManager _sceneManager;
+        [SerializeField] private SceneManager _sceneManager = null;
 
-        [SerializeField] private Camera _uiCamera;
+        [SerializeField] private Camera _uiCamera = null;
 
-        [SerializeField] private EventSystem _eventSystem;
+        [SerializeField] private EventSystem _eventSystem = null;
 
         public override void InstallBindings()
         {

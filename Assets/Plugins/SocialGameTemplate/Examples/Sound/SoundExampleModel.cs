@@ -31,7 +31,7 @@ namespace SocialGame.Examples.Sound
 
         [Inject] private ISoundController _controller = null;
 
-        [Inject] private ISoundVolumeController _volumeController;
+        [Inject] private ISoundVolumeController _volumeController = null;
         
         [Inject] private IProject _project = null;
         
