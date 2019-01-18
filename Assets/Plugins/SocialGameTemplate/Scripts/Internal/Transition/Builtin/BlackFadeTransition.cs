@@ -1,9 +1,8 @@
-﻿using System;
-using SocialGame.Transition;
+﻿using SocialGame.Transition;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityExtensions;
-using UniRx;
+using UniRx.Async;
 using DG.Tweening;
 
 namespace SocialGame.Internal.Transition.Builtin
@@ -13,18 +12,18 @@ namespace SocialGame.Internal.Transition.Builtin
         [SerializeField] private Graphic _background = null;
 
         #region ITransition implementation
-        IObservable<Unit> ITransition.OnTransInAsObservable(float defaultDuration)
+        async UniTask ITransition.OnTransIn(float defaultDuration)
         {
-            return _background
+            await _background
                 .DOFade(1.0f, defaultDuration)
-                .OnCompleteAsObservable();
+                .OnCompleteAsUniTask();
         }
 
-        IObservable<Unit> ITransition.OnTransOutAsObservable(float defaultDuration)
+        async UniTask ITransition.OnTransOut(float defaultDuration)
         {
-            return _background
+            await _background
                 .DOFade(0.0f, defaultDuration)
-                .OnCompleteAsObservable();
+                .OnCompleteAsUniTask();
         }
         #endregion
     }

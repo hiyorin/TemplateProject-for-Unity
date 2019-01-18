@@ -45,7 +45,7 @@ namespace SocialGame.Internal.TapEffect
 
             _intent.OnStopAsObservable()
                 .Where(_ => _currentContext.Value != null)
-                .SelectMany(_ => _currentContext.Value.TapEffect.OnHideAsObservable())
+                .SelectMany(_ => _currentContext.Value.TapEffect.OnHide().ToObservable())
                 .Subscribe(_ => _currentContext.Value = null)
                 .AddTo(_disposable);
 
@@ -58,13 +58,13 @@ namespace SocialGame.Internal.TapEffect
 
             current
                 .Where(_ => Input.GetMouseButtonDown(0))
-                .SelectMany(x => x.OnShowAsObservable().First())
+                .SelectMany(x => x.OnShow().ToObservable())
                 .Subscribe()
                 .AddTo(_disposable);
 
             current
                 .Where(_ => Input.GetMouseButtonUp(0))
-                .SelectMany(x => x.OnHideAsObservable().First())
+                .SelectMany(x => x.OnHide().ToObservable())
                 .Subscribe()
                 .AddTo(_disposable);
 

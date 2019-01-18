@@ -1,6 +1,5 @@
-﻿using System;
-using UnityEngine;
-using UniRx;
+﻿using UnityEngine;
+using UniRx.Async;
 
 namespace SocialGame.TapEffect
 {
@@ -8,8 +7,8 @@ namespace SocialGame.TapEffect
     {
         void OnMove(Vector3 position);
 
-        IObservable<Unit> OnShowAsObservable();
+        UniTask OnShow();
 
-        IObservable<Unit> OnHideAsObservable();
+        UniTask OnHide();
     }
 }

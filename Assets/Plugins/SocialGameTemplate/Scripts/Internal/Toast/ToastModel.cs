@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Castle.Components.DictionaryAdapter.Xml;
 using SocialGame.Toast;
 using UnityEngine;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 
 namespace SocialGame.Internal.Toast
 {
@@ -82,15 +84,16 @@ namespace SocialGame.Internal.Toast
 
             _current
                 .Where(x => x != null)
-                .SelectMany(x => x.Toast.OnOpenAsObservable(x.Param, _settings.DefaultDuration)
-                    .First()
-                    .Select(_ => x))
-                .SelectMany(x => Observable.Timer(TimeSpan.FromSeconds(_settings.ShowDuration))
-                    .First()
-                    .Select(_ => x))
-                .SelectMany(x => x.Toast.OnCloseAsObservable(_settings.DefaultDuration))
+                .SelectMany(x => Process(x).ToObservable())
                 .Subscribe(_ => _current.Value = null)
                 .AddTo(_disposable);
+        }
+
+        private async UniTask Process(Request request)
+        {
+            await request.Toast.OnOpen(request.Param, _settings.DefaultDuration);
+            await UniTask.Delay(TimeSpan.FromSeconds(_settings.ShowDuration));
+            await request.Toast.OnClose(_settings.DefaultDuration);
         }
 
         void IDisposable.Dispose()

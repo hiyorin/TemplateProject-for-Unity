@@ -41,14 +41,14 @@ namespace SocialGame.Internal.Transition
                 .Select(x => x.GetComponent<ITransition>())
                 .Where(x => x != null)
                 .Do(x => _transStack.Push(x))
-                .SelectMany(x => x.OnTransInAsObservable(_settings.DefaultDuration).First())
+                .SelectMany(x => x.OnTransIn(_settings.DefaultDuration).ToObservable())
                 .Subscribe(_onTransInComplete.OnNext)
                 .AddTo(_disposable);
 
             _intent.OnTransOutAsObservable()
                 .Where(_ => _transStack.Count > 0)
                 .Select(_ => _transStack.Pop())
-                .SelectMany(x => x.OnTransOutAsObservable(_settings.DefaultDuration).First())
+                .SelectMany(x => x.OnTransOut(_settings.DefaultDuration).ToObservable())
                 .Subscribe(_onTransOutComplete.OnNext)
                 .AddTo(_disposable);
         }

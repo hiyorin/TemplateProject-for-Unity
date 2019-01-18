@@ -1,9 +1,8 @@
-﻿using System;
-using SocialGame.Toast;
+﻿using SocialGame.Toast;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityExtensions;
-using UniRx;
+using UniRx.Async;
 using DG.Tweening;
 
 namespace SocialGame.Internal.Toast.Builtin
@@ -18,19 +17,19 @@ namespace SocialGame.Internal.Toast.Builtin
         }
 
         #region IToast implementation
-        IObservable<Unit> IToast.OnOpenAsObservable(object param, float defaultDuration)
+        async UniTask IToast.OnOpen(object param, float defaultDuration)
         {
             _message.text = param as string;
-            return transform
+            await transform
                 .DOScale(Vector3.one, defaultDuration)
-                .OnCompleteAsObservable();
+                .OnCompleteAsUniTask();
         }
 
-        IObservable<Unit> IToast.OnCloseAsObservable(float defaultDuration)
+        async UniTask IToast.OnClose(float defaultDuration)
         {
-            return transform
+            await transform
                 .DOScale(Vector3.zero, defaultDuration)
-                .OnCompleteAsObservable();
+                .OnCompleteAsUniTask();
         }
         #endregion
     }

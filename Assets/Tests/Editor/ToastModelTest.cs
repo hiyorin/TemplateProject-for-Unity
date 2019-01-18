@@ -5,6 +5,7 @@ using SocialGame.Internal.Toast;
 using UnityEngine;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 using Moq;
 
 [TestFixture]
@@ -12,15 +13,9 @@ public sealed class ToastModelTest : ZenjectUnitTestFixture
 {
     private class MockToast : MonoBehaviour, IToast
     {
-        public IObservable<Unit> OnOpenAsObservable(object param, float defaultDuration)
-        {
-            return Observable.ReturnUnit();
-        }
+        public async UniTask OnOpen(object param, float defaultDuration) {}
 
-        public IObservable<Unit> OnCloseAsObservable(float defaultDuration)
-        {
-            return Observable.ReturnUnit();
-        }
+        public async UniTask OnClose(float defaultDuration) {}
     }
 
     private readonly Subject<RequestToast> _open = new Subject<RequestToast>();

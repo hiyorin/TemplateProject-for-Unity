@@ -1,12 +1,11 @@
-﻿using System;
-using UniRx;
+﻿using UniRx.Async;
 
 namespace SocialGame.Transition
 {
     public interface ITransition
     {
-        IObservable<Unit> OnTransInAsObservable(float defaultDuration);
+        UniTask OnTransIn(float defaultDuration);
 
-        IObservable<Unit> OnTransOutAsObservable(float defaultDuration);
+        UniTask OnTransOut(float defaultDuration);
     }
 }

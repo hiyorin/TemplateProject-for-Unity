@@ -1,12 +1,11 @@
-﻿using System;
-using UniRx;
+﻿using UniRx.Async;
 
 namespace SocialGame.Toast
 {
     public interface IToast
     {
-        IObservable<Unit> OnOpenAsObservable(object param, float defaultDuration);
+        UniTask OnOpen(object param, float defaultDuration);
 
-        IObservable<Unit> OnCloseAsObservable(float defaultDuration);
+        UniTask OnClose(float defaultDuration);
     }
 }

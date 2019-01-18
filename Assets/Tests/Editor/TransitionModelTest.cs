@@ -5,6 +5,7 @@ using SocialGame.Internal.Transition;
 using UnityEngine;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 using Moq;
 
 [TestFixture]
@@ -12,9 +13,9 @@ public sealed class TransitionModelTest : ZenjectUnitTestFixture
 {
     private class MockTransition : MonoBehaviour, ITransition
     {
-        public IObservable<Unit> OnTransInAsObservable(float defaultDuration) { return Observable.ReturnUnit(); }
+        public async UniTask OnTransIn(float defaultDuration) {}
 
-        public IObservable<Unit> OnTransOutAsObservable(float defaultDuration) { return Observable.ReturnUnit(); }
+        public async UniTask OnTransOut(float defaultDuration) {}
     }
 
     private readonly Subject<TransMode> _in = new Subject<TransMode>();

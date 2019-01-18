@@ -1,8 +1,7 @@
-﻿using System;
-using SocialGame.TapEffect;
+﻿using SocialGame.TapEffect;
 using UnityEngine;
 using Zenject;
-using UniRx;
+using UniRx.Async;
 
 namespace SocialGame.Internal.TapEffect.Builtin
 {
@@ -32,18 +31,14 @@ namespace SocialGame.Internal.TapEffect.Builtin
             _transform.position = worldPosition;
         }
 
-        IObservable<Unit> ITapEffect.OnShowAsObservable()
+        async UniTask ITapEffect.OnShow()
         {
-            return Observable
-                .ReturnUnit()
-                .Do(_ => _particle.Play(true));
+            _particle.Play(true);
         }
 
-        IObservable<Unit> ITapEffect.OnHideAsObservable()
+        async UniTask ITapEffect.OnHide()
         {
-            return Observable
-                .ReturnUnit()
-                .Do(_ => _particle.Stop());
+            _particle.Stop();
         }
         #endregion
     }
