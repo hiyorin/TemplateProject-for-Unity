@@ -2,7 +2,7 @@
 using System.Text;
 using UnityEngine;
 using UnityExtensions;
-using UniRx;
+using UniRx.Async;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -96,10 +96,9 @@ namespace SocialGame.Data
             });
         }
 
-        public IObservable<Unit> SaveAsync()
+        public async UniTask SaveAsync()
         {
-            return Observable.Start(() => Save())
-                .ObserveOnMainThread();
+            await UniTask.Run(Save);
         }
 
         public void Load()
@@ -121,10 +120,9 @@ namespace SocialGame.Data
             _model = JsonUtility.FromJson<T>(Encoding.UTF8.GetString(pack));
         }
 
-        public IObservable<Unit> LoadAsync()
+        public async UniTask LoadAsync()
         {
-            return Observable.Start(() => Load())
-                .ObserveOnMainThread();
+            await UniTask.Run(Load);
         }
 
         #if UNITY_EDITOR

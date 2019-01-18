@@ -1,8 +1,8 @@
-﻿using System;
-using SocialGame.Data;
+﻿using SocialGame.Data;
 using SocialGame.Internal.Data.DataStore;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 using UnityEngine;
 
 namespace SocialGame.Internal.Data
@@ -21,8 +21,8 @@ namespace SocialGame.Internal.Data
         {
             _defaultSize = new Vector2Int(Screen.width, Screen.height);
             
-            _datastore
-                .Get()
+            _datastore.Get()
+                .ToObservable()
                 .Subscribe(x => Apply(x.Quality))
                 .AddTo(_disposable);
         }
@@ -85,15 +85,17 @@ namespace SocialGame.Internal.Data
         }
 
         #region IResolutionController implementation
-        IObservable<Quality> IResolutionController.Put(Quality quality)
+        async UniTask<Quality> IResolutionController.Put(Quality quality)
         {
             Apply(quality);
-            return _datastore.Put(quality).Select(_ => quality);
+            await _datastore.Put(quality);
+            return quality;
         }
 
-        IObservable<Quality> IResolutionController.Get()
+        async UniTask<Quality> IResolutionController.Get()
         {
-            return _datastore.Get().Select(x => x.Quality);
+            var result = await _datastore.Get();
+            return result.Quality;
         }
         #endregion
     }

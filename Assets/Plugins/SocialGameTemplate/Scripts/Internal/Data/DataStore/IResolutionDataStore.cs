@@ -1,14 +1,13 @@
-﻿using System;
-using SocialGame.Data;
+﻿using SocialGame.Data;
 using SocialGame.Internal.Data.Entity;
-using UniRx;
+using UniRx.Async;
 
 namespace SocialGame.Internal.Data.DataStore
 {
     internal interface IResolutionDataStore
     {
-        IObservable<Resolution> Get();
+        UniTask<Resolution> Get();
 
-        IObservable<Unit> Put(Quality quality);
+        UniTask Put(Quality quality);
     }
 }

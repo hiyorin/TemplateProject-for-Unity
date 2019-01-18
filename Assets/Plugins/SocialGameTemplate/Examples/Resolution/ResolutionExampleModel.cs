@@ -24,7 +24,7 @@ namespace Sandbox.Resolution
         void IInitializable.Initialize()
         {
             _controller.Get()
-                .First()
+                .ToObservable()
                 .Subscribe(x => _message.Value = $"{x} {Screen.width}x{Screen.height}")
                 .AddTo(_disposable);
             
@@ -32,7 +32,7 @@ namespace Sandbox.Resolution
                     _intent.OnClickLowButtonAsObservable().Select(_ => Quality.Low),
                     _intent.OnClickMiddleButtonAsObservable().Select(_ => Quality.Middle),
                     _intent.OnClickHighButtonAsObservable().Select(_ => Quality.High))
-                .SelectMany(x => _controller.Put(x))
+                .SelectMany(x => _controller.Put(x).ToObservable())
                 .Subscribe(x => _message.Value = $"{x} {Screen.width}x{Screen.height}")
                 .AddTo(_disposable);
         }

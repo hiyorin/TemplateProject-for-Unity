@@ -1,8 +1,7 @@
-﻿using System;
-using SocialGame.Data;
+﻿using SocialGame.Data;
 using SocialGame.Internal.Data.Entity;
 using Zenject;
-using UniRx;
+using UniRx.Async;
 
 namespace SocialGame.Internal.Data.DataStore
 {
@@ -11,15 +10,15 @@ namespace SocialGame.Internal.Data.DataStore
         [Inject] private ResolutionLocalStorage _storage = null;
     
         #region IResolutionDataStore implementation
-        IObservable<Resolution> IResolutionDataStore.Get()
+        async UniTask<Resolution> IResolutionDataStore.Get()
         {
-            return Observable.Return(_storage.Model);
+            return _storage.Model;
         }
     
-        IObservable<Unit> IResolutionDataStore.Put(Quality quality)
+        async UniTask IResolutionDataStore.Put(Quality quality)
         {
             _storage.Model.Quality = quality;
-            return _storage.SaveAsync();
+            await _storage.SaveAsync();
         }
         #endregion
     }

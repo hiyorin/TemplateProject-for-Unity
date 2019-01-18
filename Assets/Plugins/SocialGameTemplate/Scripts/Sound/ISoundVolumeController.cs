@@ -1,6 +1,5 @@
-using System;
 using SocialGame.Data.Entity;
-using UniRx;
+using UniRx.Async;
 
 namespace SocialGame.Sound
 {
@@ -10,6 +9,6 @@ namespace SocialGame.Sound
 
         void Put(SoundVolume value);
 
-        IObservable<Unit> Save();
+        UniTask Save();
     }
 }

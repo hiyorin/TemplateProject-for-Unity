@@ -4,6 +4,7 @@ using SocialGame.Internal.Data.DataStore;
 using SocialGame.Sound;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 
 namespace SocialGame.Internal.Sound
 {
@@ -68,9 +69,9 @@ namespace SocialGame.Internal.Sound
             _voice.Value = value.Voice;
         }
 
-        IObservable<Unit> ISoundVolumeController.Save()
+        async UniTask ISoundVolumeController.Save()
         {
-            return _localStorage.SaveAsync();
+            await _localStorage.SaveAsync();
         }
         #endregion
         

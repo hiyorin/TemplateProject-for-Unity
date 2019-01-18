@@ -1,5 +1,5 @@
 ﻿using System;
-using UniRx;
+using UniRx.Async;
 
 namespace SocialGame.Data
 {    
@@ -13,8 +13,8 @@ namespace SocialGame.Data
 
     public interface IResolutionController
     {
-        IObservable<Quality> Put(Quality quality);
+        UniTask<Quality> Put(Quality quality);
 
-        IObservable<Quality> Get();
+        UniTask<Quality> Get();
     }
 }
