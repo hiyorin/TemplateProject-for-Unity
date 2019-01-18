@@ -5,6 +5,7 @@ using SocialGame.Internal.Loading;
 using UnityEngine;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 using Moq;
 
 [TestFixture]
@@ -12,9 +13,9 @@ public sealed class LoadingModelTest : ZenjectUnitTestFixture
 {
     private class MockLoading : MonoBehaviour, ILoading
     {
-        public IObservable<Unit> OnShowAsObservable(float defaultDuration) { return Observable.ReturnUnit(); }
+        public async UniTask OnShow(float defaultDuration) {}
 
-        public IObservable<Unit> OnHideAsObservable(float defaultDuration) { return Observable.ReturnUnit(); }
+        public async UniTask OnHide(float defaultDuration) {}
     }
 
     private readonly Subject<LoadingType> _onShow = new Subject<LoadingType>();

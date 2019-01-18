@@ -3,6 +3,7 @@ using SocialGame.Loading;
 using UnityEngine;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 
 namespace SocialGame.Internal.Loading
 {
@@ -29,26 +30,7 @@ namespace SocialGame.Internal.Loading
         void IInitializable.Initialize()
         {
             _intent.OnShowAsObservable()
-                .Where(_ => !_isShow.Value)
-                .Do(_ => _isShow.Value = true)
-                .Select(type => {
-                    Context context = null;
-                    if (!_contexts.TryGetValue(type, out context))
-                    {
-                        var loadingObject =_factory.Create(type);
-                        context = new Context() {
-                            Loading = loadingObject.GetComponent<ILoading>(),
-                            Object = loadingObject,
-                        };
-                        _contexts.Add(type, context);
-                    }
-                    return context.Loading;
-                })
-                .SelectMany(x => x.OnShowAsObservable(_settigns.DefaultDuration).First().Select(_ => x))
-                .SelectMany(x => _intent.OnHideAsObservable().First().Select(_ => x))
-                .SelectMany(x => x.OnHideAsObservable(_settigns.DefaultDuration).First())
-                .Do(_ => _isShow.Value = false)
-                .Subscribe()
+                .Subscribe(x => Process(x).GetAwaiter())
                 .AddTo(_disposable);
         }
 
@@ -57,6 +39,38 @@ namespace SocialGame.Internal.Loading
             _disposable.Dispose();
         }
 
+        private async UniTask Process(LoadingType type)
+        {
+            if (_isShow.Value)
+                return;
+
+            // start
+            _isShow.Value = true;
+
+            var loading = Find(type);
+            await loading.OnShow(_settigns.DefaultDuration);
+            await _intent.OnHideAsObservable().First();
+            await loading.OnHide(_settigns.DefaultDuration);
+
+            // complete
+            _isShow.Value = false;
+        }
+
+        private ILoading Find(LoadingType type)
+        {
+            Context context = null;
+            if (!_contexts.TryGetValue(type, out context))
+            {
+                var loadingObject =_factory.Create(type);
+                context = new Context() {
+                    Loading = loadingObject.GetComponent<ILoading>(),
+                    Object = loadingObject,
+                };
+                _contexts.Add(type, context);
+            }
+            return context.Loading;
+        }
+        
         #region ILoadingModel implementation
         IObservable<GameObject> ILoadingModel.OnAddAsObservable()
         {

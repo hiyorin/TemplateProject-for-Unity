@@ -1,12 +1,11 @@
-﻿using System;
-using UniRx;
+﻿using UniRx.Async;
 
 namespace SocialGame.Loading
 {
     public interface ILoading
     {
-        IObservable<Unit> OnShowAsObservable(float defaultDuration);
+        UniTask OnShow(float defaultDuration);
 
-        IObservable<Unit> OnHideAsObservable(float defaultDuration);
+        UniTask OnHide(float defaultDuration);
     }
 }

@@ -1,9 +1,8 @@
-﻿using System;
-using SocialGame.Loading;
+﻿using SocialGame.Loading;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityExtensions;
-using UniRx;
+using UniRx.Async;
 using DG.Tweening;
 
 namespace SocialGame.Internal.Loading.Builtin
@@ -34,18 +33,18 @@ namespace SocialGame.Internal.Loading.Builtin
         }
 
         #region ILoading implementation
-        IObservable<Unit> ILoading.OnShowAsObservable(float defaultDuration)
+        async UniTask ILoading.OnShow(float defaultDuration)
         {
-            return _canvasGroup
+            await _canvasGroup
                 .DOFade(1.0f, defaultDuration)
-                .OnCompleteAsObservable();
+                .OnCompleteAsUniTask();
         }
 
-        IObservable<Unit> ILoading.OnHideAsObservable(float defaultDuration)
+        async UniTask ILoading.OnHide(float defaultDuration)
         {
-            return _canvasGroup
+            await _canvasGroup
                 .DOFade(0.0f, defaultDuration)
-                .OnCompleteAsObservable();
+                .OnCompleteAsUniTask();
         }
         #endregion
     }

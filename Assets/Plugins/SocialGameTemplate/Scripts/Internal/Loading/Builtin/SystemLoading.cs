@@ -1,9 +1,8 @@
-using System;
 using SocialGame.Loading;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityExtensions;
-using UniRx;
+using UniRx.Async;
 using DG.Tweening;
 
 namespace SocialGame.Internal.Loading.Builtin
@@ -34,32 +33,29 @@ namespace SocialGame.Internal.Loading.Builtin
         }
         
         #region ILoading implementation
-        IObservable<Unit> ILoading.OnShowAsObservable(float defaultDuration)
+        async UniTask ILoading.OnShow(float defaultDuration)
         {
 #if !UNITY_EDITOR && UNITY_ANDROID
-                    Handheld.SetActivityIndicatorStyle(AndroidActivityIndicatorStyle.Small);
-                    Handheld.StartActivityIndicator();
-                    return Observable.ReturnUnit();
+            Handheld.SetActivityIndicatorStyle(AndroidActivityIndicatorStyle.Small);
+            Handheld.StartActivityIndicator();
 #elif !UNITY_EDITOR && UNITY_IOS
-                    Handheld.SetActivityIndicatorStyle(UnityEngine.iOS.ActivityIndicatorStyle.White);
-                    Handheld.StartActivityIndicator();
-                    return Observable.ReturnUnit();
+            Handheld.SetActivityIndicatorStyle(UnityEngine.iOS.ActivityIndicatorStyle.White);
+            Handheld.StartActivityIndicator();
 #else
-                    return _canvasGroup
-                        .DOFade(1.0f, defaultDuration)
-                        .OnCompleteAsObservable();
+            await _canvasGroup
+                .DOFade(1.0f, defaultDuration)
+                .OnCompleteAsUniTask();
 #endif
         }
 
-        IObservable<Unit> ILoading.OnHideAsObservable(float defaultDuration)
+        async UniTask ILoading.OnHide(float defaultDuration)
         {
 #if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IOS)
             Handheld.StopActivityIndicator();
-            return Observable.ReturnUnit();
 #else
-            return _canvasGroup
+            await _canvasGroup
                 .DOFade(0.0f, defaultDuration)
-                .OnCompleteAsObservable();
+                .OnCompleteAsUniTask();
 #endif
         }
         #endregion
