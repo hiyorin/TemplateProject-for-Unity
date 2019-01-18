@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 using UnityExtensions;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 using SceneType = SocialGame.Scene.Scene; 
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 #if UNITY_EDITOR
@@ -103,13 +104,13 @@ namespace SocialGame.Internal.Scene
         private IEnumerator Reload(LoadContext context)
         {
             _eventSystem.enabled = false;
-            yield return context.TransOut().StartAsCoroutine();
+            yield return context.TransOut();
             yield return _transController.TransIn(context.TransMode);
-            yield return context.Unload().StartAsCoroutine();
-            yield return context.Load().StartAsCoroutine();
+            yield return context.Unload();
+            yield return context.Load();
             yield return _transController.TransOut();
-            yield return context.TransIn().StartAsCoroutine();
-            context.TransComplate();
+            yield return context.TransIn();
+            context.TransComplete();
             IsLoading = false;
             _eventSystem.enabled = true;
         }
@@ -117,20 +118,20 @@ namespace SocialGame.Internal.Scene
         private IEnumerator Load(LoadContext next, LoadContext prev)
         {
             _eventSystem.enabled = false;
-            if (prev != null) yield return prev.TransOut(next).StartAsCoroutine();
+            if (prev != null) yield return prev.TransOut(next);
             yield return _transController.TransIn(next.TransMode);
             yield return LoadInternal(next);
-            if (prev != null) yield return prev.Unload(next).StartAsCoroutine();
+            if (prev != null) yield return prev.Unload(next);
             if (prev != null) yield return UnloadInternal(prev, next);
             yield return LoadSubsInternal(next, prev);
-            yield return next.Load(prev).StartAsCoroutine();
+            yield return next.Load(prev);
             yield return _transController.TransOut();
-            yield return next.TransIn(prev).StartAsCoroutine();
-            next.TransComplate();
+            yield return next.TransIn(prev);
+            next.TransComplete();
             IsLoading = false;
             _eventSystem.enabled = true;
         }
-
+        
         private static IEnumerator LoadInternal(LoadContext context)
         {
             if (context == null)
@@ -201,6 +202,7 @@ namespace SocialGame.Internal.Scene
             var scene = UnitySceneManager.GetSceneByName(sceneName);
             foreach (var rootObject in scene.GetRootGameObjects())
             {
+                
                 var context = rootObject.GetComponent<SceneContext>();
                 if (context != null)
                     return context;

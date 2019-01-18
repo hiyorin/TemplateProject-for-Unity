@@ -4,6 +4,7 @@ using SocialGame.Transition;
 using UnityEngine;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 
 namespace Sandbox.Scene
 {
@@ -23,16 +24,14 @@ namespace Sandbox.Scene
             _disposable.Dispose();
         }
 
-        IObservable<Unit> ISceneLifecycle.OnLoad(object transData)
+        async UniTask ISceneLifecycle.OnLoad(object transData)
         {
-            return Observable.ReturnUnit()
-                .Do(_ => Debug.unityLogger.Log(GetType().Name, "OnLoad " + transData));
+            Debug.unityLogger.Log(GetType().Name, "OnLoad " + transData);
         }
 
-        IObservable<Unit> ISceneLifecycle.OnTransIn()
+        async UniTask ISceneLifecycle.OnTransIn()
         {
-            return Observable.ReturnUnit()
-                .Do(_ => Debug.unityLogger.Log(GetType().Name, "OnTransIn"));
+            Debug.unityLogger.Log(GetType().Name, "OnTransIn");
         }
 
         void ISceneLifecycle.OnTransComplete()
@@ -48,16 +47,14 @@ namespace Sandbox.Scene
                 .AddTo(_disposable);
         }
 
-        IObservable<Unit> ISceneLifecycle.OnTransOut()
+        async UniTask ISceneLifecycle.OnTransOut()
         {
-            return Observable.ReturnUnit()
-                .Do(_ => Debug.unityLogger.Log(GetType().Name, "OnTransOut"));
+            Debug.unityLogger.Log(GetType().Name, "OnTransOut");
         }
 
-        IObservable<Unit> ISceneLifecycle.OnUnload()
+        async UniTask ISceneLifecycle.OnUnload()
         {
-            return Observable.ReturnUnit()
-                .Do(_ => Debug.unityLogger.Log(GetType().Name, "OnUnload"));
+            Debug.unityLogger.Log(GetType().Name, "OnUnload");
         }
     }
 }

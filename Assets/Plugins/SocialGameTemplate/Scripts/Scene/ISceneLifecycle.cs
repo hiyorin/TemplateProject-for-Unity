@@ -1,18 +1,19 @@
 ﻿using System;
 using UniRx;
+using UniRx.Async;
 
 namespace SocialGame.Scene
 {
     public interface ISceneLifecycle
     {
-        IObservable<Unit> OnLoad(object transData);
-
-        IObservable<Unit> OnTransIn();
+        UniTask OnLoad(object transData);
+        
+        UniTask OnTransIn();
 
         void OnTransComplete();
 
-        IObservable<Unit> OnTransOut();
+        UniTask OnTransOut();
 
-        IObservable<Unit> OnUnload();
+        UniTask OnUnload();
     }
 }

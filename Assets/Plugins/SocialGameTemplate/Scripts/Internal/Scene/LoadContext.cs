@@ -5,6 +5,7 @@ using UnityExtensions;
 using SocialGame.Scene;
 using SocialGame.Transition;
 using UniRx;
+using UniRx.Async;
 
 namespace SocialGame.Internal.Scene
 {
@@ -39,93 +40,85 @@ namespace SocialGame.Internal.Scene
             AdditiveScenes.Add(new Scene(name));
         }
 
-        public IObservable<Unit> Load()
+        public async UniTask Load()
         {
-            return NextScene.Lifecycles
+            await NextScene.Lifecycles
                 .Select(x => x.OnLoad(TransData))
                 .Concat(AdditiveScenes
                     .SelectMany(x => x.Lifecycles)
-                    .Select(x => x.OnLoad(TransData)))
-                .WhenAll();
+                    .Select(x => x.OnLoad(TransData)));
         }
 
-        public IObservable<Unit> Load(LoadContext prev)
+        public async UniTask Load(LoadContext prev)
         {
-            return NextScene.Lifecycles
+            await NextScene.Lifecycles
                 .Select(x => x.OnLoad(TransData))
                 .Concat(AdditiveScenes
                     .Where(x => prev == null || !prev.AdditiveScenes.Any(y => x.Name == y.Name))
                     .SelectMany(x => x.Lifecycles)
-                    .Select(x => x.OnLoad(TransData)))
-                .WhenAll();
+                    .Select(x => x.OnLoad(TransData)));
         }
 
-        public IObservable<Unit> TransIn(LoadContext prev)
+        public async UniTask TransIn(LoadContext prev)
         {
-            return NextScene.Lifecycles
+            await NextScene.Lifecycles
                 .Select(x => x.OnTransIn())
                 .Concat(AdditiveScenes
                     .Where(x => prev == null || !prev.AdditiveScenes.Any(y => x.Name == y.Name))
                     .SelectMany(x => x.Lifecycles)
-                    .Select(x => x.OnTransIn()))
-                .WhenAll();
+                    .Select(x => x.OnTransIn()));
         }
 
-        public IObservable<Unit> TransIn()
+        public async UniTask TransIn()
         {
-            return NextScene.Lifecycles
+            await NextScene.Lifecycles
                 .Select(x => x.OnTransIn())
                 .Concat(AdditiveScenes
                     .SelectMany(x => x.Lifecycles)
-                    .Select(x => x.OnTransIn()))
-                .WhenAll();
+                    .Select(x => x.OnTransIn()));
         }
 
-        public void TransComplate()
+        public void TransComplete()
         {
             NextScene.Lifecycles.ForEach(x => x.OnTransComplete());
         }
 
-        public IObservable<Unit> TransOut()
+        public async UniTask TransOut()
         {
-            return AdditiveScenes
+            await AdditiveScenes
                 .SelectMany(x => x.Lifecycles)
                 .Select(x => x.OnTransOut())
                 .Concat(NextScene.Lifecycles
-                    .Select(x => x.OnTransOut()))
-                .WhenAll();
+                    .Select(x => x.OnTransOut()));
         }
 
-        public IObservable<Unit> TransOut(LoadContext next)
+        public async UniTask TransOut(LoadContext next)
         {
-            return AdditiveScenes
+             await AdditiveScenes
                 .Where(x => next == null || !next.AdditiveScenes.Any(y => x.Name == y.Name))
                 .SelectMany(x => x.Lifecycles)
                 .Select(x => x.OnTransOut())
                 .Concat(NextScene.Lifecycles
-                    .Select(x => x.OnTransOut()))
-                .WhenAll();
+                    .Select(x => x.OnTransOut()));
         }
 
-        public IObservable<Unit> Unload()
+        public async UniTask Unload()
         {
-            return AdditiveScenes
+            await AdditiveScenes
                 .SelectMany(x => x.Lifecycles)
                 .Select(x => x.OnUnload())
                 .Concat(NextScene.Lifecycles
-                    .Select(x => x.OnUnload()))
-                .WhenAll();
+                    .Select(x => x.OnUnload()));
         }
 
-        public IObservable<Unit> Unload(LoadContext next)
+        public async UniTask Unload(LoadContext next)
         {
-            return AdditiveScenes
+            await AdditiveScenes
                 .Where(x => next == null || !next.AdditiveScenes.Any(y => x.Name == y.Name))
                 .SelectMany(x => x.Lifecycles)
                 .Select(x => x.OnUnload())
                 .Concat(NextScene.Lifecycles
-                    .Select(x => x.OnUnload()))
-                .WhenAll();
+                    .Select(x => x.OnUnload()));
         }
     }
 }
