@@ -7,11 +7,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 using SocialGame.Network;
 using SocialGame.Internal.Network.FormatContent;
 using Env = SocialGame.Internal.Network.Environment;
 
-namespace SocialGame.Internal.Network
+namespace SocialGame.Internal.Network.HTTP
 {
     internal sealed class HttpConnection : IInitializable, IDisposable, IHttpConnection
     {
@@ -99,7 +100,8 @@ namespace SocialGame.Internal.Network
         }
         
         #region IHttpConnection implementation
-        IObservable<TResponse> IHttpConnection.Get<TRequest, TResponse>(string path, TRequest data)
+
+        async UniTask<TResponse> IHttpConnection.Get<TRequest, TResponse>(string path, TRequest data)
         {
             string url = Path.Combine(_domain, path);
             var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbGET);
@@ -111,8 +113,7 @@ namespace SocialGame.Internal.Network
                 Debug.unityLogger.Log(GetType().Name, $"request : {url}\ndata : {data}");
             }
             
-            return Observable
-                .FromCoroutine<byte[]>((observer, cancel) => Fetch(request, observer, cancel, _settings.TimeOutSeconds))
+            return await Observable.FromCoroutine<byte[]>((observer, cancel) => Fetch(request, observer, cancel, _settings.TimeOutSeconds))
                 .SelectMany(x => _formatContent.Deserialize<TResponse>(x))
                 .ObserveOnMainThread()
                 .Do(x =>
@@ -125,7 +126,7 @@ namespace SocialGame.Internal.Network
                 .OnErrorRetry((HttpException ex) => { }, _settings.RetryCount);
         }
         
-        IObservable<TResponse> IHttpConnection.Post<TRequest, TResponse>(string path, TRequest data)
+        async UniTask<TResponse> IHttpConnection.Post<TRequest, TResponse>(string path, TRequest data)
         {
             string url = Path.Combine(_domain, path);
             var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
@@ -137,8 +138,7 @@ namespace SocialGame.Internal.Network
                 Debug.unityLogger.Log(GetType().Name, $"request : {url}\ndata : {data}");
             }
             
-            return Observable
-                .FromCoroutine<byte[]>((observer, cancel) => Fetch(request, observer, cancel, _settings.TimeOutSeconds))
+            return await Observable.FromCoroutine<byte[]>((observer, cancel) => Fetch(request, observer, cancel, _settings.TimeOutSeconds))
                 .SelectMany(x => _formatContent.Deserialize<TResponse>(x))
                 .ObserveOnMainThread()
                 .Do(x =>

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace SocialGame.Internal.Network
+namespace SocialGame.Internal.Network.HTTP
 {
     [Serializable]
     internal sealed class HttpSettings
