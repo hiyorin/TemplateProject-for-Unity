@@ -49,7 +49,11 @@ namespace SocialGame.Internal.Network
             
             public override void OnInspectorGUI()
             {
+#if SGT_GRPC
                 _owner._server = (Server)EditorGUILayout.EnumPopup("Server", _owner.Server);
+#else
+                _owner._server = Server.REST;
+#endif
                 
                 EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_owner._general)), new GUIContent("General Settings"), true);
 

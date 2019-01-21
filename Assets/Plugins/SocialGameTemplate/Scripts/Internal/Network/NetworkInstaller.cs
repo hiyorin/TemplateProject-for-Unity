@@ -19,8 +19,10 @@ namespace SocialGame.Internal.Network
                     Container.Install<HttpInstaller>();
                     break;
                 case Server.gRPC:
+#if SGT_GRPC
                     Container.BindInstance(networkSettings.gRPC).AsSingle();
                     Container.Install<gRPCInstaller>();
+#endif
                     break;
                 default:
                     Debug.unityLogger.LogError(GetType().Name, $"{networkSettings.Server} is not implemented.");

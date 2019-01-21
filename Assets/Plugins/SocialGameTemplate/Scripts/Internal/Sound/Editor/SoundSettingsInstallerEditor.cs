@@ -69,7 +69,7 @@ namespace SocialGame.Internal.Sound.Editor
                         bgmNames = ADX2.ADX2Utility.GetCueInfoList(_owner.Adx2Bgm.BuiltInCueSheet)?.Select(x => x.name);
                         seNames = ADX2.ADX2Utility.GetCueInfoList(_owner.Adx2Se.BuiltInCueSheet)?.Select(x => x.name);
                         voiceNames = ADX2.ADX2Utility.GetCueInfoList(_owner.Adx2Voice.BuiltInCueSheet)?.Select(x => x.name);
-                        ADX2.ADX2Utility.Finalize();
+                        ADX2.ADX2Utility.Dispose();
 #endif
                         break;
                     default:

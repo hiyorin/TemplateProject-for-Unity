@@ -86,7 +86,7 @@ namespace SocialGame.Internal.Sound.ADX2
             CriAtomPlugin.InitializeLibrary();
         }
 
-        public static void Finalize()
+        public static void Dispose()
         {
             CriAtomPlugin.FinalizeLibrary();
         }

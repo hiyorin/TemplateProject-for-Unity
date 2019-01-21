@@ -5,7 +5,8 @@ namespace MsgPack.Serialization
     {
         public static readonly SerializationContext Context = new SerializationContext
         {
-            EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue,
+            EnumSerializationOptions = { SerializationMethod = EnumSerializationMethod.ByUnderlyingValue },
+//            EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue,
             SerializationMethod = SerializationMethod.Array,
         };
         

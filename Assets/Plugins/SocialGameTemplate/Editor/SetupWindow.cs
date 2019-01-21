@@ -13,6 +13,8 @@ namespace SocialGame.Internal.Editor
     {
         private const string ADX2_Symbol = "SGT_ADX2";
 
+        private const string gRPC_Symbol = "SGT_GRPC";
+
         [MenuItem("Window/Setup SocialGameTemplate")]
         private static void Open()
         {
@@ -58,11 +60,17 @@ namespace SocialGame.Internal.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             
-            
+            // ADX2 symbol
             if (Directory.Exists(Path.Combine(Application.dataPath, "Plugins/CriWare")))
                 MenuEditor.AddSymbols(ADX2_Symbol);
             else
                 MenuEditor.RemoveSymbols(ADX2_Symbol);
+            
+            // gRPC symbol
+            if (Directory.Exists(Path.Combine(Application.dataPath, "Plugins/Grpc.Core")))
+                MenuEditor.AddSymbols(gRPC_Symbol);
+            else
+                MenuEditor.RemoveSymbols(gRPC_Symbol);
         }
 
         private void SetupExtensions()

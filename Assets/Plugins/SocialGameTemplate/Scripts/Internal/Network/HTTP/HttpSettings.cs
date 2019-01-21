@@ -25,10 +25,6 @@ namespace SocialGame.Internal.Network.HTTP
         
         [SerializeField] private bool _useChunkedTransfer = true;
 
-        [SerializeField] private float _timeOutSeconds = 10.0f;
-
-        [SerializeField] private int _retryCount = 0;
-
         public string Domain => _domain;
 
         public string ProductionEnvironment => _productionEnvironment;
@@ -40,9 +36,5 @@ namespace SocialGame.Internal.Network.HTTP
         public Format DataFormat => _dataFormat;
 
         public bool UseChunkedTransfer => _useChunkedTransfer;
-
-        public float TimeOutSeconds => _timeOutSeconds;
-
-        public int RetryCount => _retryCount;
     }
 }

@@ -1,3 +1,4 @@
+#if SGT_GRPC
 using Zenject;
 
 namespace SocialGame.Internal.Network.gRPC
@@ -10,3 +11,4 @@ namespace SocialGame.Internal.Network.gRPC
         }
     }
 }
+#endif

@@ -113,7 +113,7 @@ namespace SocialGame.Internal.Network.HTTP
                 Debug.unityLogger.Log(GetType().Name, $"request : {url}\ndata : {data}");
             }
             
-            return await Observable.FromCoroutine<byte[]>((observer, cancel) => Fetch(request, observer, cancel, _settings.TimeOutSeconds))
+            return await Observable.FromCoroutine<byte[]>((observer, cancel) => Fetch(request, observer, cancel, _generalSettings.TimeOutSeconds))
                 .SelectMany(x => _formatContent.Deserialize<TResponse>(x))
                 .ObserveOnMainThread()
                 .Do(x =>
@@ -123,7 +123,7 @@ namespace SocialGame.Internal.Network.HTTP
                         Debug.unityLogger.Log(GetType().Name, $"response : {url}\ndata : {x}");
                     }
                 })
-                .OnErrorRetry((HttpException ex) => { }, _settings.RetryCount);
+                .OnErrorRetry((HttpException ex) => { }, _generalSettings.RetryCount);
         }
         
         async UniTask<TResponse> IHttpConnection.Post<TRequest, TResponse>(string path, TRequest data)
@@ -138,7 +138,7 @@ namespace SocialGame.Internal.Network.HTTP
                 Debug.unityLogger.Log(GetType().Name, $"request : {url}\ndata : {data}");
             }
             
-            return await Observable.FromCoroutine<byte[]>((observer, cancel) => Fetch(request, observer, cancel, _settings.TimeOutSeconds))
+            return await Observable.FromCoroutine<byte[]>((observer, cancel) => Fetch(request, observer, cancel, _generalSettings.TimeOutSeconds))
                 .SelectMany(x => _formatContent.Deserialize<TResponse>(x))
                 .ObserveOnMainThread()
                 .Do(x =>
@@ -148,7 +148,7 @@ namespace SocialGame.Internal.Network.HTTP
                         Debug.unityLogger.Log(GetType().Name, $"response : {url}\ndata : {x}");
                     }
                 })
-                .OnErrorRetry((HttpException ex) => { }, _settings.RetryCount);
+                .OnErrorRetry((HttpException ex) => { }, _generalSettings.RetryCount);
         }
         #endregion
     }
