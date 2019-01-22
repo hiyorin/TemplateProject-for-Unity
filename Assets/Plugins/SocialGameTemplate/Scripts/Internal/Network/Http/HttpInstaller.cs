@@ -1,6 +1,6 @@
 using Zenject;
 
-namespace SocialGame.Internal.Network.HTTP
+namespace SocialGame.Internal.Network.Http
 {
     internal sealed class HttpInstaller : Installer
     {

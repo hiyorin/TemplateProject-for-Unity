@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec930027d9daf4b25a30387739861a35, type: 3}
   m_Name: NetworkSettings
   m_EditorClassIdentifier: 
-  _server: 1
+  gtest: 
+  _server: 0
   _general:
     _environment: 2
     _debugMode: 0
+    _timeOutSeconds: 10
+    _retryCount: 0
   _http:
     _domain: https://www.google.co.jp/
     _productionEnvironment: 
@@ -23,8 +26,6 @@ MonoBehaviour:
     _developmentEnvironment: dev
     _dataFormat: 0
     _useChunkedTransfer: 1
-    _timeOutSeconds: 10
-    _retryCount: 0
   _grpc:
     _host: localhost
-    _port: 80
+    _port: 8080

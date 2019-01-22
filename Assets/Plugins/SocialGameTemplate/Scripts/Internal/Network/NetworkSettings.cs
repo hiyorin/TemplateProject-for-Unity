@@ -1,6 +1,6 @@
 ﻿using System;
-using SocialGame.Internal.Network.HTTP;
-using SocialGame.Internal.Network.gRPC;
+using SocialGame.Internal.Network.Http;
+using SocialGame.Internal.Network.Grpc;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,13 +20,13 @@ namespace SocialGame.Internal.Network
     {
         public const string FileName = "NetworkSettings";
 
-        [SerializeField] private Server _server = Server.REST;
+        [SerializeField] private Server _server = Server .REST;
         
         [SerializeField] private GeneralSettings _general = null;
 
         [SerializeField] private HttpSettings _http = null;
 
-        [SerializeField] private gRPCSettings _grpc = null;
+        [SerializeField] private GrpcSettings _grpc = null;
         
         internal Server Server => _server;
 
@@ -34,7 +34,7 @@ namespace SocialGame.Internal.Network
 
         internal HttpSettings Http => _http;
 
-        internal gRPCSettings gRPC => _grpc;
+        internal GrpcSettings Grpc => _grpc;
         
         #if UNITY_EDITOR
         [CustomEditor(typeof(NetworkSettings))]

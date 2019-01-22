@@ -94,7 +94,7 @@ namespace SocialGame.Internal.Sound.Editor
             }
         }
         
-        private bool Generate(string type, IEnumerable<string> names)
+        private static bool Generate(string type, IEnumerable<string> names)
         {
             if (names == null)
                 return false;

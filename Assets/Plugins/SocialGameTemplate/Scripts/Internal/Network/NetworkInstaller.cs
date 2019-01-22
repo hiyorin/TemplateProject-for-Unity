@@ -1,5 +1,5 @@
-using SocialGame.Internal.Network.gRPC;
-using SocialGame.Internal.Network.HTTP;
+using SocialGame.Internal.Network.Grpc;
+using SocialGame.Internal.Network.Http;
 using UnityEngine;
 using Zenject;
 
@@ -20,8 +20,8 @@ namespace SocialGame.Internal.Network
                     break;
                 case Server.gRPC:
 #if SGT_GRPC
-                    Container.BindInstance(networkSettings.gRPC).AsSingle();
-                    Container.Install<gRPCInstaller>();
+                    Container.BindInstance(networkSettings.Grpc).AsSingle();
+                    Container.Install<GrpcInstaller>();
 #endif
                     break;
                 default:

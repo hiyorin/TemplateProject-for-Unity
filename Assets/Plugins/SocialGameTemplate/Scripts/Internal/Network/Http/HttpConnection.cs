@@ -12,7 +12,7 @@ using SocialGame.Network;
 using SocialGame.Internal.Network.FormatContent;
 using Env = SocialGame.Internal.Network.Environment;
 
-namespace SocialGame.Internal.Network.HTTP
+namespace SocialGame.Internal.Network.Http
 {
     internal sealed class HttpConnection : IInitializable, IDisposable, IHttpConnection
     {
