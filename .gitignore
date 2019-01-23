@@ -3,6 +3,7 @@
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
+[Ll]ogs/
 Assets/AssetStoreTools*
 
 # Visual Studio cache directory
@@ -51,6 +52,8 @@ sysinfo.txt
 /Assets/Plugins/MemoryInfoPlugin*
 /Assets/Demigiant*
 /Assets/Resources/DOTweenSettings.asset*
+
+# Cri
 /Assets/Gizmos/CriWare*
 /Assets/Editor/CriWare*
 /Assets/Plugins/CriWare*
@@ -58,6 +61,14 @@ sysinfo.txt
 /Assets/Plugins/Android*
 /Assets/Plugins/iOS*
 /Assets/Plugins/x86*
+
+# gRPC
 /Assets/Plugins/Grpc.Core*
 /Assets/Plugins/Google.Protobuf*
 /Assets/Plugins/System.Interactive.Async*
+
+# Firebase
+/Assets/Editor Default Resources/Firebase*
+/Assets/Firebase*
+/Assets/PlayServicesResolver*
+/Assets/Parse*
