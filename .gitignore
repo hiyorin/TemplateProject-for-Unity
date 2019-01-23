@@ -58,3 +58,6 @@ sysinfo.txt
 /Assets/Plugins/Android*
 /Assets/Plugins/iOS*
 /Assets/Plugins/x86*
+/Assets/Plugins/Grpc.Core*
+/Assets/Plugins/Google.Protobuf*
+/Assets/Plugins/System.Interactive.Async*

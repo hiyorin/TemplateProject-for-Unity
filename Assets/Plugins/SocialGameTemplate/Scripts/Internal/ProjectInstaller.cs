@@ -46,12 +46,9 @@ namespace SocialGame.Internal
             Container.BindInstance(projectSettings.Application).AsSingle();
             Container.BindInstance(projectSettings.Debug).AsSingle();
 
-            // network
-            var networkSettings = Resources.Load<NetworkSettings>(NetworkSettings.FileName);
-            Container.BindInstance(networkSettings.General);
-            Container.BindInstance(networkSettings.Http);
-            Container.BindInterfacesTo<HttpConnection>().AsSingle();
-
+            // installer
+            Container.Install<NetworkInstaller>();
+            
             // Debug mode
             Container.BindInterfacesTo<DebugMode.FPSModel>().AsSingle();
             Container.BindInterfacesTo<DebugMode.MemoryModel>().AsSingle();
