@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<coreProperties xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.openxmlformats.org/package/2006/metadata/core-properties">
+  <dc:creator>gRPC authors</dc:creator>
+  <dc:description>gRPC and Protocol Buffer compiler for managed C# and native C++ projects.
+
+Add this package to a project that contains .proto files to be compiled to code.
+It contains the compilers, include files and project system integration for gRPC
+and Protocol buffer service description files necessary to build them on Windows,
+Linux and MacOS. Managed runtime is supplied separately in the Grpc.Core package.</dc:description>
+  <dc:identifier>Grpc.Tools</dc:identifier>
+  <version>1.18.0-dev</version>
+  <keywords>gRPC RPC protocol HTTP/2</keywords>
+  <lastModifiedBy>NuGet.Build.Tasks.Pack, Version=4.5.0.4, Culture=neutral, PublicKeyToken=31bf3856ad364e35;</lastModifiedBy>
+</coreProperties>
