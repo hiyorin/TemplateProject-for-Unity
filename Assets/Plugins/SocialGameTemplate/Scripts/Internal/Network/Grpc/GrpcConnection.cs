@@ -3,6 +3,7 @@ using System;
 using Grpc.Core;
 using SocialGame.Network;
 using Zenject;
+using Debug = UnityEngine.Debug;
 
 namespace SocialGame.Internal.Network.Grpc
 {
@@ -16,7 +17,22 @@ namespace SocialGame.Internal.Network.Grpc
         
         void IInitializable.Initialize()
         {
-            _envChannel = _settings.ProductionChannel;
+            switch (_generalSettings.Environment)
+            {
+                case Environment.Production:
+                    _envChannel = _settings.ProductionChannel;
+                    break;
+                case Environment.Staging:
+                    _envChannel = _settings.StagingChannel;
+                    break;
+                case Environment.Development:
+                    _envChannel = _settings.DevelopChannel;
+                    break;
+                default:
+                    Debug.unityLogger.LogError(GetType().Name, $"Not implementation {_generalSettings.Environment}");
+                    _envChannel = _settings.DevelopChannel;
+                    break;
+            }
         }
         
         Channel IGrpcConnection.Channel => new Channel(_envChannel.Host, _envChannel.Port, ChannelCredentials.Insecure);

@@ -1,3 +1,4 @@
+using Sandbox.Network.Data;
 using UnityEngine;
 using Zenject;
 
@@ -11,6 +12,10 @@ namespace Sandbox.Network
         {
             Container.BindInterfacesTo<NetworkExampleModel>().AsSingle();
             Container.BindInstance<INetworkExampleIntent>(_intent).AsSingle();
+
+            #if SGT_GRPC
+            Container.BindInterfacesTo<HelloworldDataStore>().AsSingle();
+            #endif
         }
     }
 }
