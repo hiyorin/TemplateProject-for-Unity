@@ -1,11 +1,10 @@
-﻿using System;
-using SocialGame.Loading;
-using UnityEngine;
+﻿using UnityEngine;
+using UniRx.Async;
 
 namespace SocialGame.Internal.Loading
 {
     internal interface ILoadingFactory
     {
-        GameObject Create(LoadingType type);
+        UniTask<GameObject> Create(string name);
     }
 }

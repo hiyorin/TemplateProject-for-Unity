@@ -21,7 +21,7 @@ namespace SocialGame.Internal.Loading
 
         [Inject] private LoadingSettings _settigns = null;
 
-        private readonly ReactiveDictionary<LoadingType, Context> _contexts = new ReactiveDictionary<LoadingType, Context>();
+        private readonly ReactiveDictionary<string, Context> _contexts = new ReactiveDictionary<string, Context>();
 
         private readonly BoolReactiveProperty _isShow = new BoolReactiveProperty();
 
@@ -39,7 +39,7 @@ namespace SocialGame.Internal.Loading
             _disposable.Dispose();
         }
 
-        private async UniTask Process(LoadingType type)
+        private async UniTask Process(string name)
         {
             if (_isShow.Value)
                 return;
@@ -47,7 +47,7 @@ namespace SocialGame.Internal.Loading
             // start
             _isShow.Value = true;
 
-            var loading = Find(type);
+            var loading = await Find(name);
             await loading.OnShow(_settigns.DefaultDuration);
             await _intent.OnHideAsObservable().First();
             await loading.OnHide(_settigns.DefaultDuration);
@@ -56,17 +56,17 @@ namespace SocialGame.Internal.Loading
             _isShow.Value = false;
         }
 
-        private ILoading Find(LoadingType type)
+        private async UniTask<ILoading> Find(string name)
         {
             Context context = null;
-            if (!_contexts.TryGetValue(type, out context))
+            if (!_contexts.TryGetValue(name, out context))
             {
-                var loadingObject =_factory.Create(type);
+                var loadingObject = await _factory.Create(name);
                 context = new Context() {
                     Loading = loadingObject.GetComponent<ILoading>(),
                     Object = loadingObject,
                 };
-                _contexts.Add(type, context);
+                _contexts.Add(name, context);
             }
             return context.Loading;
         }

@@ -6,16 +6,21 @@ namespace SocialGame.Internal.Loading
 {
     internal sealed class LoadingController : ILoadingController, ILoadingIntent
     {
-        private readonly Subject<LoadingType> _onShow = new Subject<LoadingType>();
+        private readonly Subject<string> _onShow = new Subject<string>();
 
         private readonly Subject<Unit> _onHide = new Subject<Unit>();
 
         #region ILoadingController implementation
         void ILoadingController.Show(LoadingType type)
         {
-            _onShow.OnNext(type);
+            _onShow.OnNext(type.ToString());
         }
 
+        void ILoadingController.Show(string name)
+        {
+            _onShow.OnNext(name);
+        }
+        
         void ILoadingController.Hide()
         {
             _onHide.OnNext(Unit.Default);
@@ -23,7 +28,7 @@ namespace SocialGame.Internal.Loading
         #endregion
         
         #region ILoadingIntent implementation
-        IObservable<LoadingType> ILoadingIntent.OnShowAsObservable()
+        IObservable<string> ILoadingIntent.OnShowAsObservable()
         {
             return _onShow;
         }
