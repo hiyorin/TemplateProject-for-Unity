@@ -29,4 +29,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Plugins/SocialGameTemplate/Scenes/Loading.unity
     guid: 99e4a48249c9744548b7abdbd04fd5d9
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 4732191aa243243adb89293107800e33,
+      type: 2}

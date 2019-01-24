@@ -45,7 +45,7 @@ public sealed class DialogModelTest : ZenjectUnitTestFixture
 
         var factoryMock = new Mock<IDialogFactory>();
         _dialog = new GameObject(string.Empty).AddComponent<MockDialog>();
-        factoryMock.Setup(x => x.Spawn(It.IsAny<DialogType>())).Returns(_dialog.gameObject);
+//        factoryMock.Setup(x => x.Spawn(It.IsAny<DialogType>())).Returns(_dialog.gameObject);
         Container.BindInstance(factoryMock.Object).AsSingle();
 
         var intentMock = new Mock<IDialogIntent>();

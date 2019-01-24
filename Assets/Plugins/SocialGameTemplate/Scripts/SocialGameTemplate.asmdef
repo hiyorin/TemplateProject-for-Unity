@@ -1,6 +1,8 @@
 {
     "name": "SocialGameTemplate",
     "references": [
+        "Unity.Addressables",
+        "Unity.ResourceManager",
         "Zenject",
         "UniRx",
         "UniRx.Async",
@@ -11,5 +13,9 @@
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }

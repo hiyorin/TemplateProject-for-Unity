@@ -10,8 +10,8 @@ namespace SocialGame.Internal.Dialog
 
         public override void InstallBindings()
         {
-            Container.BindInterfacesTo<DialogModel>().AsSingle();
             Container.BindInterfacesTo<DialogFactory>().AsSingle();
+            Container.BindInterfacesTo<DialogModel>().AsSingle();
             Container.BindInstance(_sample).AsSingle();
         }
     }

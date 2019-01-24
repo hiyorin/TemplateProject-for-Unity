@@ -113,6 +113,8 @@ namespace SocialGame.Internal.Editor
 
             var builder = new AssemblyDefinitionBuilder("Plugins/SocialGameTemplate/Scripts/SocialGameTemplate")
                 .AddReferences(
+                    "Unity.Addressables",
+                    "Unity.ResourceManager",
                     "Zenject",
                     "UniRx",
                     "UniRx.Async",
