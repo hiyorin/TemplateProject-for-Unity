@@ -1,11 +1,10 @@
-﻿using System;
-using UnityEngine;
-using SocialGame.Toast;
+﻿using UnityEngine;
+using UniRx.Async;
 
 namespace SocialGame.Internal.Toast
 {
     internal interface IToastFactory
     {
-        GameObject Create(ToastType type);
+        UniTask<GameObject> Create(string name);
     }
 }

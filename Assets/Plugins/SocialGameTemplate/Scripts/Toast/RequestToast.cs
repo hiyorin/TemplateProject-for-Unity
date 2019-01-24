@@ -1,16 +1,20 @@
-﻿using System;
-
+﻿
 namespace SocialGame.Toast
 {
     public sealed class RequestToast
     {
-        public readonly ToastType Type;
+        public readonly string Name;
 
         public readonly object Param;
 
-        public RequestToast(ToastType type, object param)
+        public RequestToast(ToastType type, object param) : this(type.ToString(), param)
         {
-            Type = type;
+            
+        }
+
+        public RequestToast(string name, object param)
+        {
+            Name = name;
             Param = param;
         }
     }

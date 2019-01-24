@@ -31,7 +31,7 @@ public sealed class ToastModelTest : ZenjectUnitTestFixture
         Container.BindInterfacesAndSelfTo<ToastSettings>().AsSingle();
 
         var factoryMock = new Mock<IToastFactory>();
-        factoryMock.Setup(x => x.Create(It.IsAny<ToastType>())).Returns(new GameObject("").AddComponent<MockToast>().gameObject);
+//        factoryMock.Setup(x => x.Create(It.IsAny<ToastType>())).Returns(new GameObject("").AddComponent<MockToast>().gameObject);
         Container.BindInstance(factoryMock.Object).AsSingle();
 
         var intentMock = new Mock<IToastIntent>();

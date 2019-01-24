@@ -34,7 +34,7 @@ namespace SocialGame.Internal.Toast
 
         private readonly Queue<Request> _requests = new Queue<Request>();
 
-        private readonly ReactiveDictionary<ToastType, Context> _contexts = new ReactiveDictionary<ToastType, Context>();
+        private readonly ReactiveDictionary<string, Context> _contexts = new ReactiveDictionary<string, Context>();
 
         private readonly BoolReactiveProperty _isOpen = new BoolReactiveProperty();
 
@@ -44,32 +44,7 @@ namespace SocialGame.Internal.Toast
         {
             _intent
                 .OnOpenAsObservable()
-                .Select(request => {
-                    Context context = null;
-                    if (!_contexts.TryGetValue(request.Type, out context))
-                    {
-                        var toastObject = _factory.Create(request.Type);
-                        context = new Context() {
-                            Toast = toastObject.GetComponent<IToast>(),
-                            Object = toastObject,
-                        };
-                        _contexts.Add(request.Type, context);
-                    }
-                    return new Request() {
-                        Toast = context.Toast,
-                        Param = request.Param,
-                    };
-                })
-                .Where(x => x.Toast != null)
-                .Subscribe(x => {
-                    if (_current.Value == null)
-                    {
-                        _isOpen.Value = true;
-                        _current.Value = x;
-                    }
-                    else
-                        _requests.Enqueue(x);
-                })
+                .Subscribe(x => Open(x).GetAwaiter())
                 .AddTo(_disposable);
 
             Observable
@@ -89,6 +64,36 @@ namespace SocialGame.Internal.Toast
                 .AddTo(_disposable);
         }
 
+        private async UniTask Open(RequestToast request)
+        {
+            Context context = null;
+            if (!_contexts.TryGetValue(request.Name, out context))
+            {
+                var toastObject = await _factory.Create(request.Name);
+                if (toastObject == null)
+                    return;
+                
+                context = new Context() {
+                    Toast = toastObject.GetComponent<IToast>(),
+                    Object = toastObject,
+                };
+                _contexts.Add(request.Name, context);
+            }
+            
+            var req = new Request() {
+                Toast = context.Toast,
+                Param = request.Param,
+            };
+            
+            if (_current.Value == null)
+            {
+                _isOpen.Value = true;
+                _current.Value = req;
+            }
+            else
+                _requests.Enqueue(req);
+        }
+        
         private async UniTask Process(Request request)
         {
             await request.Toast.OnOpen(request.Param, _settings.DefaultDuration);

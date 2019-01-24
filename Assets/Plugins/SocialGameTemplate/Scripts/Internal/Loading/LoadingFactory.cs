@@ -4,13 +4,14 @@ using SocialGame.Loading;
 using SocialGame.Internal.Loading.Builtin;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityExtensions;
 using Zenject;
 using UniRx.Async;
 using UnityObject = UnityEngine.Object;
 
 namespace SocialGame.Internal.Loading
 {
-    internal sealed class LoadingFactory : IInitializable, ILoadingFactory
+    internal sealed class LoadingFactory : IInitializable, IDisposable, ILoadingFactory
     {
         [Inject] private DiContainer _container = null;
 
@@ -37,6 +38,12 @@ namespace SocialGame.Internal.Loading
                 var pool = new ObjectPool(_container, template);
                 _objectPools.Add(type.ToString(), pool);
             }
+        }
+
+        void IDisposable.Dispose()
+        {
+            _objectPools.Values.ForEach(x => x.Dispose());
+            _objectPools.Clear();
         }
         
         #region ILoadingFactory implementation
