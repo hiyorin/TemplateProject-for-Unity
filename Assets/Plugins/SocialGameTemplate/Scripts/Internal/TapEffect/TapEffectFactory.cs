@@ -1,11 +1,17 @@
-﻿using SocialGame.Internal.TapEffect.Builtin;
+﻿using System;
+using System.Collections.Generic;
+using SocialGame.Internal.TapEffect.Builtin;
 using SocialGame.TapEffect;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Zenject;
+using UniRx.Async;
+using UnityExtensions;
+using UnityObject = UnityEngine.Object;
 
 namespace SocialGame.Internal.TapEffect
 {
-    internal sealed class TapEffectFactory : ITapEffectFactory
+    internal sealed class TapEffectFactory : IInitializable, IDisposable, ITapEffectFactory
     {
         [Inject] private DiContainer _container = null;
 
@@ -13,12 +19,44 @@ namespace SocialGame.Internal.TapEffect
 
         [Inject] private SampleTapEffect _samplePrefab = null;
 
-        public GameObject Create(TapEffectType type)
+        private readonly Dictionary<string, ObjectPool> _objectPools = new Dictionary<string, ObjectPool>();
+
+        void IInitializable.Initialize()
         {
-            if (type == TapEffectType.Sample)
-                return _container.InstantiatePrefab(_samplePrefab);
-            else
-                return _container.InstantiatePrefab(_settings.Prefabs[(int)type]);
+            foreach (TapEffectType type in Enum.GetValues(typeof(TapEffectType)))
+            {
+                UnityObject template;
+                if (type == TapEffectType.Sample)
+                    template = _samplePrefab;
+                else
+                    template = _settings.Prefabs[(int)type];
+                
+                var pool = new ObjectPool(_container, template);
+                _objectPools.Add(type.ToString(), pool);
+            }
         }
+
+        void IDisposable.Dispose()
+        {
+            _objectPools.Values.ForEach(x => x.Dispose());
+            _objectPools.Clear();
+        }
+        
+        #region ITapEffectFactory implementation
+        async UniTask<GameObject> ITapEffectFactory.Create(string name)
+        {
+            ObjectPool pool;
+            if (!_objectPools.TryGetValue(name, out pool))
+            {
+                var operation = Addressables.LoadAsset<GameObject>(name);
+                await operation.ToUniTask();
+                
+                pool = new ObjectPool(_container, operation.Result);
+                _objectPools.Add(name, pool);
+            }
+            
+            return pool.Spawn();
+        }
+        #endregion
     }
 }

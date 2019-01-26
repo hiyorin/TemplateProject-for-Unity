@@ -3,6 +3,7 @@ using SocialGame.TapEffect;
 using UnityEngine;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 
 namespace SocialGame.Internal.TapEffect
 {
@@ -20,27 +21,14 @@ namespace SocialGame.Internal.TapEffect
 
         private readonly ReactiveProperty<Context> _currentContext = new ReactiveProperty<Context>();
 
-        private readonly ReactiveDictionary<TapEffectType, Context> _contexts = new ReactiveDictionary<TapEffectType, Context>();
+        private readonly ReactiveDictionary<string, Context> _contexts = new ReactiveDictionary<string, Context>();
 
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
         void IInitializable.Initialize()
         {
             _intent.OnStartAsObservable()
-                .Select(x => {
-                    Context context = null;
-                    if (!_contexts.TryGetValue(x, out context))
-                    {
-                        var tapEffectObject = _factory.Create(x);
-                        context = new Context() {
-                            TapEffect = tapEffectObject.GetComponent<ITapEffect>(),
-                            Object = tapEffectObject,
-                        };
-                        _contexts.Add(x, context);
-                    }
-                    return context;
-                })
-                .Subscribe(x => _currentContext.Value = x)
+                .Subscribe(x => Start(x).GetAwaiter())
                 .AddTo(_disposable);
 
             _intent.OnStopAsObservable()
@@ -74,6 +62,22 @@ namespace SocialGame.Internal.TapEffect
                 .AddTo(_disposable);
         }
 
+        private async UniTask Start(string name)
+        {
+            Context context = null;
+            if (!_contexts.TryGetValue(name, out context))
+            {
+                var tapEffectObject = await _factory.Create(name);
+                context = new Context() {
+                    TapEffect = tapEffectObject.GetComponent<ITapEffect>(),
+                    Object = tapEffectObject,
+                };
+                _contexts.Add(name, context);
+            }
+
+            _currentContext.Value = context;
+        }
+        
         void IDisposable.Dispose()
         {
             _disposable.Dispose();

@@ -6,7 +6,7 @@ namespace SocialGame.Internal.TapEffect
 {
     internal interface ITapEffectIntent
     {
-        IObservable<TapEffectType> OnStartAsObservable();
+        IObservable<string> OnStartAsObservable();
 
         IObservable<Unit> OnStopAsObservable();
     }
