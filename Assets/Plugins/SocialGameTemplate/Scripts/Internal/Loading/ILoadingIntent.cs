@@ -6,7 +6,7 @@ namespace SocialGame.Internal.Loading
 {
     internal interface ILoadingIntent
     {
-        IObservable<LoadingType> OnShowAsObservable();
+        IObservable<string> OnShowAsObservable();
 
         IObservable<Unit> OnHideAsObservable();
     }

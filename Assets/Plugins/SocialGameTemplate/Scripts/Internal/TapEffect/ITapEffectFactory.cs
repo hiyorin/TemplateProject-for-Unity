@@ -1,11 +1,10 @@
-﻿using System;
-using SocialGame.TapEffect;
-using UnityEngine;
+﻿using UnityEngine;
+using UniRx.Async;
 
 namespace SocialGame.Internal.TapEffect
 {
     internal interface ITapEffectFactory
     {
-        GameObject Create(TapEffectType type);
+        UniTask<GameObject> Create(string name);
     }
 }

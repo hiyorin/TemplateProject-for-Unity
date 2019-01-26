@@ -5,6 +5,8 @@ namespace SocialGame.Loading
     {
         void Show(LoadingType type);
 
+        void Show(string name);
+
         void Hide();
     }
 }

@@ -32,11 +32,11 @@ public sealed class LoadingModelTest : ZenjectUnitTestFixture
         Container.BindInterfacesAndSelfTo<LoadingModel>().AsSingle();
 
         var factoryMock = new Mock<ILoadingFactory>();
-        factoryMock.Setup(x => x.Create(It.IsAny<LoadingType>())).Returns(new GameObject(string.Empty).AddComponent<MockLoading>().gameObject);
+//        factoryMock.Setup(x => x.Create(It.IsAny<LoadingType>())).Returns(new GameObject(string.Empty).AddComponent<MockLoading>().gameObject);
         Container.BindInstance(factoryMock.Object).AsSingle();
 
         var intentMock = new Mock<ILoadingIntent>();
-        intentMock.Setup(x => x.OnShowAsObservable()).Returns(_onShow);
+//        intentMock.Setup(x => x.OnShowAsObservable()).Returns(_onShow);
         intentMock.Setup(x => x.OnHideAsObservable()).Returns(_onHide);
         Container.BindInstance(intentMock.Object).AsSingle();
 

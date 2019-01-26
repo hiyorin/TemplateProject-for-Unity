@@ -1,13 +1,12 @@
-﻿using System;
-using SocialGame.Dialog;
-using UnityEngine;
+﻿using UnityEngine;
+using UniRx.Async;
 
 namespace SocialGame.Internal.Dialog
 {
     internal interface IDialogFactory
     {
-        GameObject Spawn(DialogType type);
+        UniTask<GameObject> Spawn(string name);
 
-        void Despawn(DialogType type, GameObject value);
+        void Despawn(string name, GameObject value);
     }
 }

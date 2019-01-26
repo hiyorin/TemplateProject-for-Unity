@@ -72,3 +72,7 @@ sysinfo.txt
 /Assets/Firebase*
 /Assets/PlayServicesResolver*
 /Assets/Parse*
+
+# AddressableAssets
+/Assets/AddressableAssetsData*
+/Assets/StreamingAssets/com.unity.addressables*

@@ -32,7 +32,7 @@ namespace SocialGame.Internal.Dialog
         
         private readonly Stack<Request> _stack = new Stack<Request>();
 
-        private readonly ReactiveDictionary<DialogType, Context> _contexts = new ReactiveDictionary<DialogType, Context>();
+        private readonly ReactiveDictionary<string, Context> _contexts = new ReactiveDictionary<string, Context>();
 
         private readonly BoolReactiveProperty _isOpen = new BoolReactiveProperty();
 
@@ -62,22 +62,6 @@ namespace SocialGame.Internal.Dialog
                 .Merge(
                     _intent.OnOpenAsObservable().Where(x => x.Primary || !_isOpen.Value),
                     _onOpen)
-                .Select(request => {
-                    Context context = null;
-                    if (!_contexts.TryGetValue(request.Type, out context))
-                    {
-                        var dialogObject = _factory.Spawn(request.Type);
-                        context = new Context() {
-                            Dialog = dialogObject.GetComponent<IDialog>(),
-                            Object = dialogObject,
-                        };
-                        _contexts.Add(request.Type, context);
-                    }
-                    return new Request() {
-                        Dialog = context.Dialog,
-                        Param = request.Param,
-                    };
-                })
                 .Subscribe(x => Open(x).GetAwaiter())
                 .AddTo(_disposable);
 
@@ -97,6 +81,25 @@ namespace SocialGame.Internal.Dialog
             _contexts.Clear();
         }
 
+        private async UniTask Open(RequestDialog request)
+        {
+            Context context = null;
+            if (!_contexts.TryGetValue(request.Name, out context))
+            {
+                var dialogObject = await _factory.Spawn(request.Name);
+                context = new Context() {
+                    Dialog = dialogObject.GetComponent<IDialog>(),
+                    Object = dialogObject,
+                };
+                _contexts.Add(request.Name, context);
+            }
+            
+            await Open(new Request() {
+                Dialog = context.Dialog,
+                Param = request.Param,
+            });
+        }
+        
         private async UniTask Open(Request request)
         {
             if (request.Dialog == null)

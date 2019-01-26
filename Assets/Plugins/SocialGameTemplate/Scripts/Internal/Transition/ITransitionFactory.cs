@@ -1,11 +1,10 @@
-﻿using System;
-using SocialGame.Transition;
-using UnityEngine;
+﻿using UnityEngine;
+using UniRx.Async;
 
 namespace SocialGame.Internal.Transition
 {
     internal interface ITransitionFactory
     {
-        GameObject Create(TransMode trans);
+        UniTask<GameObject> Create(string name);
     }
 }
