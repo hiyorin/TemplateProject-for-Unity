@@ -6,7 +6,7 @@ namespace SocialGame.Internal.Transition
 {
     internal interface ITransitionIntent
     {
-        IObservable<TransMode> OnTransInAsObservable();
+        IObservable<string> OnTransInAsObservable();
 
         IObservable<Unit> OnTransOutAsObservable();
     }

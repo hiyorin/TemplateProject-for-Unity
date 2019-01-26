@@ -4,6 +4,7 @@ using SocialGame.Transition;
 using UnityEngine;
 using Zenject;
 using UniRx;
+using UniRx.Async;
 
 namespace SocialGame.Internal.Transition
 {
@@ -17,7 +18,7 @@ namespace SocialGame.Internal.Transition
         
         private readonly Stack<ITransition> _transStack = new Stack<ITransition>();
 
-        private readonly ReactiveDictionary<TransMode, GameObject> _transObjects = new ReactiveDictionary<TransMode, GameObject>();
+        private readonly ReactiveDictionary<string, GameObject> _transObjects = new ReactiveDictionary<string, GameObject>();
 
         private readonly Subject<Unit> _onTransInComplete = new Subject<Unit>();
 
@@ -28,28 +29,12 @@ namespace SocialGame.Internal.Transition
         void IInitializable.Initialize()
         {
             _intent.OnTransInAsObservable()
-                .Where(x => x != TransMode.None)
-                .Select(trans => {
-                    GameObject transObject = null;
-                    if (!_transObjects.TryGetValue(trans, out transObject))
-                    {
-                        transObject = _factory.Create(trans);
-                        _transObjects.Add(trans, transObject);
-                    }
-                    return transObject;
-                })
-                .Select(x => x.GetComponent<ITransition>())
-                .Where(x => x != null)
-                .Do(x => _transStack.Push(x))
-                .SelectMany(x => x.OnTransIn(_settings.DefaultDuration).ToObservable())
-                .Subscribe(_onTransInComplete.OnNext)
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Subscribe(x => TransIn(x).GetAwaiter())
                 .AddTo(_disposable);
 
             _intent.OnTransOutAsObservable()
-                .Where(_ => _transStack.Count > 0)
-                .Select(_ => _transStack.Pop())
-                .SelectMany(x => x.OnTransOut(_settings.DefaultDuration).ToObservable())
-                .Subscribe(_onTransOutComplete.OnNext)
+                .Subscribe(_ => TransOut().GetAwaiter())
                 .AddTo(_disposable);
         }
 
@@ -58,6 +43,40 @@ namespace SocialGame.Internal.Transition
             _disposable.Dispose();
         }
 
+        async UniTask TransIn(string name)
+        {
+            GameObject transObject = null;
+            if (!_transObjects.TryGetValue(name, out transObject))
+            {
+                transObject = await _factory.Create(name);
+                _transObjects.Add(name, transObject);
+            }
+
+            if (transObject == null)
+            {
+                Debug.unityLogger.LogError(GetType().Name, $"{name} is not found.");
+                return;
+            }
+
+            var transition = transObject.GetComponent<ITransition>();
+            if (transition == null)
+            {
+                Debug.unityLogger.LogError(GetType().Name, $"{name} is not implementation.");
+                return;
+            }
+
+            _transStack.Push(transition);
+            await transition.OnTransIn(_settings.DefaultDuration);
+            _onTransInComplete.OnNext(Unit.Default);
+        }
+
+        async UniTask TransOut()
+        {
+            var transition = _transStack.Pop();
+            await transition.OnTransOut(_settings.DefaultDuration);
+            _onTransOutComplete.OnNext(Unit.Default);
+        }
+        
         #region ITransitionModel implementation
         IObservable<GameObject> ITransitionModel.OnAddAsObservable()
         {

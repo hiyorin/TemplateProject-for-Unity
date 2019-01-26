@@ -6,14 +6,20 @@ namespace SocialGame.Internal.Transition
 {
     internal sealed class TransitionController : ITransitionController, ITransitionIntent
     {
-        private readonly Subject<TransMode> _onTransIn = new Subject<TransMode>();
+        private readonly Subject<string> _onTransIn = new Subject<string>();
 
         private readonly Subject<Unit> _onTransOut = new Subject<Unit>();
 
         #region ITransitionIntent implementation
-        IObservable<Unit> ITransitionController.TransIn(TransMode tras)
+        IObservable<Unit> ITransitionController.TransIn(TransMode trans)
         {
-            _onTransIn.OnNext(tras);
+            _onTransIn.OnNext(trans.ToString());
+            return Observable.Timer(TimeSpan.FromSeconds(0.5f)).AsUnitObservable();
+        }
+
+        IObservable<Unit> ITransitionController.TransIn(string name)
+        {
+            _onTransIn.OnNext(name);
             return Observable.Timer(TimeSpan.FromSeconds(0.5f)).AsUnitObservable();
         }
 
@@ -25,7 +31,7 @@ namespace SocialGame.Internal.Transition
         #endregion
 
         #region ITransitionIntent implementation
-        IObservable<TransMode> ITransitionIntent.OnTransInAsObservable()
+        IObservable<string> ITransitionIntent.OnTransInAsObservable()
         {
             return _onTransIn;
         }

@@ -32,11 +32,11 @@ public sealed class TransitionModelTest : ZenjectUnitTestFixture
         Container.BindInterfacesAndSelfTo<TransitionModel>().AsSingle();
 
         var factoryMock = new Mock<ITransitionFactory>();
-        factoryMock.Setup(x => x.Create(It.IsAny<TransMode>())).Returns(new GameObject(string.Empty).AddComponent<MockTransition>().gameObject);
+//        factoryMock.Setup(x => x.Create(It.IsAny<TransMode>())).Returns(new GameObject(string.Empty).AddComponent<MockTransition>().gameObject);
         Container.BindInstance(factoryMock.Object).AsSingle();
 
         var intentMock = new Mock<ITransitionIntent>();
-        intentMock.Setup(x => x.OnTransInAsObservable()).Returns(_in);
+//        intentMock.Setup(x => x.OnTransInAsObservable()).Returns(_in);
         intentMock.Setup(x => x.OnTransOutAsObservable()).Returns(_out);
         Container.BindInstance(intentMock.Object).AsSingle();
 
