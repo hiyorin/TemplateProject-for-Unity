@@ -1,5 +1,9 @@
 # TemplateProject-for-Unity
 
+# Unity Version
+* Unity 2018.3 higher
+* AddressableAssets 0.5.3 higher
+
 # Requirement
 * [UniRx](https://github.com/neuecc/UniRx)(6.1.1 or higher)
 * [Zenject](https://github.com/svermeulen/Zenject)(7.3.0 or higher)
