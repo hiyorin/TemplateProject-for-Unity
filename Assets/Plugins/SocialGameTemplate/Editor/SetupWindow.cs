@@ -44,7 +44,6 @@ namespace SocialGame.Internal.Editor
 
         private void OnWizardCreate()
         {
-            SetupExtensions();
             SetupBuildSettingsScene();
             SetupSettings<ProjectSettings>(ProjectSettings.FileName);
             SetupSettings<NetworkSettings>(NetworkSettings.FileName);
@@ -71,12 +70,6 @@ namespace SocialGame.Internal.Editor
                 MenuEditor.AddSymbols(gRPC_Symbol);
             else
                 MenuEditor.RemoveSymbols(gRPC_Symbol);
-        }
-
-        private void SetupExtensions()
-        {
-            UniRxMenu.Enable();
-            DOTweenMenu.Enable();
         }
 
         private void SetupBuildSettingsScene()

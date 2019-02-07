@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "com.hiyorin.extensions": "https://github.com/hiyorin/upm.Extensions-for-Unity.git",
+    "com.hiyorin.extensions.dotween": "https://github.com/hiyorin/upm.Extensions-for-Unity.DOTween.git",
+    "com.hiyorin.extensions.unirx": "https://github.com/hiyorin/upm.Extensions-for-Unity.UniRx.git",
     "com.unity.addressables": "0.5.3-preview",
     "com.unity.ads": "2.3.1",
     "com.unity.analytics": "3.2.2",
@@ -37,5 +40,19 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
+  },
+  "lock": {
+    "com.hiyorin.extensions": {
+      "hash": "0055b08a73d4c5b4d4bee2e759416634dfbba60c",
+      "revision": "HEAD"
+    },
+    "com.hiyorin.extensions.unirx": {
+      "hash": "2cb82a0677f2c557d165374f110cdde39de01244",
+      "revision": "HEAD"
+    },
+    "com.hiyorin.extensions.dotween": {
+      "hash": "3020e71effbe0148498c9ec90191f9c8a3d81b70",
+      "revision": "HEAD"
+    }
   }
 }

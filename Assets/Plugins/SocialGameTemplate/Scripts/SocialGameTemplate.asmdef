@@ -8,6 +8,8 @@
         "UniRx.Async",
         "MemoryInfoPlugin",
         "UnityExtensions",
+        "UnityExtensions.UniRx",
+        "UnityExtensions.DOTween",
         "CriWare"
     ],
     "optionalUnityReferences": [],
