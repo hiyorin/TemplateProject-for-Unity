@@ -3,6 +3,7 @@
     "com.hiyorin.extensions": "https://github.com/hiyorin/upm.Extensions-for-Unity.git",
     "com.hiyorin.extensions.dotween": "https://github.com/hiyorin/upm.Extensions-for-Unity.DOTween.git",
     "com.hiyorin.extensions.unirx": "https://github.com/hiyorin/upm.Extensions-for-Unity.UniRx.git",
+    "com.hiyorin.memoryinfo": "https://github.com/hiyorin/upm.MemoryInfoPlugin-for-Unity.git",
     "com.unity.addressables": "0.5.3-preview",
     "com.unity.ads": "2.3.1",
     "com.unity.analytics": "3.2.2",
@@ -52,6 +53,10 @@
     },
     "com.hiyorin.extensions.dotween": {
       "hash": "3020e71effbe0148498c9ec90191f9c8a3d81b70",
+      "revision": "HEAD"
+    },
+    "com.hiyorin.memoryinfo": {
+      "hash": "1a61c448c75d528c807a7c1ce512b42f4f02ddd5",
       "revision": "HEAD"
     }
   }
